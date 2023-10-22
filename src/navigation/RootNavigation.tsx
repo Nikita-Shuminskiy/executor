@@ -23,9 +23,33 @@ import WifiReconnect from "../components/WifiReconnect";
 import GivePermissions from "../components/GivePermissions";
 import rootStore from "../store/RootStore/root-store";
 import authenticatedRoutes from "./routesConstants";
-
+import notifee, {AndroidColor, AndroidImportance, AndroidVisibility, EventType} from "@notifee/react-native";
+import {Platform} from "react-native";
 
 const RootStack = createNativeStackNavigator()
+/*notifee.onBackgroundEvent(async ({ type, detail }) => {
+    const { notification, pressAction } = detail;
+   // console.log('onBackgroundEvent')
+    // Check if the user pressed the "Mark as read" action
+    if (type === EventType.ACTION_PRESS && pressAction.id === 'accept') {
+        // Update external API
+      //  console.log('press, accept')
+
+        // Remove the notification
+       // await notifee.cancelNotification(notification.id);
+    }
+});
+notifee.onForegroundEvent(async ({ type, detail }) => {
+    //console.log(detail, 'onForegroundEvent')
+    switch (type) {
+        case EventType.DISMISSED:
+         //   console.log('User dismissed notification', detail.notification);
+            break;
+        case EventType.PRESS:
+           // console.log('User pressed notification', detail.notification);
+            break;
+    }
+});*/
 
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
@@ -42,9 +66,12 @@ const RootNavigation = observer(() => {
 
     const {checkInternetConnection, isConnected} = useInternetConnected()
     const navigate = useNavigation<any>()
-
-    useNotification()
-
+    const createChannel = async () => {
+        if (Platform.OS == 'ios') {
+            await notifee.requestPermission()
+        }
+    }
+    useNotification(isAuth)
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
         AuthStoreService.getSettingExecutor(navigate?.navigate)
@@ -58,6 +85,7 @@ const RootNavigation = observer(() => {
                     setIsLoading(LoadingEnum.success)
                 }, 2000)
             })
+
     }, [])
     return (
         <BurgerMenuProvider>

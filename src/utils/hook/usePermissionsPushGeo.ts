@@ -8,7 +8,19 @@ export const usePermissionsPushGeo = () => {
 	const [notificationStatus, setNotificationStatus] = useState<string>('undetermined')
 	const [locationStatus, setLocationStatus] = useState<string>('undetermined')
 	const askNotificationPermissionHandler = async () => {
-		const { status } = await Notifications.requestPermissionsAsync()
+		const { status } = await Notifications.requestPermissionsAsync({
+			ios: {
+				allowAlert: true,
+				allowBadge: true,
+				allowSound: true,
+			},
+			android: {
+			allowAlert: true,
+				allowBadge: true,
+				allowSound: true,
+				allowVibration: true,
+		},
+		})
 		setNotificationStatus(status)
 		return status
 	}
@@ -25,7 +37,6 @@ export const usePermissionsPushGeo = () => {
 				const { status } = await Notifications.getPermissionsAsync()
 				setNotificationStatus(status)
 				const { status: existingLocationStatus } = await Location.getForegroundPermissionsAsync()
-
 				setLocationStatus(existingLocationStatus)
 			} catch (e) {
 

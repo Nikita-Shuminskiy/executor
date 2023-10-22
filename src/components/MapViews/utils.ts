@@ -1,15 +1,12 @@
 import * as Location from 'expo-location'
-import { createAlert } from '../CreateAlert'
+import NotificationStore from "../../store/NotificationStore/notification-store";
 
 export const allowLocation = async () => {
+	const {setServerErrorText} = NotificationStore
 	try {
 		let { status } = await Location.requestForegroundPermissionsAsync()
 		if (status !== 'granted') {
-			createAlert({
-				title: 'Message',
-				message: 'Permission to access location was denied',
-				buttons: [{ text: 'Exit' }],
-			})
+			setServerErrorText('Permission to access location was denied')
 			return
 		}
 		return status
@@ -27,6 +24,7 @@ export const getCurrentPositionHandler = async () => {
 			return { latitude, longitude }
 		}
 	} catch (e) {
+		console.log(e, 'getCurrentPositionHandler')
 	} finally {
 	}
 }

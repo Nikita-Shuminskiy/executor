@@ -34,7 +34,8 @@ type ExecutorType = {
     phone_verify_datetime: string;
 }
 type ExecutorSettingType = {
-    country: CountryType[];
+    country: CountryType;
+    countries: CountryType[];
     executors: ExecutorType;
     languages: string[];
     status: string;
