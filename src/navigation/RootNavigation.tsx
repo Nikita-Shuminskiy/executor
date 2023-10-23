@@ -23,56 +23,39 @@ import WifiReconnect from "../components/WifiReconnect";
 import GivePermissions from "../components/GivePermissions";
 import rootStore from "../store/RootStore/root-store";
 import authenticatedRoutes from "./routesConstants";
-import notifee, {AndroidColor, AndroidImportance, AndroidVisibility, EventType} from "@notifee/react-native";
-import {Platform} from "react-native";
+import notifee, {AndroidImportance, AndroidVisibility} from "@notifee/react-native";
 
 const RootStack = createNativeStackNavigator()
-/*notifee.onBackgroundEvent(async ({ type, detail }) => {
-    const { notification, pressAction } = detail;
-   // console.log('onBackgroundEvent')
-    // Check if the user pressed the "Mark as read" action
-    if (type === EventType.ACTION_PRESS && pressAction.id === 'accept') {
-        // Update external API
-      //  console.log('press, accept')
-
-        // Remove the notification
-       // await notifee.cancelNotification(notification.id);
-    }
-});
-notifee.onForegroundEvent(async ({ type, detail }) => {
-    //console.log(detail, 'onForegroundEvent')
-    switch (type) {
-        case EventType.DISMISSED:
-         //   console.log('User dismissed notification', detail.notification);
-            break;
-        case EventType.PRESS:
-           // console.log('User pressed notification', detail.notification);
-            break;
-    }
-});*/
+const test = async () => {
+    await notifee.createChannel({
+        id: 'default3',
+        name: 'default3',
+        visibility: AndroidVisibility.PUBLIC,
+        importance: AndroidImportance.HIGH,
+        bypassDnd: true,
+        vibration: true,
+        sound: 'test.wav',
+    });
+}
 
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {isAuth} = AuthStore
     const {AuthStoreService} = rootStore
-    const {
+   /* const {
         askNotificationPermissionHandler,
         askLocationPermissionHandler,
         locationStatus,
         notificationStatus
-    } = usePermissionsPushGeo()
+    } = usePermissionsPushGeo()*/
 
-    const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
+    //const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
 
     const {checkInternetConnection, isConnected} = useInternetConnected()
     const navigate = useNavigation<any>()
-    const createChannel = async () => {
-        if (Platform.OS == 'ios') {
-            await notifee.requestPermission()
-        }
-    }
     useNotification(isAuth)
     useLayoutEffect(() => {
+        test()
         setIsLoading(LoadingEnum.fetching)
         AuthStoreService.getSettingExecutor(navigate?.navigate)
             .then((data) => {
@@ -95,10 +78,10 @@ const RootNavigation = observer(() => {
                 text={serverResponseText}/>}
             {!isConnected && <WifiReconnect
                 checkInternet={checkInternetConnection} visible={!isConnected}/>}
-            {checkStatusPermissions && <GivePermissions
+           {/* {checkStatusPermissions && <GivePermissions
                 askLocationPermissionHandler={askLocationPermissionHandler}
                 askNotificationPermissionHandler={askNotificationPermissionHandler}
-                visible={checkStatusPermissions}/>}
+                visible={checkStatusPermissions}/>}*/}
             <BurgerMenu/>
             <RootStack.Navigator screenOptions={{headerShown: false}}>
                 <RootStack.Screen

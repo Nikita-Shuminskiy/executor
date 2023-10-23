@@ -62,15 +62,6 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Swash executor to use your location."
         }
-      ],
-      [
-        "expo-notifications",
-        {
-          "color": "#ffffff",
-          "sounds": [
-            "./test.wav"
-          ]
-        }
       ]
     ]
   }

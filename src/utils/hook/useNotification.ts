@@ -1,41 +1,18 @@
 import {useEffect} from "react";
 import messaging from "@react-native-firebase/messaging";
 import {Linking, PermissionsAndroid, PermissionStatus, Platform} from 'react-native';
-import AuthStore from "../../store/AuthStore/auth-store";
-import notifee, {AndroidColor, AndroidImportance, AndroidVisibility} from '@notifee/react-native';
+import notifee, {AndroidImportance, AndroidVisibility} from '@notifee/react-native';
 import {authApi} from "../../api/authApi";
-import * as Notifications from 'expo-notifications';
-Notifications.scheduleNotificationAsync({
-    content: {
-        title: "Time's up!",
-        body: 'Change sides!',
-    },
-    trigger: {
-        seconds: 2,
-    },
-});
 
-
-const onDisplayNotification = async (data) => {
-    const channelId = await notifee.createChannel({
-        id: 'TEST_1',
-        name: 'TEST_1',
-        bypassDnd: true,
-        importance: AndroidImportance.HIGH,
-        lightColor: AndroidColor.BLUE,
-        visibility: AndroidVisibility.PUBLIC,
-        sound: 'test',
-    });
-
+export const onDisplayNotification = async (data) => {
     await notifee.displayNotification({
         title: data?.notification.title,
         body: data?.notification.body,
         android: {
-            channelId: channelId,
+            channelId: 'default3',
             lightUpScreen: true, // подсветка экрана
             loopSound: true,
             onlyAlertOnce: false, // хз
-            timeoutAfter: 1000000000,
             visibility: AndroidVisibility.PUBLIC,
             importance: AndroidImportance.HIGH,
             ongoing: true, // предотвращает закрытие
@@ -54,7 +31,7 @@ const onDisplayNotification = async (data) => {
 }
 export const useNotification = (isAuth) => {
     useEffect(() => {
-        if (isAuth) {
+        if (!isAuth) {
             requestUserPermission().then((data) => {
                 if (data) {
                     messaging()
@@ -62,44 +39,27 @@ export const useNotification = (isAuth) => {
                         .then((token) => {
                             console.log(token)
                             sendToken(token);
-                            notificationListeners()
                         });
                 }
             })
+            const unsubscribe = messaging().onMessage(onDisplayNotification);
+            const unsubscribeNotifee = notifee.onForegroundEvent(onForegroundEvent);
+            return () => {
+                unsubscribeNotifee()
+                unsubscribe()
+            }
         }
     }, [isAuth]);
 };
-
-export async function notificationListeners() {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-        console.log('A new FCM message arrived!', remoteMessage);
-        onDisplayNotification(remoteMessage)
-    });
-    messaging().onNotificationOpenedApp(remoteMessage => {
-        console.log(
-            'Notification caused app to open from background state:',
-            remoteMessage,
-        );
-        messaging().setBackgroundMessageHandler(async remoteMessage => {
-            console.log('Message handled in the background!', remoteMessage);
-            await onDisplayNotification(remoteMessage)
-        });
-    });
-
-    // Check whether an initial notification is available
-    messaging()
-        .getInitialNotification()
-        .then(remoteMessage => {
-            if (remoteMessage) {
-                console.log(
-                    'Notification caused app to open from quit state:',
-                    remoteMessage.notification,
-                );
-            }
-        });
-    return unsubscribe
+const onForegroundEvent = ({type, detail}) => {
+    switch (detail?.pressAction?.id) {
+        case 'accept':
+            console.log('accept')
+            break;
+        case 'cansel':
+            console.log('cansel')
+    }
 }
-
 const requestUserPermission = async () => {
     try {
         const permission: PermissionStatus = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
@@ -117,6 +77,7 @@ const sendToken = async (token: string) => {
         console.log(e, 'sendDeviceToken');
     }
 }
+
 async function openAppSettings() {
     if (Platform.OS === 'ios') {
         await Linking.openURL('app-settings:');
@@ -135,9 +96,3 @@ async function openAppSettings() {
     providesAppNotificationSettings: true,
     provisional: true,
 }*/
-/*   const handleNotificationClick = () => {
-        console.log('addNotificationResponseReceivedListener')
-        // Обработайте действия пользователя при нажатии на уведомление
-    };
-    const notificationClickSubscription =
-        Notifications.addNotificationResponseReceivedListener(handleNotificationClick);*/

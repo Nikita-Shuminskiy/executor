@@ -1,4 +1,4 @@
-import * as Notifications from 'expo-notifications'
+
 import * as Location from 'expo-location'
 import { useEffect, useState } from 'react'
 
@@ -8,7 +8,7 @@ export const usePermissionsPushGeo = () => {
 	const [notificationStatus, setNotificationStatus] = useState<string>('undetermined')
 	const [locationStatus, setLocationStatus] = useState<string>('undetermined')
 	const askNotificationPermissionHandler = async () => {
-		const { status } = await Notifications.requestPermissionsAsync({
+	/*	const { status } = await Notifications.requestPermissionsAsync({
 			ios: {
 				allowAlert: true,
 				allowBadge: true,
@@ -22,7 +22,7 @@ export const usePermissionsPushGeo = () => {
 		},
 		})
 		setNotificationStatus(status)
-		return status
+		return status*/
 	}
 
 	const askLocationPermissionHandler = async () => {
@@ -31,7 +31,7 @@ export const usePermissionsPushGeo = () => {
 		return status
 	}
 
-	useEffect(() => {
+/*	useEffect(() => {
 		(async () => {
 			try {
 				const { status } = await Notifications.getPermissionsAsync()
@@ -43,7 +43,7 @@ export const usePermissionsPushGeo = () => {
 			} finally {
 			}
 		})()
-	}, [])
+	}, [])*/
 
 	return {
 		askLocationPermissionHandler,
