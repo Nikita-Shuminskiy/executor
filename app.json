@@ -2,6 +2,7 @@
   "expo": {
     "name": "Swash executor",
     "slug": "swash-executor",
+    "scheme": ["swash-executor", "fb679597410577527"],
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -49,7 +50,6 @@
         "projectId": "9c0f47d0-4406-45e6-8f51-5043c3314158"
       }
     },
-    "scheme": ["swash-executor", "fb679597410577527"],
     "owner": "nick_111122",
     "plugins": [
       "@notifee/react-native",

@@ -1,3 +1,5 @@
+import {NavigationProp, ParamListBase} from "@react-navigation/native";
+
 export enum LanguageEnum {
     EN = 'EN',
     PL = 'PL',
@@ -74,8 +76,11 @@ type AuthGooglePayload = {
     language?: string
     country?: string
 }
-
+type CommonScreenPropsType = {
+    navigation: NavigationProp<ParamListBase>
+}
 export {
+    CommonScreenPropsType,
     AuthGooglePayload,
     ExecutorSettingType,
     RegisterPayloadType,

@@ -1,5 +1,6 @@
 import React from 'react';
-import TestS from "../screen/Main/TestS";
+import ApprovalS from "../screen/Main/ApprovalS";
+import {routerConstants} from "../constants/routerConstants";
 
 type Route = {
 	name: string;
@@ -7,7 +8,7 @@ type Route = {
 };
 
 const authenticatedRoutes: Route[] = [
-	{component: TestS, name: 'main'}
+	{component: ApprovalS, name: routerConstants.APPROVAL}
 ];
 
 export default authenticatedRoutes;
