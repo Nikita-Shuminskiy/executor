@@ -10,7 +10,6 @@ import LoginS from '../screen/authScreens/LoginS'
 import VerifyNumberS from '../screen/authScreens/VerifyNumberS'
 import AddPhoneS from '../screen/authScreens/AddPhoneS'
 import TermsOfUseS from '../screen/authScreens/TermsOfUseS'
-import {usePermissionsPushGeo} from '../utils/hook/usePermissionsPushGeo'
 import LoadingLocal from '../components/LoadingLocal'
 import {useInternetConnected} from '../utils/hook/useInternetConnected'
 import {BurgerMenuProvider} from '../components/BurgerMenu/BurgerMenuContext'
@@ -20,42 +19,30 @@ import {useNotification} from "../utils/hook/useNotification";
 import AboutUsS from "../screen/AboutUsS";
 import Alerts from "../components/Alert";
 import WifiReconnect from "../components/WifiReconnect";
-import GivePermissions from "../components/GivePermissions";
 import rootStore from "../store/RootStore/root-store";
 import authenticatedRoutes from "./routesConstants";
 import notifee, {AndroidImportance, AndroidVisibility} from "@notifee/react-native";
+import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
+import GivePermissions from "../components/GivePermissions";
 
 const RootStack = createNativeStackNavigator()
-const test = async () => {
-    await notifee.createChannel({
-        id: 'default3',
-        name: 'default3',
-        visibility: AndroidVisibility.PUBLIC,
-        importance: AndroidImportance.HIGH,
-        bypassDnd: true,
-        vibration: true,
-        sound: 'test.wav',
-    });
-}
-
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {isAuth} = AuthStore
     const {AuthStoreService} = rootStore
-   /* const {
-        askNotificationPermissionHandler,
-        askLocationPermissionHandler,
-        locationStatus,
-        notificationStatus
-    } = usePermissionsPushGeo()*/
-
-    //const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
-
+     const {
+         askNotificationPermissionHandler,
+         askLocationPermissionHandler,
+         locationStatus,
+         notificationStatus
+     } = usePermissionsPushGeo()
+    console.log(notificationStatus, 'notificationStatus')
+    const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
     const {checkInternetConnection, isConnected} = useInternetConnected()
-    const navigate = useNavigation<any>()
+    const navigate = useNavigation()
+
     useNotification(isAuth)
     useLayoutEffect(() => {
-        test()
         setIsLoading(LoadingEnum.fetching)
         AuthStoreService.getSettingExecutor(navigate?.navigate)
             .then((data) => {
@@ -78,10 +65,10 @@ const RootNavigation = observer(() => {
                 text={serverResponseText}/>}
             {!isConnected && <WifiReconnect
                 checkInternet={checkInternetConnection} visible={!isConnected}/>}
-           {/* {checkStatusPermissions && <GivePermissions
+             {checkStatusPermissions && <GivePermissions
                 askLocationPermissionHandler={askLocationPermissionHandler}
                 askNotificationPermissionHandler={askNotificationPermissionHandler}
-                visible={checkStatusPermissions}/>}*/}
+                visible={checkStatusPermissions}/>}
             <BurgerMenu/>
             <RootStack.Navigator screenOptions={{headerShown: false}}>
                 <RootStack.Screen

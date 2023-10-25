@@ -1,15 +1,25 @@
 import {useEffect} from "react";
 import messaging from "@react-native-firebase/messaging";
 import {Linking, PermissionsAndroid, PermissionStatus, Platform} from 'react-native';
-import notifee, {AndroidImportance, AndroidVisibility} from '@notifee/react-native';
+import notifee, {AndroidImportance, AndroidStyle, AndroidVisibility} from '@notifee/react-native';
 import {authApi} from "../../api/authApi";
 
 export const onDisplayNotification = async (data) => {
+   const channelId = await notifee.createChannel({
+        id: 'default5',
+        name: 'default5',
+        visibility: AndroidVisibility.PUBLIC,
+        importance: AndroidImportance.HIGH,
+        bypassDnd: true,
+        vibration: true,
+        sound: 'test.wav',
+    });
     await notifee.displayNotification({
         title: data?.notification.title,
         body: data?.notification.body,
+        id: 'default5',
         android: {
-            channelId: 'default3',
+            channelId,
             lightUpScreen: true, // подсветка экрана
             loopSound: true,
             onlyAlertOnce: false, // хз
@@ -37,16 +47,27 @@ export const useNotification = (isAuth) => {
                     messaging()
                         .getToken()
                         .then((token) => {
-                            console.log(token)
                             sendToken(token);
                         });
                 }
             })
             const unsubscribe = messaging().onMessage(onDisplayNotification);
-            const unsubscribeNotifee = notifee.onForegroundEvent(onForegroundEvent);
+            messaging().setOpenSettingsForNotificationsHandler((data) => {
+                console.log(data, 'setOpenSettingsForNotificationsHandler')
+            })
+
+            messaging()
+                .getInitialNotification()
+                .then(remoteMessage => {
+                    if (remoteMessage) {
+                        console.log(
+                            'Notification caused app to open from quit state:',
+                            remoteMessage.notification,
+                        );
+                    }
+                });
             return () => {
-                unsubscribeNotifee()
-                unsubscribe()
+               unsubscribe()
             }
         }
     }, [isAuth]);
@@ -63,7 +84,17 @@ const onForegroundEvent = ({type, detail}) => {
 const requestUserPermission = async () => {
     try {
         const permission: PermissionStatus = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-        const authStatus = await messaging().requestPermission();
+        const authStatus = await messaging().requestPermission({
+            provisional: true,
+            carPlay: true,
+            badge: true,
+            sound: true,
+            alert: true,
+            criticalAlert: true,
+            announcement: true,
+            providesAppNotificationSettings: true
+        });
+        await messaging().registerDeviceForRemoteMessages();
         return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     } catch (e) {

@@ -1,6 +1,5 @@
 {
   "expo": {
-    "originalFullName": "@nick_111122/swash",
     "name": "Swash executor",
     "slug": "swash-executor",
     "version": "1.0.1",
@@ -26,7 +25,6 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "userInterfaceStyle": "light",
-      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -51,6 +49,7 @@
         "projectId": "9c0f47d0-4406-45e6-8f51-5043c3314158"
       }
     },
+    "scheme": ["swash-executor", "fb679597410577527"],
     "owner": "nick_111122",
     "plugins": [
       "@notifee/react-native",

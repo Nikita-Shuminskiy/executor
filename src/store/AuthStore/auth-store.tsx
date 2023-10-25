@@ -1,12 +1,12 @@
 import {action, makeObservable, observable} from 'mobx'
 import {authApi} from '../../api/authApi'
 import {deviceStorage} from '../../utils/storage/storage'
-import {AuthGooglePayload, ExecutorSettingType, RegisterPayloadType} from "../../api/type";
+import {AuthGooglePayload, ExecutorSettingType, LogisticsPointType, RegisterPayloadType} from "../../api/type";
 
 export class AuthStore {
     isAuth: boolean = false
     phone: string = ''
-    logisticPoints: any = []
+    logisticPoints: LogisticsPointType[] = []
     executorSettings: ExecutorSettingType = {} as ExecutorSettingType
 
     setAuth(auth: boolean): void {
@@ -17,12 +17,14 @@ export class AuthStore {
         this.phone = phone
     }
 
-    setLogisticPoints(points) {
+    setLogisticPoints(points: LogisticsPointType[]) {
         this.logisticPoints = points
     }
 
     clearStore() {
         this.phone = ''
+        this.executorSettings = {} as ExecutorSettingType
+        this.logisticPoints = []
     }
 
     setExecutorSettings(executor: ExecutorSettingType) {
@@ -46,10 +48,7 @@ export class AuthStore {
     }
 
     async sendCode(formattedPhoneNumber?: string) {
-        const payload = {
-            phone: formattedPhoneNumber ?? this.phone,
-        }
-        const {data} = await authApi.sendCode(payload)
+        const {data} = await authApi.sendCode({phone: formattedPhoneNumber ?? this.phone})
         return data
     }
 
@@ -76,8 +75,8 @@ export class AuthStore {
         return data
     }
 
-    async getLogisticPoints() {
-        const {data} = await authApi.getLogisticsPoints({country: 'PL'})
+    async getLogisticPoints(country = 'PL') {
+        const {data} = await authApi.getLogisticsPoints({country})
         this.setLogisticPoints(data.points)
     }
 

@@ -1,14 +1,13 @@
 import {StatusBar} from 'expo-status-bar'
 import RootNavigation from './src/navigation/RootNavigation'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
-import {Alert, NativeBaseProvider} from 'native-base'
+import {NativeBaseProvider} from 'native-base'
 import {LogBox} from 'react-native'
 import {useFonts} from '@expo-google-fonts/inter/useFonts'
 import {NavigationContainer} from '@react-navigation/native'
 import messaging from "@react-native-firebase/messaging";
 import {onDisplayNotification} from "./src/utils/hook/useNotification";
 import notifee, {EventType} from "@notifee/react-native";
-import {deviceStorage} from "./src/utils/storage/storage";
 
 LogBox.ignoreLogs([
     'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
@@ -20,10 +19,7 @@ LogBox.ignoreLogs([
 		console.log(ev, 'ev action')
 	}
 })*/
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message handled in the background!', remoteMessage);
-    await onDisplayNotification(remoteMessage)
-});
+messaging().setBackgroundMessageHandler(onDisplayNotification);
 notifee.onBackgroundEvent(async ({type, detail}) => {
     const {notification, pressAction} = detail;
     switch (detail?.pressAction?.id) {
@@ -35,9 +31,8 @@ notifee.onBackgroundEvent(async ({type, detail}) => {
     }
 });
 export default function App() {
-
     let [fontsLoaded] = useFonts({
-        'regular': require('./assets/font/MyriadPro-Regular.ttf'), //font weight 400
+        'regular': require('./assets/font/MyriadPro-Regular.ttf'), //400
         'bold': require('./assets/font/MyriadPro-Bold.ttf'), // 700
         'semiBold': require('./assets/font/MyriadPro-Semibold.ttf'),// 600
     })

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Image, StyleSheet} from 'react-native'
 import {BaseWrapperComponent} from '../../components/baseWrapperComponent'
 import imgLogo from '../../assets/Images/logoSwash.png'
@@ -12,7 +12,11 @@ import {GoogleSignin, statusCodes,} from '@react-native-google-signin/google-sig
 import NotificationStore from "../../store/NotificationStore/notification-store";
 import rootStore from "../../store/RootStore/root-store";
 import {routerConstants} from "../../constants/routerConstants";
+import * as Facebook from "expo-auth-session/providers/facebook";
+import * as WebBrowser from "expo-web-browser";
+import {Prompt, ResponseType} from "expo-auth-session";
 
+WebBrowser.maybeCompleteAuthSession();
 GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
     webClientId: '298228729066-qtmrfm78vfcs6nmhsup9q5hhp3ilbasu.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
@@ -28,8 +32,30 @@ GoogleSignin.configure({
 export const LoginS = observer(({navigation}: any) => {
     const {setIsLoading} = NotificationStore
     const {AuthStoreService} = rootStore
-
-    const loginGoogle = async () => {
+    const [request, response, promptAsync] = Facebook.useAuthRequest({
+        clientId: "679597410577527", // change this for yours
+        prompt: Prompt.SelectAccount,
+    });
+    useEffect(() => {
+        if (response && response.type === "success" && response.authentication) {
+            (async () => {
+                const userInfoResponse = await fetch(
+                    `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id`
+                );
+                const userInfo = await userInfoResponse.json();
+                console.log(userInfo, 'userInfo')
+                console.log(JSON.stringify(response, null, 2));
+            })();
+        }
+    }, [response]);
+    const onPressFacebookHandler = async () => {
+        const result = await promptAsync();
+        if (result.type !== "success") {
+            alert("Uh oh, something went wrong");
+            return;
+        }
+    };
+    const onPressGoogleHandler = async () => {
         try {
             const data = await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
@@ -61,7 +87,6 @@ export const LoginS = observer(({navigation}: any) => {
             <Box paddingX={5} flex={1} alignItems={'center'} justifyContent={'space-evenly'}>
                 <Box alignItems={'center'}>
                     <Image alt={'logo'} style={styles.imgLogo} source={imgLogo}/>
-
                     <Box w={'100%'} alignItems={'center'}>
                         <Text fontSize={28} fontWeight={'600'}>Welcome to Swash</Text>
                         <Text fontSize={15}
@@ -69,10 +94,9 @@ export const LoginS = observer(({navigation}: any) => {
                     </Box>
                 </Box>
                 <Box alignItems={'center'} w={'100%'}>
-                    <Button styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue}
-                            onPress={loginGoogle}
+                    <Button disabled={!request} styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue}
+                            onPress={onPressFacebookHandler}
                     >
-
                         <Box flexDirection={'row'} alignItems={'center'}>
                             <Image style={styles.imgIco} alt={'img-face'} source={imgFacebook}/>
                             <Text color={colors.white}>
@@ -81,7 +105,7 @@ export const LoginS = observer(({navigation}: any) => {
                         </Box>
                     </Button>
                     <Button colorText={colors.white} styleContainer={{...styles.styleContainerBtn, ...styles.shadow}}
-                            onPress={loginGoogle}>
+                            onPress={onPressGoogleHandler}>
                         <Box flexDirection={'row'} alignItems={'center'}>
                             <Image style={styles.imgIco} alt={'img-google'} source={imgGoogle}/>
                             <Text>

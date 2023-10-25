@@ -1,6 +1,3 @@
-import {CountryCode} from 'react-native-country-picker-modal/lib/types'
-
-
 export enum LanguageEnum {
     EN = 'EN',
     PL = 'PL',
@@ -71,7 +68,7 @@ type RegisterPayloadType = {
     patronymic_name?: string,
     consent_datetime?: string
 }
- type AuthGooglePayload = {
+type AuthGooglePayload = {
     id_token: string
     server_auth_code: string
     language?: string
