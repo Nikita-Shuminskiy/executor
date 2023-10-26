@@ -20,6 +20,7 @@ type UnitType = {
 };
 type ExecutorType = {
     consent_datetime: null | string;
+    executor_logistic_partners_points_id: null | string;
     country: string;
     disabled: null | string;
     email: string;
@@ -32,6 +33,15 @@ type ExecutorType = {
     phone: string;
     phone_verify_datetime: string;
 }
+type PhotosApprovalType = {
+    admins_id?: null,
+    admins_verdict?: null,
+    datetime?: string,
+    executors_id?: number,
+    filename: string
+    id: any
+    type_of_photo?: PhotoCategoryEnum
+}
 type ExecutorSettingType = {
     country: CountryType;
     countries: CountryType[];
@@ -39,6 +49,7 @@ type ExecutorSettingType = {
     languages: string[];
     status: string;
     units: UnitType[];
+    executor_photos_for_approval: PhotosApprovalType[];
 };
 
 type LogisticsPointType = {
@@ -55,7 +66,7 @@ type LogisticsPointType = {
     name: string;
 };
 
-type RegisterPayloadType = {
+type UpdateExecutorPayloadType = {
     phone?: string,
     photo?: string,
     country?: string,
@@ -67,8 +78,23 @@ type RegisterPayloadType = {
     lon?: string,
     address?: string,
     services_units?: string,
+    executor_logistic_partners_points_id?: string,
     patronymic_name?: string,
     consent_datetime?: string
+}
+
+enum PhotoCategoryEnum {
+    DOC = 'doc',
+    FACE = 'face',
+    WASH = 'wash',
+    IRON = 'iron',
+    ROOM = 'room',
+    ADDRESS = 'address',
+}
+
+type PhotoPayloadType = {
+    type_of_photo?: PhotoCategoryEnum
+    photo: string
 }
 type AuthGooglePayload = {
     id_token: string
@@ -78,12 +104,18 @@ type AuthGooglePayload = {
 }
 type CommonScreenPropsType = {
     navigation: NavigationProp<ParamListBase>
+    route: any
 }
+type PhotoType = { 'filename': string, 'id': string }
 export {
+    PhotoType,
+    PhotosApprovalType,
+    PhotoCategoryEnum,
     CommonScreenPropsType,
+    PhotoPayloadType,
     AuthGooglePayload,
     ExecutorSettingType,
-    RegisterPayloadType,
+    UpdateExecutorPayloadType,
     LogisticsPointType,
     UnitType,
     CountryType,

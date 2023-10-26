@@ -1,7 +1,13 @@
 import {action, makeObservable, observable} from 'mobx'
 import {authApi} from '../../api/authApi'
 import {deviceStorage} from '../../utils/storage/storage'
-import {AuthGooglePayload, ExecutorSettingType, LogisticsPointType, RegisterPayloadType} from "../../api/type";
+import {
+    AuthGooglePayload,
+    ExecutorSettingType,
+    LogisticsPointType,
+    PhotoPayloadType,
+    UpdateExecutorPayloadType
+} from "../../api/type";
 
 export class AuthStore {
     isAuth: boolean = false
@@ -30,40 +36,41 @@ export class AuthStore {
     setExecutorSettings(executor: ExecutorSettingType) {
         this.executorSettings = executor
     }
-
     async getSettingExecutor() {
         const {data} = await authApi.getSettingsExecutor()
         this.setExecutorSettings(data)
         return data
     }
-
     async logout() {
         //const { data } = await authApi.logout()
     }
-
     async setUserAuthData(token: string) {
         const currentDate = new Date().toISOString();
         await deviceStorage.saveItem('token', token)
         await deviceStorage.saveItem('tokenDate', currentDate)
     }
-
     async sendCode(formattedPhoneNumber?: string) {
         const {data} = await authApi.sendCode({phone: formattedPhoneNumber ?? this.phone})
         return data
     }
-
     async sendVerifyCode(code: string) {
         const payload = {
             phone_verify_code: code,
         }
         return await authApi.sendCodeVerify(payload)
     }
-
-    async sendRegister(payload: RegisterPayloadType) {
+    async updateExecutor(payload: UpdateExecutorPayloadType) {
         const {data} = await authApi.updateExecutor(payload)
         return data
     }
-
+    async sendPhotosForApproval(payload: PhotoPayloadType) {
+        const {data} = await authApi.sendPhotosForApproval(payload)
+        return data
+    }
+    async deletePhoto(photoId: number) {
+        const {data} = await authApi.deletePhoto(photoId)
+        return data
+    }
     async updatePhoto(photo: string) {
         //const { data } = await clientApi.updateClientPhoto(photo)
         //return data

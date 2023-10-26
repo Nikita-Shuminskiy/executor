@@ -7,4 +7,7 @@ export const routerConstants = {
     PHONE_VERIFY: 'phone-verify',
     TERMS_OF_USE: 'terms-of-use',
     APPROVAL: 'approval',
+    SELECT_LOGISTIC_POINT: 'select-logistic-point',
+    DOCUMENT_VERIFICATION: 'document-verification',
+    WAITING_VERIFICATION: 'waiting-verification',
 };

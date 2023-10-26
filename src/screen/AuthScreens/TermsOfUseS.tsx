@@ -30,15 +30,11 @@ const TermsOfUseS = observer(({navigation}: TermsOfUseSProps) => {
         }
         const currentDate = new Date();
         const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm:ss');
-        AuthStoreService.sendRegister({
+        AuthStoreService.sendConsentDateTime({
             consent_datetime: formattedDate,
         }).then((data) => {
             if (data) {
-               AuthStoreService.getSettingExecutor(navigation.navigate).then((data) => {
-                   if(data) {
-                      navigation.navigate(routerConstants.main)
-                   }
-               })
+               AuthStoreService.getSettingExecutor(navigation.navigate)
             }
         })
     }
@@ -60,7 +56,7 @@ const TermsOfUseS = observer(({navigation}: TermsOfUseSProps) => {
         }
     }
     return (
-        <BaseWrapperComponent styleSafeArea={{backgroundColor: colors.blueLight}}>
+        <BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{backgroundColor: colors.blueLight}}>
             <StatusBar backgroundColor={colors.blueLight}/>
             <Box flex={1} w={'100%'} justifyContent={'space-between'} alignItems={'center'}
                  backgroundColor={colors.blueLight}>

@@ -8,11 +8,12 @@ import ListImg from "../../assets/Images/Approval/List.png";
 import imgBack from "../../assets/Images/backWave.png";
 import Button from "../../components/Button";
 import {CommonScreenPropsType} from "../../api/type";
+import {routerConstants} from "../../constants/routerConstants";
 
 type ApprovalSProps = CommonScreenPropsType & {}
-const ApprovalS = ({navigation}: ApprovalSProps) => {
+const ApprovalInfoS = ({navigation}: ApprovalSProps) => {
     const onPressStartApprovement = () => {
-
+        navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
     }
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}
@@ -31,7 +32,7 @@ const ApprovalS = ({navigation}: ApprovalSProps) => {
                          backgroundColor={colors.white}>
                         <Text fontSize={27} textAlign={'center'} fontFamily={'semiBold'}>We need a few photos for the
                             approvement process</Text>
-                        <Box mt={3} paddingX={7}>
+                        <Box mt={3} ml={2} paddingX={7}>
                             <Text textAlign={'left'} fontSize={17} fontFamily={'regular'} color={colors.black}>
                                 We will ask you for photos of
                             </Text>
@@ -75,4 +76,4 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 })
-export default ApprovalS;
+export default ApprovalInfoS;

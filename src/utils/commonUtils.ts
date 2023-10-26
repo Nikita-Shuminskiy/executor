@@ -4,6 +4,7 @@ import { enUS } from 'date-fns/locale'
 import { format, isBefore, subYears } from 'date-fns';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {deviceStorage} from "./storage/storage";
+import {manipulateAsync, SaveFormat} from "expo-image-manipulator";
 export const language = Localization.locale;
 const checkInternet = async () => {
 	const netInfoState = await NetInfo.fetch()
@@ -34,4 +35,18 @@ export const checkToken = async () => {
 		await deviceStorage.removeItem('tokenDate');
 		return false
 	}
+}
+export const convertToFormDataImg = async (img: string) => {
+	const resizedImage = await manipulateAsync(
+		img,
+		[{ resize: { width: 720, height: 1280 } }],
+		{ format: 'jpeg' as SaveFormat, compress: 0.5 },
+	)
+	const formData = new FormData()
+	// @ts-ignore
+	formData.append('photo', { uri: resizedImage.uri,
+		name: 'image.jpg',
+		type: 'image/jpeg',
+	})
+	return formData
 }

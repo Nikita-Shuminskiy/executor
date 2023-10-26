@@ -37,7 +37,7 @@ const AddPhoneS = ({navigation, route}: PhoneVerifySProps) => {
             if (executorSettings?.executors.phone === formattedPhoneNumber) {
                 return
             }
-            AuthStoreService.updateUserInfo({
+            AuthStoreService.updateExecutor({
                 phone: formattedPhoneNumber,
             }).then((data) => {
                 if (data) {
