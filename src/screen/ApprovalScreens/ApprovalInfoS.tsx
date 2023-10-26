@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {BaseWrapperComponent} from "../../components/baseWrapperComponent";
-import {Image, StyleSheet} from "react-native";
+import {BackHandler, Image, StyleSheet} from "react-native";
 import {colors} from "../../assets/colors/colors";
 import {StatusBar} from "expo-status-bar";
 import {Box, Text} from "native-base";
@@ -9,12 +9,16 @@ import imgBack from "../../assets/Images/backWave.png";
 import Button from "../../components/Button";
 import {CommonScreenPropsType} from "../../api/type";
 import {routerConstants} from "../../constants/routerConstants";
+import {useIsFocused} from "@react-navigation/native";
 
 type ApprovalSProps = CommonScreenPropsType & {}
 const ApprovalInfoS = ({navigation}: ApprovalSProps) => {
+    const isFocused = useIsFocused()
+    console.log(isFocused)
     const onPressStartApprovement = () => {
         navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
     }
+
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}
 

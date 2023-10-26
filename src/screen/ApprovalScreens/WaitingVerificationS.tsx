@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {BaseWrapperComponent} from "../../components/baseWrapperComponent";
 import {observer} from "mobx-react-lite";
 import {CommonScreenPropsType} from "../../api/type";
@@ -6,12 +6,14 @@ import AuthStore from "../../store/AuthStore/auth-store";
 import {colors} from "../../assets/colors/colors";
 import {StatusBar} from "expo-status-bar";
 import {Box, Text} from "native-base";
-import {Image, StyleSheet} from "react-native";
+import {BackHandler, Image, StyleSheet} from "react-native";
 import imgBack from "../../assets/Images/backWave.png";
 import SleepImg from "../../assets/Images/Sleep.png";
 import ListRedImg from "../../assets/Images/listRed.png";
 import Button from "../../components/Button";
 import {routerConstants} from "../../constants/routerConstants";
+import {useGoBack} from "../../utils/hook/useGoBack";
+import {useFocusEffect} from "@react-navigation/native";
 
 type WaitingVerificationProps = CommonScreenPropsType & {}
 const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) => {
@@ -20,6 +22,7 @@ const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) =
     const onPressGoAddPhoto = () => {
         navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
     }
+
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true} contentContainerStyle={{flexGrow: 1}} styleSafeArea={{
             backgroundColor: isMissingPhoto ? colors.redLight : colors.redLight,
@@ -31,9 +34,7 @@ const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) =
                 <Image style={isMissingPhoto ?  styles.imgListRed : styles.imgWaiting }
                        source={isMissingPhoto ? ListRedImg : SleepImg}/>
                 <Box justifyContent={'space-between'} w={'100%'}>
-                    <Box alignItems={'center'}>
-                        <Image style={{width: '100%'}} source={imgBack}/>
-                    </Box>
+
                     <Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
                          backgroundColor={colors.white}>
                         <Box  alignItems={'center'} flex={1} justifyContent={'space-evenly'}>

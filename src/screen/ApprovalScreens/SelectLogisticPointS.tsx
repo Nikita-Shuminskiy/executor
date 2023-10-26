@@ -24,10 +24,10 @@ const SelectLogisticPointS = observer(({navigation}: SelectLogisticPointProps) =
             }
         })
     }
-    const goBackPress = () => {
+  /*  const goBackPress = () => {
         return true
     }
-    useGoBack(goBackPress)
+    useGoBack(goBackPress)*/
     return (
         <BaseWrapperComponent>
             <Box paddingX={3} h={58} backgroundColor={colors.white} flexDirection={'row'} alignItems={'center'}
