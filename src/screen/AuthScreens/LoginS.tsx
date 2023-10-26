@@ -15,17 +15,18 @@ import {routerConstants} from "../../constants/routerConstants";
 import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
 import {Prompt, ResponseType} from "expo-auth-session";
+import {deviceStorage} from "../../utils/storage/storage";
 
 WebBrowser.maybeCompleteAuthSession();
 GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
     webClientId: '298228729066-qtmrfm78vfcs6nmhsup9q5hhp3ilbasu.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-    offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+    offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     hostedDomain: '', // specifies a hosted domain restriction
     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-    accountName: '', // [Android] specifies an account name on the device that should be used
-    iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-    googleServicePlistPath: '', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
+    accountName: 'Swash', // [Android] specifies an account name on the device that should be used
+    iosClientId: '298228729066-isg7hg07egimuc3lra510tmpn5id1jem.apps.googleusercontent.com', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+    //googleServicePlistPath: '../../GoogleService-Info.plist', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
     openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
     profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
 });
@@ -37,6 +38,7 @@ export const LoginS = observer(({navigation}: any) => {
         prompt: Prompt.SelectAccount,
     });
     useEffect(() => {
+
         if (response && response.type === "success" && response.authentication) {
             (async () => {
                 const userInfoResponse = await fetch(
