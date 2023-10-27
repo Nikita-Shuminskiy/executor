@@ -11,6 +11,7 @@ import AuthStore from "../../store/AuthStore/auth-store";
 import Button from "../../components/Button";
 import {StyleSheet} from "react-native";
 import {routerConstants} from "../../constants/routerConstants";
+import BaseModalInfo from "../../components/modal/BaseModalInfo";
 
 type DocumentsVerificationProps = CommonScreenPropsType & {}
 const DocumentsVerification = observer(({navigation}: DocumentsVerificationProps) => {
@@ -143,6 +144,9 @@ const DocumentsVerification = observer(({navigation}: DocumentsVerificationProps
                             colorText={colors.white} backgroundColor={disableBtn ? colors.red : colors.blue}/>
                 </Box>
             </Box>
+            {
+                disableBtn && <BaseModalInfo visible={disableBtn} onClose={() => setDisableBtn(false)}/>
+            }
         </BaseWrapperComponent>
     );
 });

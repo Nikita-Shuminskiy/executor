@@ -1,16 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {FlatList, Image, ImageBackground, Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {FlatList, Image, Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {Camera, CameraType, FlashMode,} from 'expo-camera'
-import addPhotoImage from '../../assets/Images/order/add_photo.png'
 import {observer} from 'mobx-react-lite'
-import deleteImg from '../../assets/Images/order/closeCircleGray.png'
 import btnCamera from '../../assets/Images/order/blue-circle.png'
 import closeCameraImg from '../../assets/Images/order/closeBlack.png'
 import DeletePhotoModal from '../modal/DeletePhotoModal'
-import NotificationStore from '../../store/NotificationStore/notification-store'
 import * as ImagePicker from 'expo-image-picker'
 import {Box} from 'native-base'
-import {BASE_URL} from '../../api/config'
 import {Ionicons} from '@expo/vector-icons'
 import {colors} from '../../assets/colors/colors'
 import {PhotosApprovalType} from "../../api/type";
@@ -25,7 +21,6 @@ type AddPhotoComponentProps = {
 }
 
 const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponentProps) => {
-    const {setLocalLoading} = NotificationStore
     const [cameraPermission, setCameraPermission] = useState(null)
     const [isOpenCamera, setIsOpenCamera] = useState(false)
     const [isDeleteModal, setIsDeleteModal] = useState(false)

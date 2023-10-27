@@ -2,9 +2,8 @@ import React, {memo} from 'react';
 import {Image, ImageBackground, StyleSheet, TouchableOpacity} from "react-native";
 import addPhotoImage from "../../../assets/Images/order/add_photo.png";
 import deleteImg from "../../../assets/Images/order/closeCircleGray.png";
-import {colors} from "../../../assets/colors/colors";
 import {ApprovedEnum, PhotosApprovalType} from "../../../api/type";
-import {Box} from "native-base";
+import warningImg from '../../../assets/Images/Approval/warningRed.png'
 
 type PhotoViewerProps = {
     photo: PhotosApprovalType
@@ -26,14 +25,15 @@ const PhotoViewer = memo(({photo, onPressShowPhoto, onPressDeletePhoto, onPressA
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity onPress={onPressShowPhotoHandler}>
-                        <ImageBackground imageStyle={[{borderRadius: 16}, photoNotApproved && {
-                            borderWidth: 3,
-                            borderColor: colors.red
-                        }]} source={{uri: photo.filename}} borderRadius={16}
+                        <ImageBackground imageStyle={{borderRadius: 16}} source={{uri: photo.filename}}
+                                         borderRadius={16}
                                          style={styles.image}>
                             <TouchableOpacity onPress={() => onPressDeletePhoto(photo.id)}>
                                 <Image style={styles.deleteImg} source={deleteImg} alt={'delete'}/>
                             </TouchableOpacity>
+                            {
+                                photoNotApproved && <Image style={styles.imgWarning} source={warningImg}/>
+                            }
                         </ImageBackground>
                     </TouchableOpacity>
                 )
@@ -42,6 +42,13 @@ const PhotoViewer = memo(({photo, onPressShowPhoto, onPressDeletePhoto, onPressA
     );
 });
 const styles = StyleSheet.create({
+    imgWarning: {
+        position: "absolute",
+        top: 8,
+        right: 7,
+        width: 49,
+        height: 49
+    },
     deleteImg: {
         position: 'absolute',
         top: -5,

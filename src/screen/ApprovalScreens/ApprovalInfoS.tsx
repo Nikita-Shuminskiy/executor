@@ -10,15 +10,17 @@ import Button from "../../components/Button";
 import {CommonScreenPropsType} from "../../api/type";
 import {routerConstants} from "../../constants/routerConstants";
 import {useIsFocused} from "@react-navigation/native";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type ApprovalSProps = CommonScreenPropsType & {}
 const ApprovalInfoS = ({navigation}: ApprovalSProps) => {
-    const isFocused = useIsFocused()
-    console.log(isFocused)
     const onPressStartApprovement = () => {
         navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
     }
-
+    const goBackPress = () => {
+        return true
+    }
+    useGoBack(goBackPress)
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}
 

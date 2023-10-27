@@ -10,4 +10,5 @@ export const routerConstants = {
     SELECT_LOGISTIC_POINT: 'select-logistic-point',
     DOCUMENT_VERIFICATION: 'document-verification',
     WAITING_VERIFICATION: 'waiting-verification',
+    EDUCATIONAL_TEST: 'educational-test',
 };

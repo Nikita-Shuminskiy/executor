@@ -21,7 +21,7 @@
       "userInterfaceStyle": "light",
       "supportsTablet": true,
       "config": {
-        "googleMapsApiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
+        "googleMapsApiKey": "AIzaSyDJwL5Sga6m6xvxUVf_yAil6R48AJfs0xE"
       }
     },
     "android": {
@@ -33,7 +33,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyD-3PKe63YHjDDaxjVahTekuyvvOFfwKp4"
+          "apiKey": "AIzaSyCR74jQheniMKW9sTcQtVsmF_v42Vn4u38"
         }
       },
       "permissions": [

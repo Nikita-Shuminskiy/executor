@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {BaseWrapperComponent} from "../../components/baseWrapperComponent";
 import {observer} from "mobx-react-lite";
 import {CommonScreenPropsType} from "../../api/type";
@@ -6,24 +6,25 @@ import AuthStore from "../../store/AuthStore/auth-store";
 import {colors} from "../../assets/colors/colors";
 import {StatusBar} from "expo-status-bar";
 import {Box, Text} from "native-base";
-import {BackHandler, Image, StyleSheet} from "react-native";
+import {Image, StyleSheet} from "react-native";
 import imgBack from "../../assets/Images/backWave.png";
 import SleepImg from "../../assets/Images/Sleep.png";
 import ListRedImg from "../../assets/Images/listRed.png";
 import Button from "../../components/Button";
 import {routerConstants} from "../../constants/routerConstants";
 import {useGoBack} from "../../utils/hook/useGoBack";
-import {useFocusEffect} from "@react-navigation/native";
 
 type WaitingVerificationProps = CommonScreenPropsType & {}
-const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) => {
+const WaitingVerificationS = observer(({navigation, route}: WaitingVerificationProps) => {
     const {executorSettings} = AuthStore
-    const isMissingPhoto = executorSettings.executors.executor_approve_refuse_text
-
+    const isMissingPhoto = route?.params?.error //photos are missing
     const onPressGoAddPhoto = () => {
         navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
     }
-
+    const goBackPress = () => {
+        return true
+    }
+    useGoBack(goBackPress)
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true} contentContainerStyle={{flexGrow: 1}} styleSafeArea={{
             backgroundColor: colors.white,
@@ -57,10 +58,10 @@ const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) =
                             {
                                 isMissingPhoto && <Box>
                                     <Text textAlign={'left'} fontSize={17} fontFamily={'regular'} color={colors.black}>Our
-                                        admin marked photos that have troubles, here is the comment from them:
+                                        Our admin marked photos that have troubles, you will be able to view marked photos
                                     </Text>
                                     <Text textAlign={'left'} mt={5} fontSize={17} fontFamily={'regular'}
-                                          color={colors.black}>“{isMissingPhoto}”</Text>
+                                          color={colors.red}>“{executorSettings.executors.executor_approve_refuse_text}”</Text>
 
                                 </Box>
                             }
