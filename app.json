@@ -2,7 +2,10 @@
   "expo": {
     "name": "Swash executor",
     "slug": "swash-executor",
-    "scheme": ["swash-executor", "fb679597410577527"],
+    "scheme": [
+      "swash-executor",
+      "fb679597410577527"
+    ],
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -48,10 +51,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "9c0f47d0-4406-45e6-8f51-5043c3314158"
+        "projectId": "84d1f601-2370-4c20-80f0-0d06d13f3339"
       }
     },
-    "owner": "nick_111122",
+    "owner": "nick_1111222",
     "plugins": [
       "@notifee/react-native",
       "@react-native-firebase/app",
@@ -63,6 +66,19 @@
           "ios": {
             "useFrameworks": "static"
           }
+        }
+      ],
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "679597410577527",
+          "clientToken": "42904ec02d393d529f015ab395b45e27",
+          "displayName": "Swash executor",
+          "scheme": "fb679597410577527",
+          "advertiserIDCollectionEnabled": true,
+          "autoLogAppEventsEnabled": true,
+          "isAutoInitEnabled": true,
+          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
         }
       ]
     ]

@@ -15,7 +15,7 @@ const ShowPhotoModal = ({visible, onClose, photo}: ShowPhotoModalProps) => {
     const photoNotApproved = photo.approved === ApprovedEnum.DONT_APPROVED
     return (
         <Modal transparent={true} visible={visible}>
-            <ScrollView  contentContainerStyle={{ flexGrow: 1, width: '100%' }}>
+            <ScrollView contentContainerStyle={{flexGrow: 1, width: '100%'}}>
                 <Box backgroundColor={"rgba(27,24,24,0.65)"} pt={5} flex={1} w={'100%'} alignItems={'center'}
                      justifyContent={'space-evenly'}>
                     <Box>
@@ -26,9 +26,11 @@ const ShowPhotoModal = ({visible, onClose, photo}: ShowPhotoModalProps) => {
                                          borderRadius={16}
                                          style={styles.img}>
                         </ImageBackground>
-                        <Box backgroundColor={colors.white} mt={2} borderRadius={16} paddingX={4} paddingY={3}>
-                            <Text fontSize={15} fontFamily={'regular'}>This photo was refused by our admin</Text>
-                        </Box>
+                        {photoNotApproved &&
+                            <Box backgroundColor={colors.white} mt={2} borderRadius={16} paddingX={4} paddingY={3}>
+                                <Text fontSize={15} fontFamily={'regular'}>This photo was refused by our admin</Text>
+                            </Box>
+                        }
                     </Box>
                     <Box maxWidth={271} mt={2} w={'100%'}>
                         <Button onPress={onClose} styleContainer={styles.styleContainerBtn}
