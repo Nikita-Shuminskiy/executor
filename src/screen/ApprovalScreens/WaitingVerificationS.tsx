@@ -17,8 +17,9 @@ import {useFocusEffect} from "@react-navigation/native";
 
 type WaitingVerificationProps = CommonScreenPropsType & {}
 const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) => {
-    const [isMissingPhoto, setIsMissingPhoto] = useState<boolean>(false)
     const {executorSettings} = AuthStore
+    const isMissingPhoto = executorSettings.executors.executor_approve_refuse_text
+
     const onPressGoAddPhoto = () => {
         navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
     }
@@ -31,13 +32,13 @@ const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) =
             <StatusBar backgroundColor={isMissingPhoto ? colors.redLight : colors.blueLight}/>
             <Box justifyContent={'space-between'} pt={20} alignItems={'center'}
                  backgroundColor={isMissingPhoto ? colors.redLight : colors.blueLight}>
-                <Image style={isMissingPhoto ?  styles.imgListRed : styles.imgWaiting }
+                <Image style={isMissingPhoto ? styles.imgListRed : styles.imgWaiting}
                        source={isMissingPhoto ? ListRedImg : SleepImg}/>
                 <Box justifyContent={'space-between'} w={'100%'}>
                     <Image style={{width: '100%', position: 'relative', top: 1}} source={imgBack}/>
                     <Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
                          backgroundColor={colors.white}>
-                        <Box  alignItems={'center'} flex={1} justifyContent={'space-evenly'}>
+                        <Box alignItems={'center'} flex={1} justifyContent={'space-evenly'}>
                             <Text fontSize={27}
                                   textAlign={'center'}
                                   fontFamily={'semiBold'}>{isMissingPhoto ? 'Some photos are missing!' : 'Now you need to wait'}</Text>
@@ -55,12 +56,12 @@ const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) =
                             }
                             {
                                 isMissingPhoto && <Box>
-                                    <Text textAlign={'left'} fontSize={17} fontFamily={'regular'} color={colors.black}>Photos
-                                        that was problematic:</Text>
-                                    <Text textAlign={'left'} ml={4} fontSize={17} fontFamily={'regular'}
-                                          color={colors.black}>&#8226;  your ID document - “refusal comment”</Text>
-                                    <Text textAlign={'left'} ml={4} fontSize={17} fontFamily={'regular'}
-                                          color={colors.black}>&#8226;  your washing machine - “refusal comment”</Text>
+                                    <Text textAlign={'left'} fontSize={17} fontFamily={'regular'} color={colors.black}>Our
+                                        admin marked photos that have troubles, here is the comment from them:
+                                    </Text>
+                                    <Text textAlign={'left'} mt={5} fontSize={17} fontFamily={'regular'}
+                                          color={colors.black}>“{isMissingPhoto}”</Text>
+
                                 </Box>
                             }
                         </Box>

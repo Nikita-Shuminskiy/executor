@@ -8,6 +8,7 @@ type CheckBoxsProps = {
 }
 export const CheckBoxs = ({ value, onPress, borderRadius }: CheckBoxsProps) => {
 	return <Checkbox borderRadius={borderRadius} accessibilityLabel='This is a dummy checkbox' size={'md'}
+									 aria-label="check"
 									 onChange={onPress}
 									 colorScheme={'blue'} value={'test'} />
 }

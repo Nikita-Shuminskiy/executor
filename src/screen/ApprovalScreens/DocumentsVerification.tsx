@@ -81,9 +81,9 @@ const DocumentsVerification = observer(({navigation}: DocumentsVerificationProps
                 </Box>
                 <Box mb={6}>
                     {
-                        !executorSettings.executors.executor_approve_refuse_text && (
+                        !!executorSettings.executors.executor_approve_refuse_text && (
                             <Text fontSize={17} mb={4} color={colors.red} fontFamily={'regular'}
-                                  textAlign={'center'}>“refusal comment”</Text>
+                                  textAlign={'center'}>“{executorSettings.executors.executor_approve_refuse_text}”</Text>
                         )
                     }
                     <Text fontSize={22} fontFamily={'semiBold'} textAlign={'left'}>ID document</Text>

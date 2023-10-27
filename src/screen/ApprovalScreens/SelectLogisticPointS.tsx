@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {BaseWrapperComponent} from "../../components/baseWrapperComponent";
 import {observer} from "mobx-react-lite";
 import {CommonScreenPropsType} from "../../api/type";
@@ -10,6 +10,8 @@ import {MapViews} from "../../components/MapViews/MapViews";
 import rootStore from "../../store/RootStore/root-store";
 import {useGoBack} from "../../utils/hook/useGoBack";
 import {routerConstants} from "../../constants/routerConstants";
+import {useFocusEffect} from "@react-navigation/native";
+import {BackHandler, Platform} from "react-native";
 
 type SelectLogisticPointProps = CommonScreenPropsType & {}
 const SelectLogisticPointS = observer(({navigation}: SelectLogisticPointProps) => {
@@ -24,10 +26,6 @@ const SelectLogisticPointS = observer(({navigation}: SelectLogisticPointProps) =
             }
         })
     }
-    const goBackPress = () => {
-        return true
-    }
-    useGoBack(goBackPress)
     return (
         <BaseWrapperComponent>
             <Box paddingX={3} h={58} backgroundColor={colors.white} flexDirection={'row'} alignItems={'center'}
@@ -42,7 +40,7 @@ const SelectLogisticPointS = observer(({navigation}: SelectLogisticPointProps) =
                  marginY={5}
                  marginX={5}
                  position={'absolute'}
-                 bottom={0}
+                 bottom={ Platform.OS === 'ios' ? 10 : 0}
                  backgroundColor={colors.white}>
                 <Text fontSize={15} textAlign={'center'} fontFamily={'regular'}>You would need to use this Paczkomat to
                     return washed clothes</Text>

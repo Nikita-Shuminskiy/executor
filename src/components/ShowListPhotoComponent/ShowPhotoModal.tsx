@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, Modal, StyleSheet} from "react-native";
-import {PhotosApprovalType} from "../../api/type";
+import {ApprovedEnum, PhotosApprovalType} from "../../api/type";
 import {Box} from "native-base";
 import Button from "../Button";
 import {colors} from "../../assets/colors/colors";
@@ -11,11 +11,12 @@ type ShowPhotoModalProps = {
     photo: PhotosApprovalType
 }
 const ShowPhotoModal = ({visible, onClose, photo}: ShowPhotoModalProps) => {
+    const photoNotApproved = photo.approved === ApprovedEnum.DONT_APPROVED
     return (
         <Modal transparent={true} visible={visible}>
             <Box backgroundColor={"rgba(27,24,24,0.65)"} flex={1} w={'100%'} alignItems={'center'}
                  justifyContent={'space-evenly'}>
-                <Image style={[styles.img, photo.approved === 0 && {
+                <Image style={[styles.img, photoNotApproved && {
                     borderWidth: 3,
                     borderColor: colors.red
                 }]} source={{uri: photo.filename}} alt={'img'}/>

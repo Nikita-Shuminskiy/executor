@@ -3,7 +3,7 @@ import {Image, ImageBackground, StyleSheet, TouchableOpacity} from "react-native
 import addPhotoImage from "../../../assets/Images/order/add_photo.png";
 import deleteImg from "../../../assets/Images/order/closeCircleGray.png";
 import {colors} from "../../../assets/colors/colors";
-import {PhotosApprovalType} from "../../../api/type";
+import {ApprovedEnum, PhotosApprovalType} from "../../../api/type";
 import {Box} from "native-base";
 
 type PhotoViewerProps = {
@@ -13,7 +13,7 @@ type PhotoViewerProps = {
     onPressShowPhoto: (photo: PhotosApprovalType) => void
 }
 const PhotoViewer = memo(({photo, onPressShowPhoto, onPressDeletePhoto, onPressAddPhoto}: PhotoViewerProps) => {
-    const photoNotApproved = photo.approved === 0
+    const photoNotApproved = photo.approved === ApprovedEnum.DONT_APPROVED
     const onPressShowPhotoHandler = () => {
         onPressShowPhoto(photo)
     }
