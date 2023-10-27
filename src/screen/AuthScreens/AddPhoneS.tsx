@@ -11,6 +11,7 @@ import ArrowBack from '../../components/ArrowBack'
 import {countryDataDefault} from '../../utils/constants'
 import {PhoneNumberInput} from "../../components/PhoneNumberFieldMask";
 import {Country} from "react-native-country-picker-modal";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type PhoneVerifySProps = {
     navigation: NavigationProp<ParamListBase>
@@ -63,22 +64,24 @@ const AddPhoneS = ({navigation, route}: PhoneVerifySProps) => {
         setDisableBtn(false)
         setPhone(text)
     }
-    const goBackPress = () => {
-        navigation.goBack()
-    }
+
     const onPressChangeCountry = (country: Country) => {
         setCountry(country)
         setIsValidPhone(true)
         setPhone('')
         setDisableBtn(false)
     }
+    const goBackPress = () => {
+        return true
+    }
+    useGoBack(goBackPress)
     return (
         <BaseWrapperComponent>
-            {
+          {/*  {
                 isFromUpdate && <Box position={'relative'} top={3} paddingX={5}>
                     <ArrowBack goBackPress={goBackPress}/>
                 </Box>
-            }
+            }*/}
             <Box flex={1} justifyContent={'center'} alignItems={'center'} paddingX={5}>
                 <Box alignItems={'center'} mb={10}>
                     <Text fontSize={22} mb={2}

@@ -48,10 +48,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "9c0f47d0-4406-45e6-8f51-5043c3314158"
+        "projectId": "84d1f601-2370-4c20-80f0-0d06d13f3339"
       }
     },
-    "owner": "nick_111122",
+    "owner": "nick_1111222",
     "plugins": [
       "@notifee/react-native",
       "@react-native-firebase/app",

@@ -9,6 +9,7 @@ import {MapViews} from "../../components/MapViews/MapViews";
 import rootStore from "../../store/RootStore/root-store";
 import {Platform} from "react-native";
 import {useGoBack} from "../../utils/hook/useGoBack";
+import {StatusBar} from "expo-status-bar";
 
 type SelectLogisticPointProps = CommonScreenPropsType & {}
 const SelectLogisticPointS = observer(({navigation}: SelectLogisticPointProps) => {
@@ -29,6 +30,7 @@ const SelectLogisticPointS = observer(({navigation}: SelectLogisticPointProps) =
     useGoBack(goBackPress)
     return (
         <BaseWrapperComponent>
+            <StatusBar backgroundColor={colors.white}/>
             <Box paddingX={3} h={58} backgroundColor={colors.white} flexDirection={'row'} alignItems={'center'}
                  justifyContent={'center'}>
                 <Text fontSize={17} fontFamily={'semiBold'}>Select your nearest Paczkomat</Text>

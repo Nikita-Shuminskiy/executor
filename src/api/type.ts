@@ -56,6 +56,7 @@ type ExecutorSettingType = {
     status: string;
     units: UnitType[];
     executor_photos_for_approval: PhotosApprovalType[];
+    message: string
 };
 
 type LogisticsPointType = {

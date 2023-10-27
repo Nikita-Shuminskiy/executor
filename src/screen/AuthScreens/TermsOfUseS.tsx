@@ -14,6 +14,7 @@ import {observer} from 'mobx-react-lite'
 import {format} from 'date-fns';
 import {openBrowserAsync} from "expo-web-browser";
 import {routerConstants} from "../../constants/routerConstants";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type TermsOfUseSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -55,8 +56,13 @@ const TermsOfUseS = observer(({navigation}: TermsOfUseSProps) => {
             console.log(error.message)
         }
     }
+    const goBackPress = () => {
+        return true
+    }
+
+    useGoBack(goBackPress)
     return (
-        <BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{backgroundColor: colors.white}}>
+        <BaseWrapperComponent isKeyboardAwareScrollView={true} styleSafeArea={{backgroundColor: colors.blueLight}}>
             <StatusBar backgroundColor={colors.blueLight}/>
             <Box flex={1} w={'100%'} justifyContent={'space-between'} alignItems={'center'}
                  backgroundColor={colors.blueLight}>

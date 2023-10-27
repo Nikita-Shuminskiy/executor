@@ -29,7 +29,7 @@ export const MapViews = ({logisticPoints, onPressPaczkomat}: MapViewsProps) => {
             const {latitude, longitude} = await getCurrentPositionHandler()
             setMyPosition({latitude, longitude})
         } catch (e) {
-            console.log('catch')
+            console.log(e, 'catch')
         } finally {
             console.log('finally')
         }

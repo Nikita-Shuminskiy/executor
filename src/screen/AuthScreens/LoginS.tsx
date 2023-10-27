@@ -16,6 +16,7 @@ import * as Facebook from "expo-auth-session/providers/facebook";
 import * as WebBrowser from "expo-web-browser";
 import {Prompt, ResponseType} from "expo-auth-session";
 import {deviceStorage} from "../../utils/storage/storage";
+import {AccessToken, LoginManager} from "react-native-fbsdk-next";
 //298228729066-qtmrfm78vfcs6nmhsup9q5hhp3ilbasu.apps.googleusercontent.com  => work witch apple
 WebBrowser.maybeCompleteAuthSession();
 GoogleSignin.configure({
@@ -33,28 +34,18 @@ GoogleSignin.configure({
 export const LoginS = observer(({navigation}: any) => {
     const {setIsLoading} = NotificationStore
     const {AuthStoreService} = rootStore
-    const [request, response, promptAsync] = Facebook.useAuthRequest({
-        clientId: "679597410577527", // change this for yours
-        prompt: Prompt.SelectAccount,
-    });
-    useEffect(() => {
 
-        if (response && response.type === "success" && response.authentication) {
-            (async () => {
-                const userInfoResponse = await fetch(
-                    `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id`
-                );
-                const userInfo = await userInfoResponse.json();
-                console.log(userInfo, 'userInfo')
-                console.log(JSON.stringify(response, null, 2));
-            })();
-        }
-    }, [response]);
+
     const onPressFacebookHandler = async () => {
-        const result = await promptAsync();
-        if (result.type !== "success") {
-            alert("Uh oh, something went wrong");
-            return;
+        try {
+            await LoginManager.logInWithPermissions(['public_profile']);
+            const data = await AccessToken.getCurrentAccessToken();
+            if (!data) {
+                return;
+            }
+            console.log(data)
+        } catch (e) {
+            console.log(e);
         }
     };
     const onPressGoogleHandler = async () => {
@@ -96,7 +87,7 @@ export const LoginS = observer(({navigation}: any) => {
                     </Box>
                 </Box>
                 <Box alignItems={'center'} w={'100%'}>
-                    <Button disabled={!request} styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue}
+                    <Button  styleContainer={styles.styleContainerBtn} backgroundColor={colors.blue}
                             onPress={onPressFacebookHandler}
                     >
                         <Box flexDirection={'row'} alignItems={'center'}>

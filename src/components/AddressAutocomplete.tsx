@@ -21,6 +21,7 @@ const AddressAutocomplete = ({onSave}: AddressAutocompleteProps) => {
             onPress={(data, details = null) => {
                 const {geometry, name, formatted_address} = details;
                 if (geometry && geometry.location) {
+                    console.log('1')
                     const {lat, lng} = geometry.location;
                     onSave({
                         location: {latitude: lat, longitude: lng},

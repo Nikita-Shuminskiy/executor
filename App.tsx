@@ -36,7 +36,7 @@ export default function App() {
         'bold': require('./assets/font/MyriadPro-Bold.ttf'), // 700
         'semiBold': require('./assets/font/MyriadPro-Semibold.ttf'),// 600
     })
-
+   
     if (!fontsLoaded) {
         return null
     }

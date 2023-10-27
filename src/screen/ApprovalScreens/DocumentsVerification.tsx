@@ -12,6 +12,7 @@ import Button from "../../components/Button";
 import {StyleSheet} from "react-native";
 import {routerConstants} from "../../constants/routerConstants";
 import BaseModalInfo from "../../components/modal/BaseModalInfo";
+import {StatusBar} from "expo-status-bar";
 
 type DocumentsVerificationProps = CommonScreenPropsType & {}
 const DocumentsVerification = observer(({navigation}: DocumentsVerificationProps) => {
@@ -76,6 +77,7 @@ const DocumentsVerification = observer(({navigation}: DocumentsVerificationProps
     }
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}>
+            <StatusBar backgroundColor={colors.white}/>
             <Box paddingX={4}>
                 <Box mb={5}>
                     <ArrowBack/>

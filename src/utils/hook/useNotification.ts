@@ -41,7 +41,7 @@ export const onDisplayNotification = async (data) => {
 }
 export const useNotification = (isAuth) => {
     useEffect(() => {
-        if (!isAuth) {
+        if (isAuth) {
             requestUserPermission().then((data) => {
                 if (data) {
                     messaging()
