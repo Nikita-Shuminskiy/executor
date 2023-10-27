@@ -4,7 +4,7 @@ import {observer} from "mobx-react-lite";
 import {CommonScreenPropsType, PhotoCategoryEnum, PhotosApprovalType} from "../../api/type";
 import {Box, Text} from "native-base";
 import ArrowBack from "../../components/ArrowBack";
-import AddPhotoComponent from "../../components/AddPhotoComponent";
+import ShowListPhoto from "../../components/ShowListPhotoComponent/ShowListPhoto";
 import rootStore from "../../store/RootStore/root-store";
 import {colors} from "../../assets/colors/colors";
 import AuthStore from "../../store/AuthStore/auth-store";
@@ -46,9 +46,9 @@ const DocumentsVerification = observer(({navigation}: DocumentsVerificationProps
     const onDeletePhotoHandler = (photoId: number, type: PhotoCategoryEnum) => {
         setDisableBtn(false)
         AuthStoreService.deletePhoto(photoId).then((data) => {
-            if(data) {
+            if (data) {
                 setDataCategories((prevDataCategories) => {
-                    const updatedDataCategories = { ...prevDataCategories };
+                    const updatedDataCategories = {...prevDataCategories};
                     if (updatedDataCategories[type]) {
                         const indexToRemove = updatedDataCategories[type].findIndex(item => item.id === photoId);
                         if (indexToRemove !== -1) {
@@ -80,52 +80,59 @@ const DocumentsVerification = observer(({navigation}: DocumentsVerificationProps
                     <ArrowBack/>
                 </Box>
                 <Box mb={6}>
+                    {
+                        !executorSettings.executors.executor_approve_refuse_text && (
+                            <Text fontSize={17} mb={4} color={colors.red} fontFamily={'regular'}
+                                  textAlign={'center'}>“refusal comment”</Text>
+                        )
+                    }
                     <Text fontSize={22} fontFamily={'semiBold'} textAlign={'left'}>ID document</Text>
-                    <AddPhotoComponent savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.DOC)}
-                                       data={dataCategories[PhotoCategoryEnum.DOC]}
-                                       deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.DOC)}/>
+                    <ShowListPhoto savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.DOC)}
+                                   data={dataCategories[PhotoCategoryEnum.DOC]}
+                                   deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.DOC)}/>
                     <Box borderBottomWidth={1} mb={2} borderColor={colors.grayBright}/>
                     <Text fontSize={17} fontFamily={'regular'}>Take a picture of the page with your photo</Text>
                 </Box>
                 <Box mb={6}>
                     <Text fontSize={22} fontFamily={'semiBold'} textAlign={'left'}>ID document near to your face</Text>
-                    <AddPhotoComponent savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.FACE)}
-                                       data={dataCategories[PhotoCategoryEnum.FACE]}
-                                       deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.FACE)}/>
+                    <ShowListPhoto savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.FACE)}
+                                   data={dataCategories[PhotoCategoryEnum.FACE]}
+                                   deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.FACE)}/>
                     <Box borderBottomWidth={1} mb={2} borderColor={colors.grayBright}/>
                     <Text fontSize={17} fontFamily={'regular'}>Take a selfie with your ID document face photo
                         page</Text>
                 </Box>
                 <Box mb={6}>
                     <Text fontSize={22} fontFamily={'semiBold'} textAlign={'left'}>Washing machine</Text>
-                    <AddPhotoComponent savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.WASH)}
-                                       data={dataCategories[PhotoCategoryEnum.WASH]}
-                                       deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.WASH)}/>
+                    <ShowListPhoto savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.WASH)}
+                                   data={dataCategories[PhotoCategoryEnum.WASH]}
+                                   deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.WASH)}/>
                     <Box borderBottomWidth={1} mb={2} borderColor={colors.grayBright}/>
                     <Text fontSize={17} fontFamily={'regular'}>Add photos of your washing machine</Text>
                 </Box>
                 <Box mb={6}>
                     <Text fontSize={22} fontFamily={'semiBold'} textAlign={'left'}>Ironing equipment</Text>
-                    <AddPhotoComponent savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.IRON)}
-                                       data={dataCategories[PhotoCategoryEnum.IRON]}
-                                       deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.IRON)}/>
+                    <ShowListPhoto savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.IRON)}
+                                   data={dataCategories[PhotoCategoryEnum.IRON]}
+                                   deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.IRON)}/>
                     <Box borderBottomWidth={1} mb={2} borderColor={colors.grayBright}/>
-                    <Text fontSize={17} fontFamily={'regular'}>Add photos of your ironing equipment and your washing room</Text>
+                    <Text fontSize={17} fontFamily={'regular'}>Add photos of your ironing equipment and your washing
+                        room</Text>
                 </Box>
                 <Box mb={6}>
                     <Text fontSize={22} fontFamily={'semiBold'} textAlign={'left'}>Washing room</Text>
-                    <AddPhotoComponent savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.ROOM)}
-                                       data={dataCategories[PhotoCategoryEnum.ROOM]}
-                                       deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.ROOM)}/>
+                    <ShowListPhoto savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.ROOM)}
+                                   data={dataCategories[PhotoCategoryEnum.ROOM]}
+                                   deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.ROOM)}/>
                     <Box borderBottomWidth={1} mb={2} borderColor={colors.grayBright}/>
                     <Text fontSize={17} fontFamily={'regular'}>Take a few photos of the room where you will
                         conduct your work</Text>
                 </Box>
                 <Box mb={6}>
                     <Text fontSize={22} fontFamily={'semiBold'} textAlign={'left'}>Working address registration</Text>
-                    <AddPhotoComponent savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.ADDRESS)}
-                                       data={dataCategories[PhotoCategoryEnum.ADDRESS]}
-                                       deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.ADDRESS)}/>
+                    <ShowListPhoto savePhoto={(photo) => onSavePhotoHandler(photo, PhotoCategoryEnum.ADDRESS)}
+                                   data={dataCategories[PhotoCategoryEnum.ADDRESS]}
+                                   deletePhoto={(photoId) => onDeletePhotoHandler(photoId, PhotoCategoryEnum.ADDRESS)}/>
                     <Box borderBottomWidth={1} mb={2} borderColor={colors.grayBright}/>
                     <Text fontSize={17} fontFamily={'regular'}>Take photos of documents confirming registration
                         on your working address</Text>

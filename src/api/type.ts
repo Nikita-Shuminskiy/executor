@@ -23,6 +23,7 @@ type ExecutorType = {
     executor_logistic_partners_points_id: null | string;
     country: string;
     disabled: null | string;
+    executor_approve_refuse_text: null | string;
     email: string;
     executor_approve_datetime: null | string;
     executors_id: string;
@@ -33,8 +34,13 @@ type ExecutorType = {
     phone: string;
     phone_verify_datetime: string;
 }
+enum ApprovedEnum  {
+    APPROVED = 1,
+    DONT_APPROVED = 0
+}
 type PhotosApprovalType = {
     admins_id?: null,
+    approved?: null | ApprovedEnum,
     admins_verdict?: null,
     datetime?: string,
     executors_id?: number,
@@ -109,6 +115,7 @@ type CommonScreenPropsType = {
 type PhotoType = { 'filename': string, 'id': string }
 export {
     PhotoType,
+    ApprovedEnum,
     PhotosApprovalType,
     PhotoCategoryEnum,
     CommonScreenPropsType,

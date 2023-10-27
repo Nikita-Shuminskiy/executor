@@ -19,15 +19,15 @@ const SelectLogisticPointS = observer(({navigation}: SelectLogisticPointProps) =
         AuthStoreService.updateExecutor({
            executor_logistic_partners_points_id: id
         }).then((data) => {
-            if(!data.executors.executor_approve_datetime) {
-                navigation.navigate(routerConstants.APPROVAL)
+            if (data) {
+                AuthStoreService.getSettingExecutor(navigation.navigate)
             }
         })
     }
-  /*  const goBackPress = () => {
+    const goBackPress = () => {
         return true
     }
-    useGoBack(goBackPress)*/
+    useGoBack(goBackPress)
     return (
         <BaseWrapperComponent>
             <Box paddingX={3} h={58} backgroundColor={colors.white} flexDirection={'row'} alignItems={'center'}

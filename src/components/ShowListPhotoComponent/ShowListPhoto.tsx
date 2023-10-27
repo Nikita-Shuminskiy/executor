@@ -1,20 +1,22 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {FlatList, Image, ImageBackground, Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {Camera, CameraType, FlashMode,} from 'expo-camera'
-import addPhotoImage from '../assets/Images/order/add_photo.png'
+import addPhotoImage from '../../assets/Images/order/add_photo.png'
 import {observer} from 'mobx-react-lite'
-import deleteImg from '../assets/Images/order/closeCircleGray.png'
-import btnCamera from '../assets/Images/order/blue-circle.png'
-import closeCameraImg from '../assets/Images/order/closeBlack.png'
-import DeletePhotoModal from './modal/DeletePhotoModal'
-import NotificationStore from '../store/NotificationStore/notification-store'
+import deleteImg from '../../assets/Images/order/closeCircleGray.png'
+import btnCamera from '../../assets/Images/order/blue-circle.png'
+import closeCameraImg from '../../assets/Images/order/closeBlack.png'
+import DeletePhotoModal from '../modal/DeletePhotoModal'
+import NotificationStore from '../../store/NotificationStore/notification-store'
 import * as ImagePicker from 'expo-image-picker'
 import {Box} from 'native-base'
-import {BASE_URL} from '../api/config'
+import {BASE_URL} from '../../api/config'
 import {Ionicons} from '@expo/vector-icons'
-import {colors} from '../assets/colors/colors'
-import {PhotosApprovalType} from "../api/type";
-import turnImg from "../../src/assets/Images/turnWhite.png";
+import {colors} from '../../assets/colors/colors'
+import {PhotosApprovalType} from "../../api/type";
+import turnImg from "../../assets/Images/turnWhite.png";
+import PhotoViewer from "../list-viewer/PhotoViewer/PhotoViewer";
+import ShowPhotoModal from "./ShowPhotoModal";
 
 type AddPhotoComponentProps = {
     savePhoto: (photo: string) => void
@@ -22,53 +24,44 @@ type AddPhotoComponentProps = {
     data: PhotosApprovalType[]
 }
 
-const AddPhotoComponent = observer(({deletePhoto, savePhoto, data}: AddPhotoComponentProps) => {
+const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponentProps) => {
     const {setLocalLoading} = NotificationStore
     const [cameraPermission, setCameraPermission] = useState(null)
     const [isOpenCamera, setIsOpenCamera] = useState(false)
     const [isDeleteModal, setIsDeleteModal] = useState(false)
     const [cameraType, setCameraType] = useState<CameraType>(CameraType.back)
-    const [deletedPhotoId, setDeletedPhotoId] = useState() //can use id 'add_photo_button'
+    const [deletedPhotoId, setDeletedPhotoId] = useState<any>() //can use id 'add_photo_button'
     const [flashMode, setFlashMode] = React.useState<FlashMode>(FlashMode.off)
+    const [chosenPhoto, setChosenPhoto] = React.useState<PhotosApprovalType>(null)
     const cameraRef = useRef(null)
-
     useEffect(() => {
         getCameraPermission()
     }, [])
-
     const getCameraPermission = async () => {
         const {status} = await Camera.requestCameraPermissionsAsync()
         setCameraPermission(status === 'granted')
         return status
     }
     const takePicture = async () => {
-        //setLocalLoading(LoadingEnum.fetching)
         try {
             const photo = await cameraRef.current.takePictureAsync()
             savePhoto(photo.uri)
             setIsOpenCamera(false)
         } catch (e) {
-            console.log(e)
-        } finally {
-            //setLocalLoading(LoadingEnum.success)
+            console.log(e, 'takePicture')
         }
     }
     const onCloseModalDelete = () => {
         setIsDeleteModal(false)
     }
     const onGalleryHandler = async () => {
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
-        if (permissionResult.granted === false) {
-            alert('Permission to access camera roll is required!')
-            return
-        }
+        await ImagePicker.requestMediaLibraryPermissionsAsync()
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
             })
             setIsOpenCamera(false)
-
             if (!result.canceled) {
                 const selectedAsset = result.assets[0]
                 const selectedImageUri = selectedAsset.uri
@@ -78,32 +71,29 @@ const AddPhotoComponent = observer(({deletePhoto, savePhoto, data}: AddPhotoComp
             console.log('Error selecting image from gallery:', error)
         }
     }
-    const renderItem = ({item}: { item: PhotosApprovalType }) => {
-        const onPressDeletePhoto = () => {
-            setDeletedPhotoId(item.id)
-            setIsDeleteModal(true)
-        }
-        const imageUrl = `${BASE_URL}${item.filename}`
-        return item.id === 'add_photo_button' ? (
-            <TouchableOpacity style={styles.addPhotoButton} onPress={() => {
-                if (!cameraPermission) {
-                    getCameraPermission().then((data) => {
-                        if (data === 'granted') {
-                            setIsOpenCamera(true)
-                        }
-                    })
+    const onPressDeletePhoto = useCallback((photoId: number) => {
+        setDeletedPhotoId(photoId)
+        setIsDeleteModal(true)
+    }, [])
+    const onPressAddPhoto = useCallback(() => {
+        if (!cameraPermission) {
+            getCameraPermission().then((data) => {
+                if (data === 'granted') {
+                    setIsOpenCamera(true)
                 }
-                setIsOpenCamera(true)
-            }}>
-                <Image style={{width: 64, height: 64}} source={addPhotoImage} alt={'add_photo'}/>
-            </TouchableOpacity>
-        ) : (
-            <ImageBackground source={{uri: item.filename}} borderRadius={16} style={styles.image}>
-                <TouchableOpacity onPress={onPressDeletePhoto}>
-                    <Image style={styles.deleteImg} source={deleteImg} alt={'delete'}/>
-                </TouchableOpacity>
-            </ImageBackground>
-        )
+            })
+        }
+        setIsOpenCamera(true)
+    }, [])
+    const onPressShowPhoto = useCallback((photo: PhotosApprovalType) => {
+        setChosenPhoto(photo)
+    }, [])
+    const onDeleteShowPhoto = () => {
+        setChosenPhoto(null)
+    }
+    const renderItem = ({item}: { item: PhotosApprovalType }) => {
+        return <PhotoViewer photo={item} onPressShowPhoto={onPressShowPhoto} onPressAddPhoto={onPressAddPhoto}
+                            onPressDeletePhoto={onPressDeletePhoto}/>
     }
     const flashModeHandler = () => {
         if (flashMode === FlashMode.torch) {
@@ -112,13 +102,13 @@ const AddPhotoComponent = observer(({deletePhoto, savePhoto, data}: AddPhotoComp
             setFlashMode(FlashMode.torch)
         }
     }
- /*   useEffect(() => {
-        if (cameraPermission && cameraRef.current) {
-            cameraRef.current.getAvailablePictureSizesAsync('4:3').then(sizes => {
-                console.log(sizes)
-            });
-        }
-    }, [cameraPermission]);*/
+    /*   useEffect(() => {
+           if (cameraPermission && cameraRef.current) {
+               cameraRef.current.getAvailablePictureSizesAsync('4:3').then(sizes => {
+                   console.log(sizes)
+               });
+           }
+       }, [cameraPermission]);*/
     const changeCameraType = () => {
         setCameraType(cameraType === CameraType.front ? CameraType.back : CameraType.front)
     }
@@ -148,7 +138,7 @@ const AddPhotoComponent = observer(({deletePhoto, savePhoto, data}: AddPhotoComp
             </View>
             {cameraPermission && isOpenCamera && (
                 <Modal visible={isOpenCamera}>
-                    <Camera pictureSize={'320x240'} type={cameraType} zoom={0.1} flashMode={flashMode}
+                    <Camera pictureSize={'320x240'} type={cameraType} flashMode={flashMode}
                             style={styles.camera}
                             ref={cameraRef}>
                         <Box position={'absolute'} top={'5%'} left={5}>
@@ -194,6 +184,9 @@ const AddPhotoComponent = observer(({deletePhoto, savePhoto, data}: AddPhotoComp
                     </Camera>
                 </Modal>
             )}
+            {
+                chosenPhoto && <ShowPhotoModal visible={!!chosenPhoto} onClose={onDeleteShowPhoto} photo={chosenPhoto}/>
+            }
         </>
     )
 })
@@ -235,4 +228,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default AddPhotoComponent
+export default ShowListPhoto

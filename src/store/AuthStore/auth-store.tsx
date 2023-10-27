@@ -77,9 +77,7 @@ export class AuthStore {
     }
 
     async authWithGoogle(payload: AuthGooglePayload) {
-        console.log(payload, 'payload')
         const {data} = await authApi.authWithGoogle(payload)
-        console.log(data, 'authWithGoogle')
         await this.setUserAuthData(data?.token)
         return data
     }

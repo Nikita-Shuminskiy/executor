@@ -25,7 +25,7 @@ const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) =
 
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true} contentContainerStyle={{flexGrow: 1}} styleSafeArea={{
-            backgroundColor: isMissingPhoto ? colors.redLight : colors.redLight,
+            backgroundColor: colors.white,
             paddingTop: 0
         }}>
             <StatusBar backgroundColor={isMissingPhoto ? colors.redLight : colors.blueLight}/>
@@ -34,7 +34,7 @@ const WaitingVerificationS = observer(({navigation}: WaitingVerificationProps) =
                 <Image style={isMissingPhoto ?  styles.imgListRed : styles.imgWaiting }
                        source={isMissingPhoto ? ListRedImg : SleepImg}/>
                 <Box justifyContent={'space-between'} w={'100%'}>
-
+                    <Image style={{width: '100%', position: 'relative', top: 1}} source={imgBack}/>
                     <Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
                          backgroundColor={colors.white}>
                         <Box  alignItems={'center'} flex={1} justifyContent={'space-evenly'}>
