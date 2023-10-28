@@ -23,6 +23,7 @@ type AddPhotoComponentProps = {
 const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponentProps) => {
     const [cameraPermission, setCameraPermission] = useState(null)
     const [isOpenCamera, setIsOpenCamera] = useState(false)
+    const [ratio, setRatio] = useState<string>('')
     const [isDeleteModal, setIsDeleteModal] = useState(false)
     const [cameraType, setCameraType] = useState<CameraType>(CameraType.back)
     const [deletedPhotoId, setDeletedPhotoId] = useState<any>() //can use id 'add_photo_button'
@@ -97,13 +98,17 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
             setFlashMode(FlashMode.torch)
         }
     }
-    /*   useEffect(() => {
-           if (cameraPermission && cameraRef.current) {
-               cameraRef.current.getAvailablePictureSizesAsync('4:3').then(sizes => {
-                   console.log(sizes)
-               });
-           }
-       }, [cameraPermission]);*/
+
+    useEffect(() => {
+        if ((cameraPermission && isOpenCamera) && (cameraRef.current && !ratio)) {
+            (async () => {
+                const getSupportedRatios = await cameraRef.current.getSupportedRatiosAsync()
+                console.log(getSupportedRatios, 'getSupportedRatios')
+                setRatio(getSupportedRatios[getSupportedRatios.length - 1])
+
+            })();
+        }
+    }, [cameraPermission, cameraType, isOpenCamera]);
     const changeCameraType = () => {
         setCameraType(cameraType === CameraType.front ? CameraType.back : CameraType.front)
     }
@@ -133,7 +138,7 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
             </View>
             {cameraPermission && isOpenCamera && (
                 <Modal visible={isOpenCamera}>
-                    <Camera pictureSize={'320x240'} type={cameraType} flashMode={flashMode}
+                    <Camera ratio={ratio ? ratio :'16:9'} type={cameraType} flashMode={flashMode}
                             style={styles.camera}
                             ref={cameraRef}>
                         <Box position={'absolute'} top={'5%'} left={5}>
@@ -201,7 +206,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     camera: {
-        flex: 1,
+        flexGrow: 1,
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
