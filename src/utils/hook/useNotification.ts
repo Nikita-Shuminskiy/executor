@@ -5,14 +5,13 @@ import notifee, {AndroidImportance, AndroidStyle, AndroidVisibility} from '@noti
 import {authApi} from "../../api/authApi";
 
 export const onDisplayNotification = async (data) => {
-   const channelId = await notifee.createChannel({
+    const channelId = await notifee.createChannel({
         id: 'default5',
         name: 'default5',
         visibility: AndroidVisibility.PUBLIC,
         importance: AndroidImportance.HIGH,
         bypassDnd: true,
         vibration: true,
-        sound: 'test.wav',
     });
     await notifee.displayNotification({
         title: data?.notification.title,
@@ -67,7 +66,7 @@ export const useNotification = (isAuth) => {
                     }
                 });
             return () => {
-               unsubscribe()
+                unsubscribe()
             }
         }
     }, [isAuth]);
@@ -83,7 +82,7 @@ const onForegroundEvent = ({type, detail}) => {
 }
 const requestUserPermission = async () => {
     try {
-        const permission: PermissionStatus = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
         const authStatus = await messaging().requestPermission({
             provisional: true,
             carPlay: true,

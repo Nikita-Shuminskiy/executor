@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {FlatList, Image, Modal, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {FlatList, Image, Modal, Platform, StyleSheet, TouchableOpacity, View} from 'react-native'
 import {Camera, CameraType, FlashMode,} from 'expo-camera'
 import {observer} from 'mobx-react-lite'
 import btnCamera from '../../assets/Images/order/blue-circle.png'
@@ -100,13 +100,14 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
     }
 
     useEffect(() => {
-        if ((cameraPermission && isOpenCamera) && (cameraRef.current && !ratio)) {
-            (async () => {
-                const getSupportedRatios = await cameraRef.current.getSupportedRatiosAsync()
-                console.log(getSupportedRatios, 'getSupportedRatios')
-                setRatio(getSupportedRatios[getSupportedRatios.length - 1])
-
-            })();
+        if(Platform.OS !== 'ios') {
+            if ((cameraPermission && isOpenCamera) && (cameraRef.current && !ratio)) {
+                (async () => {
+                    const getSupportedRatios = await cameraRef.current.getSupportedRatiosAsync()
+                    console.log(getSupportedRatios, 'getSupportedRatios')
+                    setRatio(getSupportedRatios[getSupportedRatios.length - 1])
+                })();
+            }
         }
     }, [cameraPermission, cameraType, isOpenCamera]);
     const changeCameraType = () => {
