@@ -14,9 +14,13 @@ export class AuthStore {
     phone: string = ''
     logisticPoints: LogisticsPointType[] = []
     executorSettings: ExecutorSettingType = {} as ExecutorSettingType
+    examEducation: string = ''
 
     setAuth(auth: boolean): void {
         this.isAuth = auth
+    }
+    setExamEducation = (data: any) => {
+        this.examEducation = data
     }
 
     setPhone(phone: string): void {
@@ -36,41 +40,50 @@ export class AuthStore {
     setExecutorSettings(executor: ExecutorSettingType) {
         this.executorSettings = executor
     }
+
     async getSettingExecutor() {
         const {data} = await authApi.getSettingsExecutor()
         this.setExecutorSettings(data)
         return data
     }
+
     async logout() {
         //const { data } = await authApi.logout()
     }
+
     async setUserAuthData(token: string) {
         const currentDate = new Date().toISOString();
         await deviceStorage.saveItem('token', token)
         await deviceStorage.saveItem('tokenDate', currentDate)
     }
+
     async sendCode(formattedPhoneNumber?: string) {
         const {data} = await authApi.sendCode({phone: formattedPhoneNumber ?? this.phone})
         return data
     }
+
     async sendVerifyCode(code: string) {
         const payload = {
             phone_verify_code: code,
         }
         return await authApi.sendCodeVerify(payload)
     }
+
     async updateExecutor(payload: UpdateExecutorPayloadType) {
         const {data} = await authApi.updateExecutor(payload)
         return data
     }
+
     async sendPhotosForApproval(payload: PhotoPayloadType) {
         const {data} = await authApi.sendPhotosForApproval(payload)
         return data
     }
+
     async deletePhoto(photoId: number) {
         const {data} = await authApi.deletePhoto(photoId)
         return data
     }
+
     async updatePhoto(photo: string) {
         //const { data } = await clientApi.updateClientPhoto(photo)
         //return data
@@ -87,6 +100,19 @@ export class AuthStore {
         this.setLogisticPoints(data.points)
     }
 
+    getExamEducation =  async () => {
+        const {data} = await authApi.getExamEducation()
+        //console.log(data)
+        this.setExamEducation(data)
+    }
+    getExamAnswer =  async () => {
+        const {data} = await authApi.getExamAnswer()
+        console.log(data, '1111')
+    }
+    examNextQuestion =  async () => {
+        const {data} = await authApi.examNextQuestion()
+        console.log(data, '222')
+    }
     constructor() {
         makeObservable(this, {
             executorSettings: observable,
@@ -94,7 +120,10 @@ export class AuthStore {
             logisticPoints: observable,
             phone: observable,
             setPhone: action,
+            setExamEducation: action,
+            getExamEducation: action,
             getSettingExecutor: action,
+            getExamAnswer: action,
             authWithGoogle: action,
             updatePhoto: action,
             sendVerifyCode: action,

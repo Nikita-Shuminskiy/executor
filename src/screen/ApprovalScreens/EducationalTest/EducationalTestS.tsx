@@ -12,13 +12,15 @@ import {Image, StyleSheet} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import {routerConstants} from "../../../constants/routerConstants";
 import {useGoBack} from "../../../utils/hook/useGoBack";
+import AuthStore from "../../../store/AuthStore/auth-store";
 
 type EducationalTestSProps = CommonScreenPropsType & {}
 const EducationalTestS = observer(({navigation, route}: EducationalTestSProps) => {
     const isExamPassed = route.params.exam_passed
-
+const {getExamEducation, getExamAnswer, examNextQuestion} = AuthStore
     const onPressStart = () => {
-        if (!isExamPassed) return navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
+        examNextQuestion()
+        //if (!isExamPassed) return navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
     }
     const goBackPress = () => {
         return true
