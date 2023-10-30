@@ -3,20 +3,24 @@ import messaging from "@react-native-firebase/messaging";
 import {Linking, Platform} from 'react-native';
 import {authApi} from "../../api/authApi";
 import * as Notifications from 'expo-notifications';
+import {AndroidNotificationPriority, AndroidNotificationVisibility} from 'expo-notifications';
 import * as Device from 'expo-device';
-import {NotificationContentInput} from "expo-notifications";
-
+//+ "📬"
 export const onDisplayNotification = async (data) => {
     await Notifications.scheduleNotificationAsync({
+        identifier: 'default2',
         content: {
-            title: "You've got mail! 📬",
-            body: 'Here is the notification body',
-            data: { data: 'goes here' },
-            autoDismiss: true,
-            sticky: true
+            sound: Platform.OS === "android" ? null : "default",
+            categoryIdentifier: 'default2',
+            body: data.notification.body,
+            title: data.notification.title ,
+            priority: AndroidNotificationPriority.HIGH,
+            color: '#33469a',
         },
-        trigger: { seconds: 2 },
-    });
+        trigger: {
+            seconds: 1,
+        },
+    })
 }
 export const useNotification = (isAuth) => {
     const notificationListener = useRef<any>();
@@ -28,35 +32,28 @@ export const useNotification = (isAuth) => {
                     messaging()
                         .getToken()
                         .then((token) => {
+                            //console.log(token)
                             sendToken(token);
                         });
                 }
             })
+
             const unsubscribe = messaging().onMessage((data) => {
-                console.log(data, 'onMessage')
                 onDisplayNotification(data)
             });
 
-            messaging()
-                .getInitialNotification()
-                .then(remoteMessage => {
-                    if (remoteMessage) {
-                        console.log(
-                            'Notification caused app to open from quit state:',
-                            remoteMessage.notification,
-                        );
-                    }
-                });
             notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
                 console.log(notification, 'addNotificationReceivedListener')
-                // dismiss notification
-                Notifications.dismissNotificationAsync(
-                    notification.request.identifier
-                );
-            });
 
+            });
             responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-                console.log(response, 'responseresponseresponse');
+                if (response.actionIdentifier === 'NO') {
+                    alert('NO')
+                    Notifications.dismissNotificationAsync(
+                        response.notification.request.identifier
+                    );
+                }
+                console.log('addNotificationResponseReceivedListener')
             });
             return () => {
                 Notifications.removeNotificationSubscription(notificationListener.current);
@@ -68,48 +65,52 @@ export const useNotification = (isAuth) => {
 };
 
 async function registerForPushNotificationsAsync() {
-    if (Platform.OS === 'android') {
-        await Notifications.setNotificationChannelAsync('DEFAULT', {
-            name: 'DEFAULT',
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: '#FF231F7C',
-            enableLights: true,
-            enableVibrate: true
-        });
-    }
-
     if (Device.isDevice) {
         const {status: existingStatus} = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
-            const {status} = await Notifications.requestPermissionsAsync();
+            const {status} = await Notifications.requestPermissionsAsync({
+                ios: {
+                    allowAlert: true,
+                    allowBadge: true,
+                    allowSound: true,
+                    allowAnnouncements: true,
+                },
+                android: {
+                    allowAlert: true,
+                    allowBadge: true,
+                    allowSound: true,
+                    allowAnnouncements: true,
+                }
+            });
             finalStatus = status;
         }
         return finalStatus
     } else {
-        alert('Must use physical device for Push Notifications');
     }
 }
 
 const requestUserPermission = async () => {
     try {
-        await Notifications.setNotificationCategoryAsync('default', [
+        if (Platform.OS === 'android') {
+            await Notifications.setNotificationChannelAsync('default2', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                lockscreenVisibility: AndroidNotificationVisibility.PUBLIC,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+       /* await Notifications.setNotificationCategoryAsync('default2', [
             {
-                buttonTitle: 'Yes',
+                buttonTitle: 'Yess',
                 identifier: 'YES',
-                options: {
-                    opensAppToForeground: true
-                }
             },
             {
                 buttonTitle: 'NO',
                 identifier: 'NO',
-                options: {
-                    opensAppToForeground: true
-                }
             }
-        ])
+        ])*/
         await registerForPushNotificationsAsync()
         //await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
         const authStatus = await messaging().requestPermission({
@@ -122,7 +123,6 @@ const requestUserPermission = async () => {
             announcement: true,
             providesAppNotificationSettings: true
         });
-        //await messaging().registerDeviceForRemoteMessages();
         return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     } catch (e) {
@@ -146,43 +146,13 @@ async function openAppSettings() {
 }
 
 /*
-if (Platform.OS == 'ios') {
-    await notifee.requestPermission()
-}
-const channelId = await notifee.createChannel({
-    id: 'default5',
-    name: 'default5',
-    visibility: AndroidVisibility.PUBLIC,
-    importance: AndroidImportance.HIGH,
-    bypassDnd: true,
-    vibration: true,
-});
-await notifee.displayNotification({
-    title: data?.notification.title,
-    body: data?.notification.body,
-    id: 'default5',
-    android: {
-        channelId,
-        lightUpScreen: true, // подсветка экрана
-        loopSound: true,
-        onlyAlertOnce: false, // хз
-        visibility: AndroidVisibility.PUBLIC,
-        importance: AndroidImportance.HIGH,
-        ongoing: true, // предотвращает закрытие
-        actions: [
-            {
-                title: '<p style="color:#164aab;"<b>accept</b></p>',
-                pressAction: {id: 'accept'}
-            },
-            {
-                title: '<p style="color:#000000;"<b>cansel</b></p>',
-                pressAction: {id: 'cansel'}
-            }
-        ]
-    },
-    ios: {
-        interruptionLevel: 'active',
-        sound: 'default',
-        critical: true,
-    }
-});*/
+messaging()
+    .getInitialNotification()
+    .then(remoteMessage => {
+        if (remoteMessage) {
+            console.log(
+                'Notification caused app to open from quit state:',
+                remoteMessage.notification,
+            );
+        }
+    });*/

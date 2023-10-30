@@ -21,12 +21,14 @@ LogBox.ignoreLogs([
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
     }),
 });
+
 messaging().setBackgroundMessageHandler(async remoteMessage => {
     console.log('Message handled in the background!', remoteMessage);
+    await  Notifications.dismissAllNotificationsAsync()
     onDisplayNotification(remoteMessage)
 });
 export default function App() {

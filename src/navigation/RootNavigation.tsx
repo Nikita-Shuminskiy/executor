@@ -40,7 +40,7 @@ const RootNavigation = observer(() => {
     const navigate = useNavigation()
 
     useNotification(isAuth)
-    useLayoutEffect(() => {
+/*    useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
         AuthStoreService.getSettingExecutor(navigate?.navigate)
             .then((data) => {
@@ -54,7 +54,7 @@ const RootNavigation = observer(() => {
                 }, 2000)
             })
 
-    }, [])
+    }, [])*/
     return (
         <BurgerMenuProvider>
             {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true}/>}
