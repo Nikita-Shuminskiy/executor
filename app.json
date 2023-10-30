@@ -4,7 +4,7 @@
     "slug": "swash-executor",
     "scheme": [
       "swash-executor",
-      "fb679597410577527"
+      "fb3631350497192290"
     ],
     "version": "1.0.1",
     "orientation": "portrait",
@@ -21,6 +21,12 @@
     "ios": {
       "bundleIdentifier": "com.swash.executor",
       "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "fetch",
+          "remote-notification"
+        ]
+      },
       "userInterfaceStyle": "light",
       "supportsTablet": true,
       "config": {
@@ -71,8 +77,8 @@
       [
         "react-native-fbsdk-next",
         {
-          "appID": "679597410577527",
-          "clientToken": "42904ec02d393d529f015ab395b45e27",
+          "appID": "3631350497192290",
+          "clientToken": "42195cf57b580661f081690881586412",
           "displayName": "Swash executor",
           "scheme": "fb679597410577527",
           "advertiserIDCollectionEnabled": true,

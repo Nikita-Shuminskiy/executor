@@ -34,7 +34,7 @@ const GivePermissions = ({ visible, askLocationPermissionHandler, askNotificatio
 					<Image style={styles.imgLogo} source={errorPermission ? imgLookRed : imgLook} />
 					<Box justifyContent={'space-between'} w={'100%'}>
 						<Box alignItems={'center'}>
-							<Image style={{ width: '100%' }} source={imgBack} />
+							<Image style={{ width: '100%', position: 'relative', top: 1 }} source={imgBack} />
 							{
 								errorPermission &&
 								<Text fontSize={15} fontFamily={'regular'} color={colors.red} position={'absolute'}

@@ -7,8 +7,7 @@ import {useFonts} from '@expo-google-fonts/inter/useFonts'
 import {NavigationContainer} from '@react-navigation/native'
 import messaging from "@react-native-firebase/messaging";
 import {onDisplayNotification} from "./src/utils/hook/useNotification";
-import notifee, {EventType} from "@notifee/react-native";
-
+import * as Notifications from 'expo-notifications';
 LogBox.ignoreLogs([
     'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
 ])
@@ -19,16 +18,16 @@ LogBox.ignoreLogs([
 		console.log(ev, 'ev action')
 	}
 })*/
-messaging().setBackgroundMessageHandler(onDisplayNotification);
-notifee.onBackgroundEvent(async ({type, detail}) => {
-    const {notification, pressAction} = detail;
-    switch (detail?.pressAction?.id) {
-        case 'accept':
-            console.log('accept onBackgroundEvent')
-            break;
-        case 'cansel':
-            console.log('cansel onBackgroundEvent')
-    }
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log('Message handled in the background!', remoteMessage);
+    onDisplayNotification(remoteMessage)
 });
 export default function App() {
     let [fontsLoaded] = useFonts({

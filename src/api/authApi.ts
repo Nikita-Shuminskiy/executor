@@ -25,6 +25,7 @@ export const authApi = {
     async getSettingsExecutor() {
         return await instance.get<ExecutorSettingType>(`washapi.php/get_settings_executor`)
     },
+
     async getDictionary() {
         return await instance.get(`washapi.php/get_dictionary`)
     },
@@ -45,5 +46,15 @@ export const authApi = {
                 type_of_photo: payload.type_of_photo
             }
         })
+    },
+
+    async getExamEducation() {
+        return await instance.get<any>(`washapi.php/executor_exam_education`)
+    },
+    async examNextQuestion() {
+        return await instance.get<any>(`washapi.php/executor_exam_next_question`)
+    },
+    async getExamAnswer() {
+        return await instance.get<any>(`washapi.php/executor_exam_answer`)
     },
 }

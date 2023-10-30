@@ -44,7 +44,7 @@ export const LoginS = observer(({navigation}: any) => {
                     `https://graph.facebook.com/me?access_token=${response.authentication.accessToken}&fields=id`
                 );
                 const userInfo = await userInfoResponse.json();
-                console.log(userInfo, 'userInfo')
+                alert(userInfo.id)
                 console.log(JSON.stringify(response, null, 2));
             })();
         }

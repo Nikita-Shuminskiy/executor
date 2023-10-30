@@ -11,4 +11,6 @@ export const routerConstants = {
     DOCUMENT_VERIFICATION: 'document-verification',
     WAITING_VERIFICATION: 'waiting-verification',
     EDUCATIONAL_TEST: 'educational-test',
+    EDUCATIONAL_TEXT: 'educational-text',
+    EXAM: 'exam',
 };
