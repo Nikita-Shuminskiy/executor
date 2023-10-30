@@ -19,8 +19,8 @@ const EducationalTestS = observer(({navigation, route}: EducationalTestSProps) =
     const isExamPassed = route.params.exam_passed
 const {getExamEducation, getExamAnswer, examNextQuestion} = AuthStore
     const onPressStart = () => {
-        examNextQuestion()
-        //if (!isExamPassed) return navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
+        //examNextQuestion()
+        if (!isExamPassed) return navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
     }
     const goBackPress = () => {
         return true
