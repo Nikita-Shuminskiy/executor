@@ -1,21 +1,24 @@
 import {useEffect, useRef} from "react";
-import messaging from "@react-native-firebase/messaging";
+import messaging, {FirebaseMessagingTypes} from "@react-native-firebase/messaging";
 import {Linking, Platform} from 'react-native';
 import {authApi} from "../../api/authApi";
 import * as Notifications from 'expo-notifications';
 import {AndroidNotificationPriority, AndroidNotificationVisibility} from 'expo-notifications';
 import * as Device from 'expo-device';
+import {NotificationRequest} from "expo-notifications/src/Notifications.types";
+import NavigationStore from "../../store/NavigationStore/navigation-store";
+import {routerConstants} from "../../constants/routerConstants";
+import AuthStore from "../../store/AuthStore/auth-store";
 //+ "📬"
-export const onDisplayNotification = async (data) => {
+export const onDisplayNotification = async (data: FirebaseMessagingTypes.RemoteMessage) => {
     await Notifications.scheduleNotificationAsync({
-        identifier: 'default2',
+        identifier: 'default',
         content: {
             sound: Platform.OS === "android" ? null : "default",
-            categoryIdentifier: 'default2',
+            categoryIdentifier: 'default',
             body: data.notification.body,
-            title: data.notification.title ,
+            title: data.notification.title,
             priority: AndroidNotificationPriority.HIGH,
-            color: '#33469a',
         },
         trigger: {
             seconds: 1,
@@ -23,10 +26,10 @@ export const onDisplayNotification = async (data) => {
     })
 }
 export const useNotification = (isAuth) => {
-    const notificationListener = useRef<any>();
-    const responseListener = useRef<any>();
+    const {navigation, setNotification} = NavigationStore
+    const {executorSettings} = AuthStore
     useEffect(() => {
-        if (!isAuth) {
+        if (isAuth) {
             requestUserPermission().then((data) => {
                 if (data) {
                     messaging()
@@ -37,82 +40,40 @@ export const useNotification = (isAuth) => {
                         });
                 }
             })
-
-            const unsubscribe = messaging().onMessage((data) => {
-                onDisplayNotification(data)
-            });
-
-            notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-                console.log(notification, 'addNotificationReceivedListener')
-
-            });
-            responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-                if (response.actionIdentifier === 'NO') {
-                    alert('NO')
-                    Notifications.dismissNotificationAsync(
-                        response.notification.request.identifier
-                    );
-                }
-                console.log('addNotificationResponseReceivedListener')
-            });
-            return () => {
-                Notifications.removeNotificationSubscription(notificationListener.current);
-                Notifications.removeNotificationSubscription(responseListener.current);
-                unsubscribe()
+        }
+        const unsubscribe = messaging().onMessage((data) => { //expo_notifications_fallback_notification_channel
+            onDisplayNotification(data)
+            console.log(data, '11')
+        });
+        // Handle user opening the app from a notification (when the app is in the background)
+        //когда приложение открыто , но находится в фоновом режиме .
+        const unsubscribeOnNotificationOpenedApp = messaging().onNotificationOpenedApp((remoteMessage) => {
+            if(executorSettings?.executors?.email) {
+                console.log(remoteMessage.data.key, 'onNotificationOpenedApp')
+                navigation && navigation.navigate(remoteMessage.data.key as never)
+                return
             }
+            setNotification(remoteMessage)
+        });
+
+        return () => {
+            unsubscribeOnNotificationOpenedApp() // ??
+            unsubscribe()
         }
     }, [isAuth]);
 };
 
-async function registerForPushNotificationsAsync() {
-    if (Device.isDevice) {
-        const {status: existingStatus} = await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-            const {status} = await Notifications.requestPermissionsAsync({
-                ios: {
-                    allowAlert: true,
-                    allowBadge: true,
-                    allowSound: true,
-                    allowAnnouncements: true,
-                },
-                android: {
-                    allowAlert: true,
-                    allowBadge: true,
-                    allowSound: true,
-                    allowAnnouncements: true,
-                }
-            });
-            finalStatus = status;
-        }
-        return finalStatus
-    } else {
-    }
-}
+
 
 const requestUserPermission = async () => {
     try {
         if (Platform.OS === 'android') {
-            await Notifications.setNotificationChannelAsync('default2', {
+            await Notifications.setNotificationChannelAsync('default', {
                 name: 'default',
                 importance: Notifications.AndroidImportance.MAX,
-                lockscreenVisibility: AndroidNotificationVisibility.PUBLIC,
-                vibrationPattern: [0, 250, 250, 250],
-                lightColor: '#FF231F7C',
+                vibrationPattern: [0, 250, 250, 250]
             });
         }
-       /* await Notifications.setNotificationCategoryAsync('default2', [
-            {
-                buttonTitle: 'Yess',
-                identifier: 'YES',
-            },
-            {
-                buttonTitle: 'NO',
-                identifier: 'NO',
-            }
-        ])*/
-        await registerForPushNotificationsAsync()
-        //await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
         const authStatus = await messaging().requestPermission({
             provisional: true,
             carPlay: true,
@@ -144,15 +105,50 @@ async function openAppSettings() {
         await Linking.openSettings();
     }
 }
-
 /*
-messaging()
-    .getInitialNotification()
-    .then(remoteMessage => {
-        if (remoteMessage) {
-            console.log(
-                'Notification caused app to open from quit state:',
-                remoteMessage.notification,
-            );
+async function registerForPushNotificationsAsync() {
+    if (Device.isDevice) {
+        const {status: existingStatus} = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const {status} = await Notifications.requestPermissionsAsync({
+                ios: {
+                    allowAlert: true,
+                    allowBadge: true,
+                    allowSound: true,
+                    allowAnnouncements: true,
+                },
+                android: {
+                    allowAlert: true,
+                    allowBadge: true,
+                    allowSound: true,
+                    allowAnnouncements: true,
+                }
+            });
+            finalStatus = status;
         }
-    });*/
+        return finalStatus
+    } else {
+    }
+}*/
+
+/*  if (Platform.OS === 'android') {
+         await Notifications.setNotificationChannelAsync('default', {
+             name: 'default',
+             importance: Notifications.AndroidImportance.MAX,
+             lockscreenVisibility: AndroidNotificationVisibility.PUBLIC,
+             vibrationPattern: [0, 250, 250, 250],
+             lightColor: '#FF231F7C',
+         });
+     }*/
+/* await Notifications.setNotificationCategoryAsync('default', [
+     {
+         buttonTitle: 'Yess',
+         identifier: 'YES',
+     },
+     {
+         buttonTitle: 'NO',
+         identifier: 'NO',
+     }
+ ])*/
+//await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)

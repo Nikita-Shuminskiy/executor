@@ -14,7 +14,7 @@ import LoadingLocal from '../components/LoadingLocal'
 import {useInternetConnected} from '../utils/hook/useInternetConnected'
 import {BurgerMenuProvider} from '../components/BurgerMenu/BurgerMenuContext'
 import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
-import {useNavigation} from '@react-navigation/native'
+import {NavigationContainer, useNavigation} from '@react-navigation/native'
 import {useNotification} from "../utils/hook/useNotification";
 import AboutUsS from "../screen/AboutUsS";
 import Alerts from "../components/Alert";
@@ -24,17 +24,20 @@ import authenticatedRoutes from "./routesConstants";
 import notifee, {AndroidImportance, AndroidVisibility} from "@notifee/react-native";
 import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
+import NavigationStore from "../store/NavigationStore/navigation-store";
+import messaging from "@react-native-firebase/messaging";
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {isAuth} = AuthStore
+
     const {AuthStoreService} = rootStore
-     const {
-         askNotificationPermissionHandler,
-         askLocationPermissionHandler,
-         locationStatus,
-     } = usePermissionsPushGeo()
+    const {
+        askNotificationPermissionHandler,
+        askLocationPermissionHandler,
+        locationStatus,
+    } = usePermissionsPushGeo()
     const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
     const {checkInternetConnection, isConnected} = useInternetConnected()
     const navigate = useNavigation()
@@ -51,8 +54,23 @@ const RootNavigation = observer(() => {
             .finally(() => {
                 setTimeout(() => {
                     setIsLoading(LoadingEnum.success)
-                }, 2000)
+                }, 3000)
             })
+
+        messaging()
+            .getInitialNotification()
+            .then(remoteMessage => {
+                console.log(remoteMessage)
+                if (remoteMessage) {
+                    console.log(
+                        'Notification caused app to open from quit state:',
+                        remoteMessage.notification,
+                    );
+
+                }
+            }).catch((data) => {
+            console.log(data, 'catch')
+        })
 
     }, [])
     return (
@@ -63,7 +81,7 @@ const RootNavigation = observer(() => {
                 text={serverResponseText}/>}
             {!isConnected && <WifiReconnect
                 checkInternet={checkInternetConnection} visible={!isConnected}/>}
-             {checkStatusPermissions && <GivePermissions
+            {checkStatusPermissions && <GivePermissions
                 askLocationPermissionHandler={askLocationPermissionHandler}
                 askNotificationPermissionHandler={askNotificationPermissionHandler}
                 visible={checkStatusPermissions}/>}

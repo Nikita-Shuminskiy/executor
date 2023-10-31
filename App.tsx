@@ -8,6 +8,9 @@ import {NavigationContainer} from '@react-navigation/native'
 import messaging from "@react-native-firebase/messaging";
 import {onDisplayNotification} from "./src/utils/hook/useNotification";
 import * as Notifications from 'expo-notifications';
+import NavigationStore from "./src/store/NavigationStore/navigation-store";
+import {useEffect} from "react";
+
 LogBox.ignoreLogs([
     'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
 ])
@@ -25,11 +28,8 @@ Notifications.setNotificationHandler({
         shouldSetBadge: true,
     }),
 });
-
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message handled in the background!', remoteMessage);
-    await  Notifications.dismissAllNotificationsAsync()
-    onDisplayNotification(remoteMessage)
+messaging().setBackgroundMessageHandler(async remoteMessage => { //fcm_fallback_notification_channel
+    console.log('Message handled in the background!');
 });
 export default function App() {
     let [fontsLoaded] = useFonts({
@@ -37,7 +37,7 @@ export default function App() {
         'bold': require('./assets/font/MyriadPro-Bold.ttf'), // 700
         'semiBold': require('./assets/font/MyriadPro-Semibold.ttf'),// 600
     })
-   
+    const {setNavigation} = NavigationStore
     if (!fontsLoaded) {
         return null
     }
@@ -45,7 +45,9 @@ export default function App() {
         <GestureHandlerRootView style={{flex: 1}}>
             <NativeBaseProvider>
                 <StatusBar hidden={false} style={'auto'} animated={true} translucent={true}/>
-                <NavigationContainer>
+                <NavigationContainer ref={(navigationRef) => {
+                    setNavigation(navigationRef);
+                }}>
                     <RootNavigation/>
                 </NavigationContainer>
             </NativeBaseProvider>
