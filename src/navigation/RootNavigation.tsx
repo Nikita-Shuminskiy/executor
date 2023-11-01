@@ -60,7 +60,7 @@ const RootNavigation = observer(() => {
         messaging()
             .getInitialNotification()
             .then(remoteMessage => {
-                console.log(remoteMessage)
+                //alert('init')
                 if (remoteMessage) {
                     console.log(
                         'Notification caused app to open from quit state:',

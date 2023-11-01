@@ -1,5 +1,6 @@
 export const colors: { [key: string]: string } = {
 	grayLight: '#B0BAC1',
+	grayVeryLight: '#D0D0D0',
 	grayBright: '#F5F5F6',
 	gray: '#0000008A',
 	redLight: '#FFECEC',

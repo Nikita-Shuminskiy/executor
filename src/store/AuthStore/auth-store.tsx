@@ -14,13 +14,22 @@ export class AuthStore {
     phone: string = ''
     logisticPoints: LogisticsPointType[] = []
     executorSettings: ExecutorSettingType = {} as ExecutorSettingType
-    examEducation: string = ''
-
+    examEducationText: string = ''
+    examData: {question: string, answers: string[], total?: number, answered: number} | null = null
     setAuth(auth: boolean): void {
         this.isAuth = auth
     }
-    setExamEducation = (data: any) => {
-        this.examEducation = data
+    setExamEducation = (data: string) => {
+        this.examEducationText = data
+    }
+    setExamData = (data) => {
+        console.log(data, 'setExamData')
+        this.examData = {
+            answers: data.answers,
+            question: data.question,
+            total: data?.total,
+            answered: data.answered
+        }
     }
 
     setPhone(phone: string): void {
@@ -101,25 +110,27 @@ export class AuthStore {
     }
 
     getExamEducation =  async () => {
-        const {data} = await authApi.getExamEducation()
-        //console.log(data)
-        this.setExamEducation(data)
+        const {data} = await authApi.getExamEducation(this.executorSettings.executors.language)
+        this.setExamEducation(data.message)
     }
-    getExamAnswer =  async () => {
-        const {data} = await authApi.getExamAnswer()
-        console.log(data, '1111')
+    getExamAnswer =  async (answer: string) => {
+        const {data} = await authApi.getExamAnswer(this.executorSettings.executors.language, this.examData.question, answer)
+        return data
     }
-    examNextQuestion =  async () => {
-        const {data} = await authApi.examNextQuestion()
-        console.log(data, '222')
+    getExamNextQuestion =  async () => {
+        const {data} = await authApi.examNextQuestion(this.executorSettings.executors.language)
+        this.setExamData(data)
+        return true
     }
     constructor() {
         makeObservable(this, {
             executorSettings: observable,
             isAuth: observable,
             logisticPoints: observable,
+            examData: observable,
             phone: observable,
             setPhone: action,
+            setExamData: action,
             setExamEducation: action,
             getExamEducation: action,
             getSettingExecutor: action,

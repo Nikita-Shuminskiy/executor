@@ -5,6 +5,7 @@ import { format, isBefore, subYears } from 'date-fns';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {deviceStorage} from "./storage/storage";
 import {manipulateAsync, SaveFormat} from "expo-image-manipulator";
+import {Platform} from "react-native";
 export const language = Localization.locale;
 const checkInternet = async () => {
 	const netInfoState = await NetInfo.fetch()
@@ -50,3 +51,26 @@ export const convertToFormDataImg = async (img: string) => {
 	})
 	return formData
 }
+export const generateBoxShadowStyle = (
+	xOffset,
+	yOffset,
+	shadowColorIos,
+	shadowOpacity,
+	shadowRadius,
+	elevation,
+	shadowColorAndroid,
+) => {
+	if (Platform.OS === 'ios') {
+		return {
+			shadowColor: shadowColorIos,
+			shadowOffset: {width: xOffset, height: yOffset},
+			shadowOpacity,
+			shadowRadius,
+		};
+	} else if (Platform.OS === 'android') {
+		return {
+			elevation,
+			shadowColor: shadowColorAndroid,
+		};
+	}
+};

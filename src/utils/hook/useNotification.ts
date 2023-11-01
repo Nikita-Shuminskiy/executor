@@ -29,18 +29,16 @@ export const useNotification = (isAuth) => {
     const {navigation, setNotification} = NavigationStore
     const {executorSettings} = AuthStore
     useEffect(() => {
-        if (isAuth) {
-            requestUserPermission().then((data) => {
-                if (data) {
-                    messaging()
-                        .getToken()
-                        .then((token) => {
-                            //console.log(token)
-                            sendToken(token);
-                        });
-                }
-            })
-        }
+        requestUserPermission().then((data) => {
+            if (data) {
+                messaging()
+                    .getToken()
+                    .then((token) => {
+                        //console.log(token)
+                        sendToken(token);
+                    });
+            }
+        })
         const unsubscribe = messaging().onMessage((data) => { //expo_notifications_fallback_notification_channel
             onDisplayNotification(data)
             console.log(data, '11')
@@ -74,6 +72,7 @@ const requestUserPermission = async () => {
                 vibrationPattern: [0, 250, 250, 250]
             });
         }
+        await messaging().registerDeviceForRemoteMessages();
         const authStatus = await messaging().requestPermission({
             provisional: true,
             carPlay: true,

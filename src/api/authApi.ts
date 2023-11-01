@@ -48,13 +48,32 @@ export const authApi = {
         })
     },
 
-    async getExamEducation() {
-        return await instance.get<any>(`washapi.php/executor_exam_education`)
+    async getExamEducation(lang: string) {
+        return await instance.get<ExamEducationResponseType<string>>(`washapi.php/executor_exam_education`, {params: {lang}})
     },
-    async examNextQuestion() {
-        return await instance.get<any>(`washapi.php/executor_exam_next_question`)
+    async examNextQuestion(lang: string) {
+        return await instance.get<ExamNextQuestionWithTotalResponseType>(`washapi.php/executor_exam_next_question`, {params: {lang}})
     },
-    async getExamAnswer() {
-        return await instance.get<any>(`washapi.php/executor_exam_answer`)
+    async getExamAnswer(lang: string, question: string, answer: string) {
+        return await instance.get<ExamEducationResponseType<'ok' | 'Wrong answer'>>(`washapi.php/executor_exam_answer`, {
+            params: {
+                lang,
+                question,
+                answer
+            }
+        })
     },
+}
+type ExamEducationResponseType<T> = {
+    message: T
+    status: string
+}
+type ExamNextQuestionWithTotalResponseType = ExamNextQuestionType & {
+    total: number;
+};
+
+type ExamNextQuestionType = {
+    message: string
+    question: string
+    status: string
 }

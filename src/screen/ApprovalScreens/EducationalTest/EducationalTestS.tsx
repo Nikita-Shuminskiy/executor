@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BaseWrapperComponent} from "../../../components/baseWrapperComponent";
 import {observer} from "mobx-react-lite";
 import {CommonScreenPropsType} from "../../../api/type";
@@ -17,9 +17,11 @@ import AuthStore from "../../../store/AuthStore/auth-store";
 type EducationalTestSProps = CommonScreenPropsType & {}
 const EducationalTestS = observer(({navigation, route}: EducationalTestSProps) => {
     const isExamPassed = route.params.exam_passed
-const {getExamEducation, getExamAnswer, examNextQuestion} = AuthStore
+    const {getExamEducation} = AuthStore
+    useEffect(() => {
+        getExamEducation()
+    }, []);
     const onPressStart = () => {
-        //examNextQuestion()
         if (!isExamPassed) return navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
     }
     const goBackPress = () => {

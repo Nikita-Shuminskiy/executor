@@ -20,6 +20,7 @@ type UnitType = {
 };
 type ExecutorType = {
     consent_datetime: null | string;
+    executor_exam_datetime: null | string;
     executor_logistic_partners_points_id: null | string;
     country: string;
     disabled: null | string;

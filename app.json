@@ -76,6 +76,14 @@
         }
       ],
       [
+        "expo-notifications",
+        {
+          "icon": "./assets/icons.png",
+          "color": "#50d3d7",
+          "sounds": []
+        }
+      ],
+      [
         "react-native-fbsdk-next",
         {
           "appID": "3631350497192290",
