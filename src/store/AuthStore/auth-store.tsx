@@ -19,11 +19,10 @@ export class AuthStore {
     setAuth(auth: boolean): void {
         this.isAuth = auth
     }
-    setExamEducation = (data: string) => {
+    setExamEducationText = (data: string) => {
         this.examEducationText = data
     }
     setExamData = (data) => {
-        console.log(data, 'setExamData')
         this.examData = {
             answers: data.answers,
             question: data.question,
@@ -111,7 +110,7 @@ export class AuthStore {
 
     getExamEducation =  async () => {
         const {data} = await authApi.getExamEducation(this.executorSettings.executors.language)
-        this.setExamEducation(data.message)
+        this.setExamEducationText(data.message)
     }
     getExamAnswer =  async (answer: string) => {
         const {data} = await authApi.getExamAnswer(this.executorSettings.executors.language, this.examData.question, answer)
@@ -119,6 +118,8 @@ export class AuthStore {
     }
     getExamNextQuestion =  async () => {
         const {data} = await authApi.examNextQuestion(this.executorSettings.executors.language)
+        if(data.message === 'Exam_passed') return 'Exam_passed'
+        console.log(data, 'datadata')
         this.setExamData(data)
         return true
     }
@@ -131,7 +132,7 @@ export class AuthStore {
             phone: observable,
             setPhone: action,
             setExamData: action,
-            setExamEducation: action,
+            setExamEducationText: action,
             getExamEducation: action,
             getSettingExecutor: action,
             getExamAnswer: action,

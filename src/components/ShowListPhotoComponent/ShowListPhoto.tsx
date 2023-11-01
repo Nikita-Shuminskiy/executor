@@ -104,7 +104,6 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
             if ((cameraPermission && isOpenCamera) && (cameraRef.current && !ratio)) {
                 (async () => {
                     const getSupportedRatios = await cameraRef.current.getSupportedRatiosAsync()
-                    console.log(getSupportedRatios, 'getSupportedRatios')
                     setRatio(getSupportedRatios[getSupportedRatios.length - 1])
                 })();
             }

@@ -30,6 +30,7 @@ Notifications.setNotificationHandler({
 });
 messaging().setBackgroundMessageHandler(async remoteMessage => { //fcm_fallback_notification_channel
     console.log('Message handled in the background!');
+   await onDisplayNotification(remoteMessage)
 });
 export default function App() {
     let [fontsLoaded] = useFonts({

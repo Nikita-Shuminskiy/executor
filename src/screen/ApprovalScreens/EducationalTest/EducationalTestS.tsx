@@ -16,8 +16,8 @@ import AuthStore from "../../../store/AuthStore/auth-store";
 
 type EducationalTestSProps = CommonScreenPropsType & {}
 const EducationalTestS = observer(({navigation, route}: EducationalTestSProps) => {
-    const isExamPassed = route.params.exam_passed
-    const {getExamEducation} = AuthStore
+    const isExamPassed = route.params?.exam_passed
+    const {getExamEducation, getExamNextQuestion} = AuthStore
     useEffect(() => {
         getExamEducation()
     }, []);

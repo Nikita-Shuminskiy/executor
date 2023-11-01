@@ -31,22 +31,30 @@ const ExamS = observer(({navigation}: QuestionSProps) => {
     }
     const onPressAnswer = () => {
         getExamAnswer(currentAnswer).then((data) => {
+            console.log(data, 'datadata')
             setStatusAnswer(data.message)
+            setCurrentAnswer('')
         })
     }
     const onPressNextQuestion = () => {
+        setStatusAnswer('')
         setLocalLoading(LoadingEnum.fetching)
-        setCurrentAnswer('')
-        getExamNextQuestion().finally(() => {
+        getExamNextQuestion()
+            .then((data) => {
+                if(data === 'Exam_passed') {
+                    alert('Exam_passed')
+                   // return navigation.navigate(routerConstants.EDUCATIONAL_TEST, {exam_passed: true})
+                }
+            })
+            .finally(() => {
             setLocalLoading(LoadingEnum.success)
-            if (examData?.answered === examData.total) {
-                return navigation.navigate(routerConstants.EDUCATIONAL_TEST, {exam_passed: true})
-            }
         })
     }
     const goBackPress = () => {
         setExit(true)
     }
+    console.log(examData?.answered)
+    console.log(examData?.total)
     const generateShadow = generateBoxShadowStyle(-2, 4, '#171717', 0.2, 3, 10, '#171717')
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}>
@@ -97,13 +105,19 @@ const ExamS = observer(({navigation}: QuestionSProps) => {
                 statusAnswer === 'Wrong answer' &&
                 <ModalEducation textBtn={'Start over'} img={imgCorrect} textBody={'Incorrect'}
                                 visible={true}
-                                onClose={() => setCurrentAnswer('')}/>
+                                onClose={() => {
+                                    navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
+                                    setStatusAnswer('')
+                                }}/>
             }
             {
                 exit && <ModalExit textBtn={'Yes, exit the exam'}
                                    onCloseModal={() => setExit(false)}
                                    textBody={'Are you sure? You would need to start over the exam'} visible={exit}
-                                   onPress={() => navigation.goBack()}/>
+                                   onPress={() => {
+                                       setCurrentAnswer('')
+                                       navigation.navigate(routerConstants.EDUCATIONAL_TEST)
+                                   }}/>
             }
         </BaseWrapperComponent>
     );

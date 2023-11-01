@@ -11,11 +11,12 @@ import {routerConstants} from "../../constants/routerConstants";
 import AuthStore from "../../store/AuthStore/auth-store";
 //+ "📬"
 export const onDisplayNotification = async (data: FirebaseMessagingTypes.RemoteMessage) => {
+    console.log(data.notification.android.channelId, 'data.notification.android.channelId')
     await Notifications.scheduleNotificationAsync({
-        identifier: 'default',
+        identifier: data.notification.android.channelId,
         content: {
             sound: Platform.OS === "android" ? null : "default",
-            categoryIdentifier: 'default',
+            categoryIdentifier: data.notification.android.channelId,
             body: data.notification.body,
             title: data.notification.title,
             priority: AndroidNotificationPriority.HIGH,
@@ -29,16 +30,18 @@ export const useNotification = (isAuth) => {
     const {navigation, setNotification} = NavigationStore
     const {executorSettings} = AuthStore
     useEffect(() => {
-        requestUserPermission().then((data) => {
-            if (data) {
-                messaging()
-                    .getToken()
-                    .then((token) => {
-                        //console.log(token)
-                        sendToken(token);
-                    });
-            }
-        })
+        if(isAuth) {
+            requestUserPermission().then((data) => {
+                if (data) {
+                    messaging()
+                        .getToken()
+                        .then((token) => {
+                            console.log(token)
+                            sendToken(token);
+                        });
+                }
+            })
+        }
         const unsubscribe = messaging().onMessage((data) => { //expo_notifications_fallback_notification_channel
             onDisplayNotification(data)
             console.log(data, '11')

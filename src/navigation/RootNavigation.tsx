@@ -26,6 +26,9 @@ import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
 import NavigationStore from "../store/NavigationStore/navigation-store";
 import messaging from "@react-native-firebase/messaging";
+import EducationalTestS from "../screen/ApprovalScreens/EducationalTest/EducationalTestS";
+import EducationalTextS from "../screen/ApprovalScreens/EducationalTest/EducationalTextS";
+import ExamS from "../screen/ApprovalScreens/EducationalTest/ExamS";
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
@@ -69,7 +72,7 @@ const RootNavigation = observer(() => {
 
                 }
             }).catch((data) => {
-            console.log(data, 'catch')
+            console.log(data, 'getInitialNotification')
         })
 
     }, [])
@@ -117,6 +120,8 @@ const RootNavigation = observer(() => {
                         />
                     })
                 }
+
+
             </RootStack.Navigator>
         </BurgerMenuProvider>
     )
