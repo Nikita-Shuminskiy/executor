@@ -20,34 +20,28 @@ LogBox.ignoreLogs([
 		console.log(ev, 'ev action')
 	}
 })*/
-/*Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: true,
-    }),
-});*/
 messaging().onMessage(onDisplayNotification);
 messaging().setBackgroundMessageHandler(onDisplayNotification);
 notifee.onBackgroundEvent(async ({type, detail}) => {
     const {notification, pressAction} = detail;
     const {setNotification} = NavigationStore
-    setNotification(detail.notification)
     console.log(type, 'onBackgroundEvent')
     /*   Фоновые задачи выполняются без контекста React,
            а это означает, что вы не можете обновить пользовательский интерфейс приложения.
            Однако вы можете выполнить логику для обновления удаленной базы данных,*/
     // Check if the user pressed the "Mark as read" action
     if ((type === EventType.ACTION_PRESS || type === EventType.PRESS) && pressAction.id === 'default') {
+        setNotification(detail.notification)
         console.log('onBackgroundEvent press')
         await notifee.cancelNotification(notification.id);
     }
 });
 notifee.onForegroundEvent(async ({type, detail}) => {
     const {setNotification} = NavigationStore
-    setNotification(detail.notification)
+    console.log(type, 'onForegroundEvent')
    if((type === EventType.ACTION_PRESS || type === EventType.PRESS)) {
        console.log('onForegroundEvent press')
+       setNotification(detail.notification)
        await notifee.cancelNotification(detail.notification.id);
    }
 });

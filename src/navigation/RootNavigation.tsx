@@ -25,7 +25,15 @@ import notifee from "@notifee/react-native";
 import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
 import NavigationStore from "../store/NavigationStore/navigation-store";
-
+const getInitNotification = async () => {
+    try {
+        return await notifee.getInitialNotification()
+    } catch (e) {
+        //console.log('catch getInitNotification')
+    } finally {
+        //console.log('finally getInitNotification')
+    }
+}
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
@@ -40,17 +48,7 @@ const RootNavigation = observer(() => {
     const {notification, setNotification,navigation } = NavigationStore
     const {checkInternetConnection, isConnected} = useInternetConnected()
     const navigate = useNavigation()
-    const getInitNotification = async () => {
-        try {
-            const initialNotification = await notifee.getInitialNotification();
-            console.log('try getInitNotification')
-            return initialNotification
-        } catch (e) {
-            console.log('catch getInitNotification')
-        } finally {
-            console.log('finally getInitNotification')
-        }
-    }
+
     useNotification(isAuth)
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
@@ -70,10 +68,9 @@ const RootNavigation = observer(() => {
 
     }, [])
     useEffect(() => {
-        console.log(navigate, 'navigate')
         if(navigate) {
             if (notification) {
-                console.log(navigation.navigate)
+                // @ts-ignore
                 navigation.navigate(routerConstants.ABOUT_US)
                 setNotification(null)
             }
