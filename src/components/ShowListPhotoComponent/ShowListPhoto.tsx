@@ -138,7 +138,7 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
             </View>
             {cameraPermission && isOpenCamera && (
                 <Modal visible={isOpenCamera}>
-                    <Camera ratio={ratio ? ratio :'16:9'} type={cameraType} flashMode={flashMode}
+                    <Camera ratio={ratio ? ratio : '16:9'} type={cameraType} flashMode={flashMode}
                             style={styles.camera}
                             ref={cameraRef}>
                         <Box position={'absolute'} top={'5%'} left={5}>

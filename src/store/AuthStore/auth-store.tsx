@@ -119,7 +119,6 @@ export class AuthStore {
     getExamNextQuestion =  async () => {
         const {data} = await authApi.examNextQuestion(this.executorSettings.executors.language)
         if(data.message === 'Exam_passed') return 'Exam_passed'
-        console.log(data, 'datadata')
         this.setExamData(data)
         return true
     }

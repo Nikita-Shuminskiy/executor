@@ -54,8 +54,8 @@ const EducationalTextS = observer(({navigation}: EducationalTextSProps) => {
         <BaseWrapperComponent isKeyboardAwareScrollView={true}>
             <StatusBar backgroundColor={colors.white}/>
             <Box paddingTop={10} alignItems={'center'} justifyContent={'center'}>
-                <Box paddingX={0}>
-                    <Text fontFamily={'regular'} mb={7} fontSize={15}>
+                <Box paddingX={4}>
+                    <Text fontFamily={'regular'} mb={7} textAlign={'left'} fontSize={17}>
                         {examEducationText}
                     </Text>
                 </Box>

@@ -7,9 +7,8 @@ import {useFonts} from '@expo-google-fonts/inter/useFonts'
 import {NavigationContainer} from '@react-navigation/native'
 import messaging from "@react-native-firebase/messaging";
 import {onDisplayNotification} from "./src/utils/hook/useNotification";
-import * as Notifications from 'expo-notifications';
 import NavigationStore from "./src/store/NavigationStore/navigation-store";
-import {useEffect} from "react";
+import notifee, {EventType} from "@notifee/react-native";
 
 LogBox.ignoreLogs([
     'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
@@ -21,16 +20,36 @@ LogBox.ignoreLogs([
 		console.log(ev, 'ev action')
 	}
 })*/
-Notifications.setNotificationHandler({
+/*Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
         shouldPlaySound: true,
         shouldSetBadge: true,
     }),
+});*/
+messaging().onMessage(onDisplayNotification);
+messaging().setBackgroundMessageHandler(onDisplayNotification);
+notifee.onBackgroundEvent(async ({type, detail}) => {
+    const {notification, pressAction} = detail;
+    const {setNotification} = NavigationStore
+    setNotification(detail.notification)
+    console.log(type, 'onBackgroundEvent')
+    /*   Фоновые задачи выполняются без контекста React,
+           а это означает, что вы не можете обновить пользовательский интерфейс приложения.
+           Однако вы можете выполнить логику для обновления удаленной базы данных,*/
+    // Check if the user pressed the "Mark as read" action
+    if ((type === EventType.ACTION_PRESS || type === EventType.PRESS) && pressAction.id === 'default') {
+        console.log('onBackgroundEvent press')
+        await notifee.cancelNotification(notification.id);
+    }
 });
-messaging().setBackgroundMessageHandler(async remoteMessage => { //fcm_fallback_notification_channel
-    console.log('Message handled in the background!');
-   await onDisplayNotification(remoteMessage)
+notifee.onForegroundEvent(async ({type, detail}) => {
+    const {setNotification} = NavigationStore
+    setNotification(detail.notification)
+   if((type === EventType.ACTION_PRESS || type === EventType.PRESS)) {
+       console.log('onForegroundEvent press')
+       await notifee.cancelNotification(detail.notification.id);
+   }
 });
 export default function App() {
     let [fontsLoaded] = useFonts({
@@ -42,6 +61,7 @@ export default function App() {
     if (!fontsLoaded) {
         return null
     }
+
     return (
         <GestureHandlerRootView style={{flex: 1}}>
             <NativeBaseProvider>

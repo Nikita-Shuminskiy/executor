@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react'
+import React, {useEffect, useLayoutEffect} from 'react'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {observer} from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
@@ -14,27 +14,22 @@ import LoadingLocal from '../components/LoadingLocal'
 import {useInternetConnected} from '../utils/hook/useInternetConnected'
 import {BurgerMenuProvider} from '../components/BurgerMenu/BurgerMenuContext'
 import BurgerMenu from '../components/BurgerMenu/BurgerMenu'
-import {NavigationContainer, useNavigation} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native'
 import {useNotification} from "../utils/hook/useNotification";
 import AboutUsS from "../screen/AboutUsS";
 import Alerts from "../components/Alert";
 import WifiReconnect from "../components/WifiReconnect";
 import rootStore from "../store/RootStore/root-store";
 import authenticatedRoutes from "./routesConstants";
-import notifee, {AndroidImportance, AndroidVisibility} from "@notifee/react-native";
+import notifee from "@notifee/react-native";
 import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
 import NavigationStore from "../store/NavigationStore/navigation-store";
-import messaging from "@react-native-firebase/messaging";
-import EducationalTestS from "../screen/ApprovalScreens/EducationalTest/EducationalTestS";
-import EducationalTextS from "../screen/ApprovalScreens/EducationalTest/EducationalTextS";
-import ExamS from "../screen/ApprovalScreens/EducationalTest/ExamS";
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {isAuth} = AuthStore
-
     const {AuthStoreService} = rootStore
     const {
         askNotificationPermissionHandler,
@@ -42,40 +37,49 @@ const RootNavigation = observer(() => {
         locationStatus,
     } = usePermissionsPushGeo()
     const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
+    const {notification, setNotification,navigation } = NavigationStore
     const {checkInternetConnection, isConnected} = useInternetConnected()
     const navigate = useNavigation()
-
+    const getInitNotification = async () => {
+        try {
+            const initialNotification = await notifee.getInitialNotification();
+            console.log('try getInitNotification')
+            return initialNotification
+        } catch (e) {
+            console.log('catch getInitNotification')
+        } finally {
+            console.log('finally getInitNotification')
+        }
+    }
     useNotification(isAuth)
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
-        AuthStoreService.getSettingExecutor(navigate?.navigate)
-            .then((data) => {
-                if (data === 'not_token') {
-                    // DictionaryStore.getDictionaryLocal()
-                }
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    setIsLoading(LoadingEnum.success)
-                }, 3000)
-            })
-
-        messaging()
-            .getInitialNotification()
-            .then(remoteMessage => {
-                //alert('init')
-                if (remoteMessage) {
-                    console.log(
-                        'Notification caused app to open from quit state:',
-                        remoteMessage.notification,
-                    );
-
-                }
-            }).catch((data) => {
-            console.log(data, 'getInitialNotification')
+        getInitNotification().then((data) => {
+            AuthStoreService.getSettingExecutor(navigate?.navigate, data ? data : null)
+                .then((data) => {
+                    if (data === 'not_token') {
+                        // DictionaryStore.getDictionaryLocal()
+                    }
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        setIsLoading(LoadingEnum.success)
+                    }, 3000)
+                })
         })
 
     }, [])
+    useEffect(() => {
+        console.log(navigate, 'navigate')
+        if(navigate) {
+            if (notification) {
+                console.log(navigation.navigate)
+                navigation.navigate(routerConstants.ABOUT_US)
+                setNotification(null)
+            }
+        }
+
+    }, [notification, navigate]);
     return (
         <BurgerMenuProvider>
             {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true}/>}

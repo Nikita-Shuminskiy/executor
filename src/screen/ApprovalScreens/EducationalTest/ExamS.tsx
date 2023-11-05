@@ -42,8 +42,7 @@ const ExamS = observer(({navigation}: QuestionSProps) => {
         getExamNextQuestion()
             .then((data) => {
                 if(data === 'Exam_passed') {
-                    alert('Exam_passed')
-                   // return navigation.navigate(routerConstants.EDUCATIONAL_TEST, {exam_passed: true})
+                   return navigation.navigate(routerConstants.EDUCATIONAL_TEST, {exam_passed: true})
                 }
             })
             .finally(() => {
@@ -53,8 +52,6 @@ const ExamS = observer(({navigation}: QuestionSProps) => {
     const goBackPress = () => {
         setExit(true)
     }
-    console.log(examData?.answered)
-    console.log(examData?.total)
     const generateShadow = generateBoxShadowStyle(-2, 4, '#171717', 0.2, 3, 10, '#171717')
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true}>
