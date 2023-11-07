@@ -15,7 +15,6 @@ type AvatarProps = {
 }
 
 const AvatarUser = observer(({photo, name, onClose}: AvatarProps) => {
-    const photoUrl = `${BASE_URL}${photo}`
     const navigation = useNavigation<any>()
     const onPressGoProfile = () => {
         navigation.navigate(routerConstants.PROFILE)
@@ -29,7 +28,7 @@ const AvatarUser = observer(({photo, name, onClose}: AvatarProps) => {
                 <Box alignItems={'center'}
                      flexDirection={'row'}>
                     <Image style={{width: 48, height: 48, borderRadius: 28}} resizeMode={'cover'}
-                           source={{uri: photoUrl}}/>
+                           source={{uri: photo}}/>
                     <Box ml={3} flex={1} mr={4}>
                         <Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>Welcome back</Text>
                         <Text fontSize={17} fontFamily={'semiBold'}>{name}</Text>

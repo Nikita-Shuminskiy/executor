@@ -2,7 +2,7 @@ import {StatusBar} from 'expo-status-bar'
 import RootNavigation from './src/navigation/RootNavigation'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import {NativeBaseProvider} from 'native-base'
-import {LogBox} from 'react-native'
+import {AppState, LogBox} from 'react-native'
 import {useFonts} from '@expo-google-fonts/inter/useFonts'
 import {NavigationContainer} from '@react-navigation/native'
 import messaging from "@react-native-firebase/messaging";
@@ -15,6 +15,7 @@ LogBox.ignoreLogs([
 ])
 import * as Notifications from 'expo-notifications';
 import {deviceStorage} from "./src/utils/storage/storage";
+import AuthStore from "./src/store/AuthStore/auth-store";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -31,14 +32,19 @@ Notifications.setNotificationHandler({
 		console.log(ev, 'ev action')
 	}
 })*/
+import * as TaskManager from 'expo-task-manager';
+
+const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
+
+TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, ({ data, error, executionInfo }) => {
+    console.log('Received a notification in the background!');
+    // Do something with the notification data
+});
+
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 messaging().onMessage(onDisplayNotification);
 messaging().setBackgroundMessageHandler(onDisplayNotification);
-Notifications.addNotificationResponseReceivedListener(async response => {
-    console.log(' пользователь взаимодействует с уведомление', response);
-  await deviceStorage.saveItem('test', '1')
-    /*     Слушатели, зарегистрированные этим методом, будут вызываться каждый раз,
-             когда пользователь взаимодействует с уведомлением (например, нажимает на него)*/
-});
+
 /*
 notifee.onBackgroundEvent(async ({type, detail}) => {
     const {notification, pressAction} = detail;
@@ -55,7 +61,18 @@ notifee.onBackgroundEvent(async ({type, detail}) => {
     }
 });
 */
-
+Notifications.addNotificationResponseReceivedListener(async response => {
+    const { executorSettings} = AuthStore
+    const { setNotification} = NavigationStore
+    console.log('Пользователь взаимодействует с уведомлением', response);
+    if (!executorSettings?.executors) {
+        await deviceStorage.saveItem('lastNotification', JSON.stringify(response));
+        return
+    }
+    setNotification(executorSettings)
+    /*     Слушатели, зарегистрированные этим методом, будут вызываться каждый раз,
+             когда пользователь взаимодействует с уведомлением (например, нажимает на него)*/
+});
 export default function App() {
     let [fontsLoaded] = useFonts({
         'regular': require('./assets/font/MyriadPro-Regular.ttf'), //400

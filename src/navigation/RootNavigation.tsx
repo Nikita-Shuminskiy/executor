@@ -25,10 +25,16 @@ import notifee from "@notifee/react-native";
 import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
 import NavigationStore from "../store/NavigationStore/navigation-store";
+import messaging from "@react-native-firebase/messaging";
+import {deviceStorage} from "../utils/storage/storage";
 
 const getInitNotification = async () => {
     try {
-        return await notifee.getInitialNotification()
+        const lastNotification = await deviceStorage.getItem('lastNotification')
+        if(lastNotification) {
+            return JSON.parse(lastNotification)
+        }
+      //    return await notifee.getInitialNotification()
     } catch (e) {
         //console.log('catch getInitNotification')
     } finally {

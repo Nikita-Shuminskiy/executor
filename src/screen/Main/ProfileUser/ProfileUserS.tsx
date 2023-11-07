@@ -73,7 +73,6 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
     const onPressChangeLang = () => {
         navigation.navigate(routerConstants.CHANGE_LANGUAGE)
     }
-    console.log(executorSettings?.executors?.pic)
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={false}>
             <Box paddingX={4} mb={6} mt={3} flex={1} justifyContent={'space-between'}>

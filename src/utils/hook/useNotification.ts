@@ -18,12 +18,10 @@ import {deviceStorage} from "../storage/storage";
 //+ "📬"
 export const onDisplayNotification = async (data) => {
     console.log('1')
-    //getNotificationIcon()
     await Notifications.scheduleNotificationAsync({
         content: {
-            title: 'Look at that notification',
-            body: "I'm so proud of myself!",
-            categoryIdentifier: 'default'
+            ...data.data,
+            categoryIdentifier: "default"
         },
         identifier: 'default',
         trigger: null,
@@ -44,18 +42,14 @@ export const onDisplayNotification = async (data) => {
 }
 export const useNotification = (isAuth: boolean) => {
     const notificationListener = useRef<any>();
-    const lastNotificationResponse = Notifications.useLastNotificationResponse();
     useEffect(() => {
-
-        //console.log('lastNotificationResponse', lastNotificationResponse)
-
         if (isAuth) {
             requestUserPermission().then((data) => {
                 if (data) {
                     messaging()
                         .getToken()
                         .then((token) => {
-                            //console.log(token)
+                            console.log(token)
                             sendToken(token);
                         });
                 }
@@ -72,14 +66,10 @@ export const useNotification = (isAuth: boolean) => {
              }
          });*/
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            console.log('полученно уведомление')
+            // console.log('полученно уведомление')
             /* Слушатели, зарегистрированные этим методом,
                  будут вызываться каждый раз, когда во время работы приложения будет получено уведомление*/
         });
-
-        Notifications.getLastNotificationResponseAsync().then((data) => {
-            //console.log('getLastNotificationResponseAsync', data)
-        })
         return () => {
             // onForegroundEvent()
             Notifications.removeNotificationSubscription(notificationListener.current);
@@ -90,8 +80,6 @@ export const useNotification = (isAuth: boolean) => {
 
 const requestUserPermission = async () => {
     try {
-        const test = await deviceStorage.getItem('test')
-        await deviceStorage.removeItem('test')
         await setupAndroidChannel()
         await messaging().registerDeviceForRemoteMessages();
         const authStatus = await messaging().requestPermission();
@@ -103,7 +91,7 @@ const requestUserPermission = async () => {
 }
 const sendToken = async (token: string) => {
     try {
-        const data = await authApi.sendDeviceToken(token);
+        await authApi.sendDeviceToken(token);
     } catch (e) {
         console.log(e, 'sendDeviceToken');
     }
@@ -118,12 +106,13 @@ async function openAppSettings() {
 }
 
 const setupAndroidChannel = async () => {
-    await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-    });
+    if(Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+        });
+    }
     /*  await notifee.createChannel({
           id: 'one',
           name: 'One',

@@ -14,14 +14,13 @@ import btnCamera from "../../../assets/Images/order/blue-circle.png";
 
 const AvatarProfile = ({photo}) => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
-    const photoUrl = `${BASE_URL}${photo}`
     const [cameraPermission, setCameraPermission] = useState(null)
     const [isOpenCamera, setIsOpenCamera] = useState(false)
     const [cameraType, setCameraType] = useState<CameraType>(CameraType.back)
     const [ratio, setRatio] = useState<string>('')
     const {AuthStoreService} = rootStore
 
-    const [selectedImageUri, setSelectedImageUri] = useState<string>(photoUrl)
+    const [selectedImageUri, setSelectedImageUri] = useState<string>(photo)
 
     const onGalleryHandler = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
