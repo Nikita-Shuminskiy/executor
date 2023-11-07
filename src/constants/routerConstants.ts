@@ -1,4 +1,9 @@
 export const routerConstants = {
+    CHANGE_LANGUAGE: 'change-language',
+    ORDERS: 'orders',
+    CHANGE_COUNTRY: 'change-country',
+    PROFILE: 'profile',
+    //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',
     RESET_PASSWORD: 'reset-password',

@@ -41,7 +41,7 @@ const PhoneVerificationCode = observer(({navigation, isFromUpdate}: PhoneVerific
                     }, 700)
                 }
                 if (data.status === 'ok') {
-                    //if(isFromUpdate) return navigation.navigate(routerConstants.PROFILE, {from: 'open_menu'})
+                    if(isFromUpdate) return navigation.navigate(routerConstants.PROFILE, {from: 'open_menu'})
                     if (executorSettings.executors.consent_datetime) {
                         return AuthStoreService.getSettingExecutor(navigation.navigate)
                     }

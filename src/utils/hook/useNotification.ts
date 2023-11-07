@@ -1,38 +1,88 @@
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import messaging from "@react-native-firebase/messaging";
 import {Linking, Platform} from 'react-native';
 import {authApi} from "../../api/authApi";
-import notifee, {AndroidImportance, AndroidVisibility} from "@notifee/react-native";
+import notifee, {
+    AndroidBadgeIconType,
+    AndroidImportance,
+    AndroidStyle,
+    AndroidVisibility,
+    EventType
+} from "@notifee/react-native";
 import {getNotificationIcon, withNotificationIcons} from "expo-notifications/plugin/build/withNotificationsAndroid";
+import NavigationStore from "../../store/NavigationStore/navigation-store";
+import * as Notifications from 'expo-notifications';
+import {deviceStorage} from "../storage/storage";
+
+
 //+ "📬"
 export const onDisplayNotification = async (data) => {
+    console.log('1')
     //getNotificationIcon()
-    await notifee.displayNotification({
-        ...data.data,
-        android: {
-            ...JSON.parse(data.data.android),
-            lightUpScreen: true,
-           // smallIcon: 'ic_small_icon',
-            badge: false,
-            visibility: AndroidVisibility.PUBLIC,
-            pressAction: {launchActivity: 'default', id: 'default'},
-           // largeIcon: require('../../../assets/icons.png')
-        }
+    await Notifications.scheduleNotificationAsync({
+        content: {
+            title: 'Look at that notification',
+            body: "I'm so proud of myself!",
+            categoryIdentifier: 'default'
+        },
+        identifier: 'default',
+        trigger: null,
     });
+    /*   await notifee.displayNotification({
+           ...data.data,
+           android: {
+               ...JSON.parse(data.data.android),
+               lightUpScreen: true,
+               smallIcon: require('../../../assets/ic_notification.png'),
+               visibility: AndroidVisibility.PUBLIC,
+               pressAction: {launchActivity: 'default', id: 'default'},
+               badgeIconType: AndroidBadgeIconType.LARGE,
+               importance: AndroidImportance.HIGH,
+               //largeIcon: require('../../../assets/icon.png')
+           }
+       });*/
 }
 export const useNotification = (isAuth: boolean) => {
+    const notificationListener = useRef<any>();
+    const lastNotificationResponse = Notifications.useLastNotificationResponse();
     useEffect(() => {
+
+        //console.log('lastNotificationResponse', lastNotificationResponse)
+
         if (isAuth) {
             requestUserPermission().then((data) => {
                 if (data) {
                     messaging()
                         .getToken()
                         .then((token) => {
-                            console.log(token)
+                            //console.log(token)
                             sendToken(token);
                         });
                 }
             })
+        }
+        /*const onForegroundEvent = notifee.onForegroundEvent(async ({type, detail}) => {
+             const {setNotification} = NavigationStore
+             console.log(type, 'onForegroundEvent')
+             if((type === EventType.ACTION_PRESS || type === EventType.PRESS)) {
+                 console.log('onForegroundEvent press')
+                 // @ts-ignore
+                 setNotification(detail.notification)
+                 await notifee.cancelNotification(detail.notification.id);
+             }
+         });*/
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            console.log('полученно уведомление')
+            /* Слушатели, зарегистрированные этим методом,
+                 будут вызываться каждый раз, когда во время работы приложения будет получено уведомление*/
+        });
+
+        Notifications.getLastNotificationResponseAsync().then((data) => {
+            //console.log('getLastNotificationResponseAsync', data)
+        })
+        return () => {
+            // onForegroundEvent()
+            Notifications.removeNotificationSubscription(notificationListener.current);
         }
     }, [isAuth]);
 };
@@ -40,6 +90,8 @@ export const useNotification = (isAuth: boolean) => {
 
 const requestUserPermission = async () => {
     try {
+        const test = await deviceStorage.getItem('test')
+        await deviceStorage.removeItem('test')
         await setupAndroidChannel()
         await messaging().registerDeviceForRemoteMessages();
         const authStatus = await messaging().requestPermission();
@@ -66,14 +118,20 @@ async function openAppSettings() {
 }
 
 const setupAndroidChannel = async () => {
-    await notifee.createChannel({
-        id: 'one',
-        name: 'One',
-        visibility: AndroidVisibility.PUBLIC,
-        description: 'Default communication channel for the platform',
-        lights: true,
-        vibration: true,
-        badge: true,
-        importance: AndroidImportance.HIGH,
+    await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
     });
+    /*  await notifee.createChannel({
+          id: 'one',
+          name: 'One',
+          visibility: AndroidVisibility.PUBLIC,
+          description: 'Default communication channel for the platform',
+          lights: true,
+          vibration: true,
+          badge: true,
+          importance: AndroidImportance.HIGH,
+      });*/
 };

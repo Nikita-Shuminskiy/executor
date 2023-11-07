@@ -42,9 +42,12 @@ const BurgerMenu = observer(() => {
         setIsLogout(true)
     }
     const logOutHandler = () => {
-        AuthStoreService.logout()
-        navigation.navigate(routerConstants.LOGIN)
-        setIsMenuOpen(false)
+        AuthStoreService.logout().then((data) => {
+            if(data) {
+                navigation.navigate(routerConstants.LOGIN)
+                setIsMenuOpen(false)
+            }
+        })
     }
     const onPressNavigateHandler = (routeName: any) => {
         navigation.navigate(routeName)
@@ -80,8 +83,8 @@ const BurgerMenu = observer(() => {
                     ]}
                 >
                     <Box pt={8}>
-                        <AvatarUser photo={executorSettings?.client?.pic}
-                                    name={`${executorSettings.client?.first_name} ${executorSettings.client?.last_name}`}
+                        <AvatarUser photo={executorSettings?.executors?.pic}
+                                    name={`${executorSettings.executors?.first_name} ${executorSettings.executors?.last_name}`}
                                     onClose={() => setIsMenuOpen(false)}/>
                         <Box justifyContent={'space-between'}
                              alignItems={'center'}
@@ -99,21 +102,21 @@ const BurgerMenu = observer(() => {
                             <Box alignItems={'center'}
                                  flexDirection={'row'}>
                                 <Text fontSize={15} fontWeight={'regular'}
-                                      color={colors.grayLight}>{executorSettings.client?.country}</Text>
+                                      color={colors.grayLight}>{executorSettings.executors?.country}</Text>
                             </Box>
                         </Box>
-                     {/*   <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)}
+                    {/*    <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)}
                                     img={repeatImg}
-                                    text={dictionary[DictionaryEnum.OrderHistory]}/>
-                        <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)}
+                                    text={dictionary[DictionaryEnum.OrderHistory]}/>*/}
+                       {/* <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)}
                                     img={questionMarkImg}
                                     text={dictionary[DictionaryEnum.ContactSupport]}/>
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)}
                                     img={walletImg}
-                                    text={dictionary[DictionaryEnum.PaymentMethod]}/>
+                                    text={dictionary[DictionaryEnum.PaymentMethod]}/>*/}
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
                                     img={exclamationMarkImg}
-                                    text={dictionary[DictionaryEnum.AboutSwash]}/>*/}
+                                    text={'About swash'}/>
                     </Box>
                     <Box mt={2} mb={5} alignItems={'center'}>
                         <Button backgroundColor={colors.white} colorText={colors.black}
@@ -128,12 +131,12 @@ const BurgerMenu = observer(() => {
                     </Box>
                 </Animated.View>
             </Animated.View>
-        {/*    {
+            {
                 isOpenLogout &&
-                <BaseBottomPopUp dictionary={dictionary} text={'Do you want to log off'}
+                <BaseBottomPopUp  text={'Do you want to log off'}
                                  onDelete={logOutHandler} visible={isOpenLogout}
                                  onClose={() => setIsLogout(false)}/>
-            }*/}
+            }
 
         </>
     )

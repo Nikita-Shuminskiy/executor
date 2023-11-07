@@ -21,18 +21,31 @@ type UnitType = {
 type ExecutorType = {
     consent_datetime: null | string;
     executor_exam_datetime: null | string;
+    datetime_freeze_until: null | string;
+    executor_approve_admin_id: null | string;
     executor_logistic_partners_points_id: null | string;
     country: string;
+    fcm_token: string;
+    id: string;
+    lat: string;
+    lon: string;
     disabled: null | string;
     executor_approve_refuse_text: null | string;
     email: string;
+    datetime_workshift_until: string
     executor_approve_datetime: null | string;
     executors_id: string;
+    rating: string;
+    ready_for_orders: string;
+    phone_verify_code: string;
+    phone_verify_code_lifetime: string;
     first_name: string;
     language: LanguageEnum;
     last_name: string;
     patronymic_name: null | string;
     phone: string;
+    user: string;
+    pic: string
     phone_verify_datetime: string;
 }
 enum ApprovedEnum  {

@@ -6,6 +6,11 @@
       "swash-executor",
       "fb3631350497192290"
     ],
+    "notification": {
+      "iosDisplayInForeground": true,
+      "color": "#ffffff",
+      "icon": "./assets/ic_notification.png"
+    },
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -64,6 +69,7 @@
     "owner": "nick_1111222",
     "plugins": [
       "@notifee/react-native",
+      "expo-notifications",
       "@react-native-firebase/app",
       "expo-localization",
       "@react-native-google-signin/google-signin",
@@ -73,14 +79,6 @@
           "ios": {
             "useFrameworks": "static"
           }
-        }
-      ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/icons.png",
-          "color": "#50d3d7",
-          "sounds": []
         }
       ],
       [

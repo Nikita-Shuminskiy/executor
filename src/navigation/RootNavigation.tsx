@@ -25,6 +25,7 @@ import notifee from "@notifee/react-native";
 import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
 import NavigationStore from "../store/NavigationStore/navigation-store";
+
 const getInitNotification = async () => {
     try {
         return await notifee.getInitialNotification()
@@ -45,7 +46,7 @@ const RootNavigation = observer(() => {
         locationStatus,
     } = usePermissionsPushGeo()
     const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
-    const {notification, setNotification,navigation } = NavigationStore
+    const {notification, setNotification, navigation} = NavigationStore
     const {checkInternetConnection, isConnected} = useInternetConnected()
     const navigate = useNavigation()
 
@@ -68,7 +69,7 @@ const RootNavigation = observer(() => {
 
     }, [])
     useEffect(() => {
-        if(navigate) {
+        if (navigate) {
             if (notification) {
                 // @ts-ignore
                 navigation.navigate(routerConstants.ABOUT_US)

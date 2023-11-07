@@ -7,6 +7,10 @@ import WaitingVerificationS from "../screen/ApprovalScreens/WaitingVerificationS
 import EducationalTestS from "../screen/ApprovalScreens/EducationalTest/EducationalTestS";
 import EducationalTextS from "../screen/ApprovalScreens/EducationalTest/EducationalTextS";
 import ExamS from "../screen/ApprovalScreens/EducationalTest/ExamS";
+import ProfileUserS from "../screen/Main/ProfileUser/ProfileUserS";
+import ChangeLanguageS from "../screen/Main/ChangeLanguageS";
+import ChangeCountryS from "../screen/Main/ChangeCountryS";
+import OrdersS from "../screen/Main/OrdersS";
 
 type Route = {
     name: string;
@@ -21,6 +25,10 @@ const authenticatedRoutes: Route[] = [
     {component: EducationalTestS, name: routerConstants.EDUCATIONAL_TEST},
     {component: EducationalTextS, name: routerConstants.EDUCATIONAL_TEXT},
     {component: ExamS, name: routerConstants.EXAM},
+    {component: ProfileUserS, name: routerConstants.PROFILE},
+    {component: ChangeLanguageS, name: routerConstants.CHANGE_LANGUAGE},
+    {component: ChangeCountryS, name: routerConstants.CHANGE_COUNTRY},
+    {component: OrdersS, name: routerConstants.ORDERS},
 ];
 
 export default authenticatedRoutes;

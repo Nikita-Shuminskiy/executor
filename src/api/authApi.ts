@@ -8,6 +8,10 @@ export const authApi = {
             params: payload,
         })
     },
+    async updateExecutorPhoto(photo: string) {
+        const formData = await convertToFormDataImg(photo)
+        return await instance.post(`washapi.php/executor_register`, formData)
+    },
     async sendCode(payload: { phone: string }) {
         return await instance.post(`washapi.php/executor_code_send`, {}, {
             params: payload,
@@ -26,6 +30,12 @@ export const authApi = {
         return await instance.get<ExecutorSettingType>(`washapi.php/get_settings_executor`)
     },
 
+    async forgotAboutDevice() {
+        return await instance.post(`washapi.php/executor_forget_about_device`)
+    },
+    async fullDeleteAccount() {
+        return await instance.post(`washapi.php/executor_full_delete`)
+    },
     async getDictionary() {
         return await instance.get(`washapi.php/get_dictionary`)
     },
