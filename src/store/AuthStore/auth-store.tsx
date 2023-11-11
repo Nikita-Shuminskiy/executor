@@ -8,6 +8,7 @@ import {
     PhotoPayloadType,
     UpdateExecutorPayloadType
 } from "../../api/type";
+import {Platform} from "react-native";
 
 export class AuthStore {
     isAuth: boolean = false

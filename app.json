@@ -9,7 +9,7 @@
     "notification": {
       "iosDisplayInForeground": true,
       "color": "#ffffff",
-      "icon": "./assets/ic_notification.png"
+      "icon": "./assets/notification_icon.png"
     },
     "version": "1.0.1",
     "orientation": "portrait",

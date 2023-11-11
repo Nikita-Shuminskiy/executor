@@ -22,7 +22,7 @@ type ProfileUserSProps = {
 }
 const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
-    const {executorSettings} = AuthStore
+    const {executorSettings, clearStore} = AuthStore
     const {AuthStoreService} = rootStore
     const [isDeleteAccount, setIsDeleteAccount] = useState<boolean>(false)
 
@@ -59,6 +59,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
             if (data) {
                 navigation.navigate(routerConstants.LOGIN)
                 setIsMenuOpen(false)
+                clearStore()
             }
         })
     }
@@ -122,7 +123,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
                     <Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
                         <BtnDelete onPress={onPressDeleteAccount}/>
                         <Text ml={2} fontSize={15} fontFamily={'regular'}
-                              color={colors.red}>{'Delete forget profile'}</Text>
+                              color={colors.red}>{'Delete and forget profile'}</Text>
                     </Box>
                 </TouchableOpacity>
 

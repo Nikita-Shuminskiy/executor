@@ -1,6 +1,7 @@
 import {instance} from './config'
 import {AuthGooglePayload, ExecutorSettingType, PhotoPayloadType, UpdateExecutorPayloadType} from "./type";
 import {convertToFormDataImg} from "../utils/commonUtils";
+import {Platform} from "react-native";
 
 export const authApi = {
     async sendCodeVerify(payload: { phone_verify_code: string }) {
@@ -18,7 +19,13 @@ export const authApi = {
         })
     },
     async authWithGoogle(payload: AuthGooglePayload) {
-        return await instance.post(`washapi.php/auth_executor_by_google_for_android`, {}, {params: payload})
+        const URL = Platform.OS === 'ios' ? 'washapi.php/auth_executor_by_google' : 'washapi.php/auth_executor_by_google_for_android'
+        return await instance.post(URL, {}, {
+            params: {
+                ...payload,
+                status: 'executor'
+            }
+        })
     },
     async sendDeviceToken(token: string) {
         return await instance.post(`washapi.php/client_fcm_token`, {fcm_token: token})

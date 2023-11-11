@@ -1,47 +1,48 @@
-import {useEffect, useRef} from "react";
+import {useEffect} from "react";
 import messaging from "@react-native-firebase/messaging";
-import {Linking, Platform} from 'react-native';
 import {authApi} from "../../api/authApi";
-import notifee, {
-    AndroidBadgeIconType,
-    AndroidImportance,
-    AndroidStyle,
-    AndroidVisibility,
-    EventType
-} from "@notifee/react-native";
-import {getNotificationIcon, withNotificationIcons} from "expo-notifications/plugin/build/withNotificationsAndroid";
-import NavigationStore from "../../store/NavigationStore/navigation-store";
+import notifee, {AndroidImportance, AndroidVisibility, EventType} from "@notifee/react-native";
 import * as Notifications from 'expo-notifications';
-import {deviceStorage} from "../storage/storage";
+import {routerConstants} from "../../constants/routerConstants";
 
+export async function allowsNotificationsAsync() {
+    const settings = await Notifications.getPermissionsAsync();
+    return (
+        settings.granted || settings.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL
+    );
+}
 
+const createChannel = async () => {
+    return await notifee.createChannel({
+        id: 'channel-id',
+        name: 'Default channel',
+        vibration: true,
+        visibility: AndroidVisibility.PUBLIC,
+        sound: 'default',
+        importance: AndroidImportance.HIGH,
+    }) // return channelId
+}
 //+ "📬"
 export const onDisplayNotification = async (data) => {
-    console.log('1')
-    await Notifications.scheduleNotificationAsync({
-        content: {
-            ...data.data,
-            categoryIdentifier: "default"
+    await notifee.requestPermission()
+    const channelId = await createChannel()
+    await notifee.displayNotification({
+        title: data.notification.title,
+        body: data.notification.body,
+        data: {
+            route: data.data.route,
         },
-        identifier: 'default',
-        trigger: null,
-    });
-    /*   await notifee.displayNotification({
-           ...data.data,
-           android: {
-               ...JSON.parse(data.data.android),
-               lightUpScreen: true,
-               smallIcon: require('../../../assets/ic_notification.png'),
-               visibility: AndroidVisibility.PUBLIC,
-               pressAction: {launchActivity: 'default', id: 'default'},
-               badgeIconType: AndroidBadgeIconType.LARGE,
-               importance: AndroidImportance.HIGH,
-               //largeIcon: require('../../../assets/icon.png')
-           }
-       });*/
+        android: {
+            channelId,
+            smallIcon: 'notification_icon',
+            // pressAction: {
+            // 	launchActivity: 'default',
+            // 	id: 'default',
+            // },
+        },
+    })
 }
-export const useNotification = (isAuth: boolean) => {
-    const notificationListener = useRef<any>();
+export const useNotification = (isAuth: boolean, navigate: (route: string) => void) => {
     useEffect(() => {
         if (isAuth) {
             requestUserPermission().then((data) => {
@@ -55,33 +56,42 @@ export const useNotification = (isAuth: boolean) => {
                 }
             })
         }
-        /*const onForegroundEvent = notifee.onForegroundEvent(async ({type, detail}) => {
-             const {setNotification} = NavigationStore
-             console.log(type, 'onForegroundEvent')
-             if((type === EventType.ACTION_PRESS || type === EventType.PRESS)) {
-                 console.log('onForegroundEvent press')
-                 // @ts-ignore
-                 setNotification(detail.notification)
-                 await notifee.cancelNotification(detail.notification.id);
-             }
-         });*/
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            // console.log('полученно уведомление')
-            /* Слушатели, зарегистрированные этим методом,
-                 будут вызываться каждый раз, когда во время работы приложения будет получено уведомление*/
-        });
-        return () => {
-            // onForegroundEvent()
-            Notifications.removeNotificationSubscription(notificationListener.current);
-        }
     }, [isAuth]);
+    useEffect(() => {
+        // дергается при открытом приложении
+        const unsubscribeForegroundEvent = notifee.onForegroundEvent(async (event) => {
+            const {
+                type,
+                detail: {notification},
+            } = event
+            if (type === EventType.PRESS) {
+                navigate(routerConstants[notification?.data.route as string])
+                await notifee.cancelNotification(notification.id)
+            }
+        })
+        // приложение находилось в фоновом режиме и открылось из уведомления
+        const unsub = messaging().onNotificationOpenedApp((remoteMessage) => {
+            console.log('notif opened app:', remoteMessage)
+            if (remoteMessage) {
+                navigate(routerConstants[remoteMessage?.data.route as string])
+            }
+        })
+        let unsubscribeOnMessage: () => void = () => {
+            }
+        ;(async () => {
+            unsubscribeOnMessage = messaging().onMessage(onDisplayNotification)
+        })()
+        return () => {
+            unsubscribeForegroundEvent()
+            unsub()
+            unsubscribeOnMessage()
+        }
+    }, [])
 };
 
 
 const requestUserPermission = async () => {
     try {
-        await setupAndroidChannel()
-        await messaging().registerDeviceForRemoteMessages();
         const authStatus = await messaging().requestPermission();
         return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
@@ -96,31 +106,3 @@ const sendToken = async (token: string) => {
         console.log(e, 'sendDeviceToken');
     }
 }
-
-async function openAppSettings() {
-    if (Platform.OS === 'ios') {
-        await Linking.openURL('app-settings:');
-    } else {
-        await Linking.openSettings();
-    }
-}
-
-const setupAndroidChannel = async () => {
-    if(Platform.OS === 'android') {
-        await Notifications.setNotificationChannelAsync('default', {
-            name: 'default',
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-        });
-    }
-    /*  await notifee.createChannel({
-          id: 'one',
-          name: 'One',
-          visibility: AndroidVisibility.PUBLIC,
-          description: 'Default communication channel for the platform',
-          lights: true,
-          vibration: true,
-          badge: true,
-          importance: AndroidImportance.HIGH,
-      });*/
-};

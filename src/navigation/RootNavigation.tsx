@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from 'react'
+import React, {useLayoutEffect} from 'react'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {observer} from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
@@ -21,26 +21,10 @@ import Alerts from "../components/Alert";
 import WifiReconnect from "../components/WifiReconnect";
 import rootStore from "../store/RootStore/root-store";
 import authenticatedRoutes from "./routesConstants";
-import notifee from "@notifee/react-native";
 import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
 import NavigationStore from "../store/NavigationStore/navigation-store";
-import messaging from "@react-native-firebase/messaging";
-import {deviceStorage} from "../utils/storage/storage";
 
-const getInitNotification = async () => {
-    try {
-        const lastNotification = await deviceStorage.getItem('lastNotification')
-        if(lastNotification) {
-            return JSON.parse(lastNotification)
-        }
-      //    return await notifee.getInitialNotification()
-    } catch (e) {
-        //console.log('catch getInitNotification')
-    } finally {
-        //console.log('finally getInitNotification')
-    }
-}
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
@@ -52,38 +36,26 @@ const RootNavigation = observer(() => {
         locationStatus,
     } = usePermissionsPushGeo()
     const checkStatusPermissions = locationStatus !== 'undetermined' && locationStatus !== 'granted'
-    const {notification, setNotification, navigation} = NavigationStore
     const {checkInternetConnection, isConnected} = useInternetConnected()
     const navigate = useNavigation()
-
-    useNotification(isAuth)
+    // emulator(10) egovLUZ5QWWrNLEWUwFjkY:APA91bE0BIx8nAxOXsL1RoNyolI6EZZVMM9x2uWRJ4bBq7W2S46Y07xPcigUuSznoq1xbtCwkVUgfHnH1i-jId4Ffs5_vjAntlJLCRgsPnV1PSkYJAHNL8otUUQmJXrQ4DwN0Is51tdd
+    // my xiaomi(10) fr6iOk8YR0-x9EBGMZsifW:APA91bHaNKBxv3Xzw8RrdqXb4QQM2gi0OHi5JJiizXoPYFs9lGclrdd6DmYmWektI5zx0r4c_h8MavwI7jzaLlNWB4K5fwnIXO6Ij935mZ4qC8JAYn5HD2-UDzR6y07w9p1wGkLStugX
+    // my android (9) eCJMtreXTQKFzpuO1sve0K:APA91bGykORJfvmJ0eMaLT1pnFuXIk74syB6eCwbZLw9onBfyKH0CRmaBgPXDgbwiHNRn14o6unHFEqme2RQpGhrrLpPEoAJOtxwZak1wlcfratd7g_ECgTT4p2zYyZQ6liRcix5_shG
+    useNotification(isAuth, navigate.navigate)
     useLayoutEffect(() => {
         setIsLoading(LoadingEnum.fetching)
-        getInitNotification().then((data) => {
-            AuthStoreService.getSettingExecutor(navigate?.navigate, data ? data : null)
-                .then((data) => {
-                    if (data === 'not_token') {
-                        // DictionaryStore.getDictionaryLocal()
-                    }
-                })
-                .finally(() => {
-                    setTimeout(() => {
-                        setIsLoading(LoadingEnum.success)
-                    }, 3000)
-                })
-        })
-
+        AuthStoreService.getSettingExecutor(navigate?.navigate)
+            .then((data) => {
+                if (data === 'not_token') {
+                    // DictionaryStore.getDictionaryLocal()
+                }
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setIsLoading(LoadingEnum.success)
+                }, 3000)
+            })
     }, [])
-    useEffect(() => {
-        if (navigate) {
-            if (notification) {
-                // @ts-ignore
-                navigation.navigate(routerConstants.ABOUT_US)
-                setNotification(null)
-            }
-        }
-
-    }, [notification, navigate]);
     return (
         <BurgerMenuProvider>
             {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true}/>}

@@ -37,7 +37,6 @@ export const LoginS = observer(({navigation}: any) => {
         prompt: Prompt.SelectAccount,
     });
     useEffect(() => {
-
         if (response && response.type === "success" && response.authentication) {
             (async () => {
                 const userInfoResponse = await fetch(

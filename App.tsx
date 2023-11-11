@@ -2,29 +2,14 @@ import {StatusBar} from 'expo-status-bar'
 import RootNavigation from './src/navigation/RootNavigation'
 import {GestureHandlerRootView} from 'react-native-gesture-handler'
 import {NativeBaseProvider} from 'native-base'
-import {AppState, LogBox} from 'react-native'
+import {LogBox} from 'react-native'
 import {useFonts} from '@expo-google-fonts/inter/useFonts'
 import {NavigationContainer} from '@react-navigation/native'
-import messaging from "@react-native-firebase/messaging";
-import {onDisplayNotification} from "./src/utils/hook/useNotification";
 import NavigationStore from "./src/store/NavigationStore/navigation-store";
-import notifee, {EventType} from "@notifee/react-native";
 
 LogBox.ignoreLogs([
     'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
 ])
-import * as Notifications from 'expo-notifications';
-import {deviceStorage} from "./src/utils/storage/storage";
-import AuthStore from "./src/store/AuthStore/auth-store";
-
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: true,
-    }),
-});
-
 // Temporary solution until the problem is officially fixed
 // https://github.com/GeekyAnts/NativeBase/issues/5758
 /*spy((ev) => {
@@ -32,47 +17,6 @@ Notifications.setNotificationHandler({
 		console.log(ev, 'ev action')
 	}
 })*/
-import * as TaskManager from 'expo-task-manager';
-
-const BACKGROUND_NOTIFICATION_TASK = 'BACKGROUND-NOTIFICATION-TASK';
-
-TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK, ({ data, error, executionInfo }) => {
-    console.log('Received a notification in the background!');
-    // Do something with the notification data
-});
-
-Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
-messaging().onMessage(onDisplayNotification);
-messaging().setBackgroundMessageHandler(onDisplayNotification);
-
-/*
-notifee.onBackgroundEvent(async ({type, detail}) => {
-    const {notification, pressAction} = detail;
-    const {setNotification} = NavigationStore
-    console.log(type, 'onBackgroundEvent')
-    /!*   Фоновые задачи выполняются без контекста React,
-           а это означает, что вы не можете обновить пользовательский интерфейс приложения.
-           Однако вы можете выполнить логику для обновления удаленной базы данных,*!/
-    // Check if the user pressed the "Mark as read" action
-    if ((type === EventType.ACTION_PRESS || type === EventType.PRESS) && pressAction.id === 'default') {
-        setNotification(detail.notification)
-        console.log('onBackgroundEvent press')
-        await notifee.cancelNotification(notification.id);
-    }
-});
-*/
-Notifications.addNotificationResponseReceivedListener(async response => {
-    const { executorSettings} = AuthStore
-    const { setNotification} = NavigationStore
-    console.log('Пользователь взаимодействует с уведомлением', response);
-    if (!executorSettings?.executors) {
-        await deviceStorage.saveItem('lastNotification', JSON.stringify(response));
-        return
-    }
-    setNotification(executorSettings)
-    /*     Слушатели, зарегистрированные этим методом, будут вызываться каждый раз,
-             когда пользователь взаимодействует с уведомлением (например, нажимает на него)*/
-});
 export default function App() {
     let [fontsLoaded] = useFonts({
         'regular': require('./assets/font/MyriadPro-Regular.ttf'), //400

@@ -25,7 +25,7 @@ const BurgerMenu = observer(() => {
     const toValue = isMenuOpen ? 0 : -1000
     const menuPosition = useRef(new Animated.Value(toValue)).current
     const {AuthStoreService} = rootStore
-    const {executorSettings} = AuthStore
+    const {executorSettings, clearStore} = AuthStore
     const navigation = useNavigation<any>()
     const toggleMenu = () => {
         Animated.timing(menuPosition, {
@@ -46,6 +46,7 @@ const BurgerMenu = observer(() => {
             if(data) {
                 navigation.navigate(routerConstants.LOGIN)
                 setIsMenuOpen(false)
+                clearStore()
             }
         })
     }
