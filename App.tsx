@@ -6,6 +6,8 @@ import {LogBox} from 'react-native'
 import {useFonts} from '@expo-google-fonts/inter/useFonts'
 import {NavigationContainer} from '@react-navigation/native'
 import NavigationStore from "./src/store/NavigationStore/navigation-store";
+import messaging from "@react-native-firebase/messaging";
+import {onDisplayNotification} from "./src/utils/hook/useNotification";
 
 LogBox.ignoreLogs([
     'In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.',
@@ -17,6 +19,7 @@ LogBox.ignoreLogs([
 		console.log(ev, 'ev action')
 	}
 })*/
+messaging().setBackgroundMessageHandler(onDisplayNotification)
 export default function App() {
     let [fontsLoaded] = useFonts({
         'regular': require('./assets/font/MyriadPro-Regular.ttf'), //400

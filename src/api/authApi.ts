@@ -28,7 +28,7 @@ export const authApi = {
         })
     },
     async sendDeviceToken(token: string) {
-        return await instance.post(`washapi.php/client_fcm_token`, {fcm_token: token})
+        return await instance.post(`washapi.php/executor_fcm_token`, {fcm_token: token})
     },
     async getLogisticsPoints(payload: { country: string }) {
         return await instance.get(`washapi.php/get_logistics_points`, {params: payload})

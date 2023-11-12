@@ -11,7 +11,9 @@
     "build_apk": "eas build -p android --profile preview",
     "build_dev_android": "eas build --profile development --platform android",
     "build_dev_ios": "eas build --profile development --platform ios ",
-    "build_android_aab": "eas build --platform android"
+    "build_android_aab": "eas build --platform android",
+    "uplad_ios": "eas submit -p ios --latest",
+    "build_ios": "eas build -p ios"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
