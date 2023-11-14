@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {BaseWrapperComponent} from "../../components/baseWrapperComponent";
+import {BaseWrapperComponent} from "../../../components/baseWrapperComponent";
 import {observer} from "mobx-react-lite";
-import {CommonScreenPropsType, PhotoCategoryEnum, PhotosApprovalType} from "../../api/type";
+import {CommonScreenPropsType, PhotoCategoryEnum, PhotosApprovalType} from "../../../api/type";
 import {Box, Text} from "native-base";
-import ArrowBack from "../../components/ArrowBack";
-import ShowListPhoto from "../../components/ShowListPhotoComponent/ShowListPhoto";
-import rootStore from "../../store/RootStore/root-store";
-import {colors} from "../../assets/colors/colors";
-import AuthStore from "../../store/AuthStore/auth-store";
-import Button from "../../components/Button";
+import ArrowBack from "../../../components/ArrowBack";
+import ShowListPhoto from "../../../components/ShowListPhotoComponent/ShowListPhoto";
+import rootStore from "../../../store/RootStore/root-store";
+import {colors} from "../../../assets/colors/colors";
+import AuthStore from "../../../store/AuthStore/auth-store";
+import Button from "../../../components/Button";
 import {StyleSheet} from "react-native";
-import {routerConstants} from "../../constants/routerConstants";
-import BaseModalInfo from "../../components/modal/BaseModalInfo";
+import {routerConstants} from "../../../constants/routerConstants";
+import BaseModalInfo from "./BaseModalInfo";
 import {StatusBar} from "expo-status-bar";
 
 type DocumentsVerificationProps = CommonScreenPropsType & {}

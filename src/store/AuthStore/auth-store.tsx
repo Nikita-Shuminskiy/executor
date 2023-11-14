@@ -5,7 +5,7 @@ import {
     AuthGooglePayload,
     ExecutorSettingType,
     LogisticsPointType,
-    PhotoPayloadType,
+    PhotoPayloadType, ShiftSetupPayload,
     UpdateExecutorPayloadType
 } from "../../api/type";
 
@@ -129,7 +129,11 @@ export class AuthStore {
         const {data} = await authApi.fullDeleteAccount()
         return data
     }
-
+    sendShiftSetup = async (date: ShiftSetupPayload) => {
+        const {data} = await authApi.sendShiftSetup(date)
+        console.log(data)
+        return data
+    }
     constructor() {
         makeAutoObservable(this)
     }

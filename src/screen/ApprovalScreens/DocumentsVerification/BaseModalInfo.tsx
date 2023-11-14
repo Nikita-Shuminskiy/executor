@@ -1,9 +1,9 @@
 import React from 'react';
 import {Image, Modal, StyleSheet, TouchableOpacity} from "react-native";
 import {Box, Text} from "native-base";
-import {colors} from "../../assets/colors/colors";
-import closeImage from "../../assets/Images/order/closeCircleGray.png";
-import Button from "../Button";
+import {colors} from "../../../assets/colors/colors";
+import closeImage from "../../../assets/Images/order/closeCircleGray.png";
+import Button from "../../../components/Button";
 
 type BaseModalInfoProps = {
     visible: boolean

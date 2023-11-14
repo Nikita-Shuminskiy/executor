@@ -24,7 +24,7 @@ const AvatarUser = observer(({photo, name, onClose}: AvatarProps) => {
         <TouchableOpacity onPress={onPressGoProfile} style={{paddingTop: 10}}>
             <Box justifyContent={'space-between'}
                  alignItems={'center'}
-                 flexDirection={'row'} mb={9}>
+                 flexDirection={'row'} mb={5}>
                 <Box alignItems={'center'}
                      flexDirection={'row'}>
                     <Image style={{width: 48, height: 48, borderRadius: 28}} resizeMode={'cover'}

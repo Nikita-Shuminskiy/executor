@@ -11,13 +11,15 @@ const checkInternet = async () => {
 	const netInfoState = await NetInfo.fetch()
 	return netInfoState.isConnected
 }
-
-export const dateStringFormat = (formatDate: string, date: string) => {
+export const dateStringFormat = (date: string, formatDate: string) => {
 	if(!date) return ''
 	const inputDate = new Date(date);
 	return format(inputDate, formatDate, { locale: enUS })
 }
-
+export const getCurrentDate = (formats = 'DD/MM/YYYY') => {
+	const now = new Date();
+	return format(now, formats);
+}
 export const checkToken = async () => {
 	const savedToken = await deviceStorage.getItem('token');
 	const tokenDate = await deviceStorage.getItem('tokenDate');

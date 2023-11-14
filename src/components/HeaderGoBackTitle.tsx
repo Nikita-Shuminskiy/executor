@@ -12,7 +12,7 @@ const HeaderGoBackTitle = ({ goBackPress, title }: HeaderGoBackTitleProps) => {
 			<Box flex={1}  position={'relative'} bottom={1}>
 				<ArrowBack goBackPress={goBackPress} />
 			</Box>
-			<Box flex={2} alignItems={'center'}>
+			<Box flex={3} alignItems={'center'}>
 				<Text fontSize={17} fontFamily={'semiBold'}>{title}</Text>
 			</Box>
 			<Box flex={1} />

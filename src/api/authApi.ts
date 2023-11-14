@@ -1,5 +1,11 @@
 import {instance} from './config'
-import {AuthGooglePayload, ExecutorSettingType, PhotoPayloadType, UpdateExecutorPayloadType} from "./type";
+import {
+    AuthGooglePayload,
+    ExecutorSettingType,
+    PhotoPayloadType,
+    ShiftSetupPayload,
+    UpdateExecutorPayloadType
+} from "./type";
 import {convertToFormDataImg} from "../utils/commonUtils";
 import {Platform} from "react-native";
 
@@ -70,6 +76,9 @@ export const authApi = {
     },
     async examNextQuestion(lang: string) {
         return await instance.get<ExamNextQuestionWithTotalResponseType>(`executor_exam_next_question`, {params: {lang}})
+    },
+    async sendShiftSetup(date: ShiftSetupPayload) {
+        return await instance.post(`executor_freeze`, date)
     },
     async getExamAnswer(lang: string, question: string, answer: string) {
         return await instance.get<ExamEducationResponseType<'ok' | 'Wrong answer'>>(`executor_exam_answer`, {

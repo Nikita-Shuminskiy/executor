@@ -1,5 +1,9 @@
 import {NavigationProp, ParamListBase} from "@react-navigation/native";
-
+type ShiftSetupPayload = {
+    datetime_freeze_until?: string
+    datetime_workshift_until?: string
+    ready_for_orders?: string
+}
 export enum LanguageEnum {
     EN = 'EN',
     PL = 'PL',
@@ -155,6 +159,7 @@ enum LastStep {
     COMPLETED = 'completed'
 }
 export {
+    ShiftSetupPayload,
     StatusOrder,
     LastStep,
     PhotoType,

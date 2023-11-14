@@ -10,7 +10,8 @@ import {useGoBack} from "../../utils/hook/useGoBack";
 type OrdersSProps = CommonScreenPropsType & {
 
 }
-const OrdersS = observer(({navigation}:OrdersSProps) => {
+const OrdersS = observer(({navigation, route}:OrdersSProps) => {
+    const isOpenMenu = route.params?.from === 'open_menu'
     const goBackPress = () => {
         return true
     }
@@ -20,7 +21,7 @@ const OrdersS = observer(({navigation}:OrdersSProps) => {
         <BaseWrapperComponent isKeyboardAwareScrollView={true}>
             <StatusBar backgroundColor={colors.white} />
             <Box paddingX={4}>
-                <BurgerMenuBtn openingForced={false}/>
+                <BurgerMenuBtn openingForced={isOpenMenu}/>
                 <Text>Orders</Text>
             </Box>
         </BaseWrapperComponent>

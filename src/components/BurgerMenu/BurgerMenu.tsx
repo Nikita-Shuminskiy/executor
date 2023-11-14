@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {Animated, StyleSheet} from 'react-native'
+import {Animated, ScrollView, StyleSheet} from 'react-native'
 import {Box, Image, Pressable, Text} from 'native-base'
 import {colors} from '../../assets/colors/colors'
 import {useBurgerMenu} from './BurgerMenuContext'
@@ -42,15 +42,15 @@ const BurgerMenu = observer(() => {
     }
     const logOutHandler = () => {
         AuthStoreService.logout().then((data) => {
-            if(data) {
+            if (data) {
                 navigation.navigate(routerConstants.LOGIN)
                 setIsMenuOpen(false)
                 clearStore()
             }
         })
     }
-    const onPressNavigateHandler = (routeName: any) => {
-        navigation.navigate(routeName)
+    const onPressNavigateHandler = (routeName: any, options = {}) => {
+        navigation.navigate(routeName, options)
         setIsMenuOpen(false)
     }
     const onPressOrderHistoryHandler = () => {
@@ -96,61 +96,68 @@ const BurgerMenu = observer(() => {
                         },
                     ]}
                 >
-                    <Box pt={8}>
-                        <AvatarUser photo={executorSettings?.executors?.pic}
-                                    name={`${executorSettings.executors?.first_name} ${executorSettings.executors?.last_name}`}
-                                    onClose={() => setIsMenuOpen(false)}/>
-                        <Box justifyContent={'space-between'}
-                             alignItems={'center'}
-                             flexDirection={'row'}
-                             marginY={2}
-                             borderRadius={16}
-                             p={4}
-                             borderWidth={1}
-                             borderColor={colors.grayBright}>
-                            <Box flexDirection={'row'} alignItems={'center'}>
-                                <Image w={6} h={6} alt={'img'} source={countryImg}/>
-                                <Text fontSize={15} fontWeight={'regular'}
-                                      ml={2}>Country</Text>
+                    <Box pt={10}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <AvatarUser photo={executorSettings?.executors?.pic}
+                                        name={`${executorSettings.executors?.first_name} ${executorSettings.executors?.last_name}`}
+                                        onClose={() => setIsMenuOpen(false)}/>
+                            <Box justifyContent={'space-between'}
+                                 alignItems={'center'}
+                                 flexDirection={'row'}
+                                 marginY={2}
+                                 borderRadius={16}
+                                 p={4}
+                                 borderWidth={1}
+                                 borderColor={colors.grayBright}>
+                                <Box flexDirection={'row'} alignItems={'center'}>
+                                    <Image w={6} h={6} alt={'img'} source={countryImg}/>
+                                    <Text fontSize={15} fontWeight={'regular'}
+                                          ml={2}>Country</Text>
+                                </Box>
+                                <Box alignItems={'center'}
+                                     flexDirection={'row'}>
+                                    <Text fontSize={15} fontWeight={'regular'}
+                                          color={colors.grayLight}>{executorSettings.executors?.country}</Text>
+                                </Box>
                             </Box>
-                            <Box alignItems={'center'}
-                                 flexDirection={'row'}>
-                                <Text fontSize={15} fontWeight={'regular'}
-                                      color={colors.grayLight}>{executorSettings.executors?.country}</Text>
+
+                            <BurgerLink onPress={onPressOrderHistoryHandler}
+                                        img={repeatImg}
+                                        text={'Order history'}/>
+                            <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.RECEIVING_METHOD)}
+                                        img={walletImg}
+                                        text={'Receiving method'}/>
+                            <BurgerLink onPress={onPressChatHandler}
+                                        img={questionMarkImg}
+                                        text={'Contact support'}/>
+                            <BurgerLink
+                                onPress={() => onPressNavigateHandler(routerConstants.SELECT_LOGISTIC_POINT, {from: 'update'})}
+                                img={exclamationMarkImg}
+                                text={'Change of logistics point'}/>
+                            <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.OPEN_SHIFT)}
+                                        img={exclamationMarkImg}
+                                        text={'Shift opening and freezing'}/>
+                            <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
+                                        img={exclamationMarkImg}
+                                        text={'About swash'}/>
+                            <Box mt={5} mb={3} alignItems={'center'}>
+                                <Button backgroundColor={colors.white} colorText={colors.black}
+                                        styleContainer={{
+                                            borderWidth: 1,
+                                            borderColor: colors.blue,
+                                            borderRadius: 28,
+                                            maxWidth: 280,
+                                            width: '100%',
+                                        }} styleText={{fontFamily: 'regular'}} onPress={onPressLogOut}
+                                        title={'Log off'}/>
                             </Box>
-                        </Box>
-                    {/*    <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)}
-                                    img={repeatImg}
-                                    text={dictionary[DictionaryEnum.OrderHistory]}/>*/}
-                        <BurgerLink onPress={onPressOrderHistoryHandler}
-                                    img={repeatImg}
-                                    text={'Order history'}/>
-                        <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.RECEIVING_METHOD)}
-                                    img={walletImg}
-                                    text={'Receiving method'}/>
-                        <BurgerLink onPress={onPressChatHandler}
-                                    img={questionMarkImg}
-                                    text={'Contact support'}/>
-                        <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
-                                    img={exclamationMarkImg}
-                                    text={'About swash'}/>
-                    </Box>
-                    <Box mt={2} mb={5} alignItems={'center'}>
-                        <Button backgroundColor={colors.white} colorText={colors.black}
-                                styleContainer={{
-                                    borderWidth: 1,
-                                    borderColor: colors.blue,
-                                    borderRadius: 28,
-                                    maxWidth: 280,
-                                    width: '100%',
-                                }} styleText={{fontFamily: 'regular'}} onPress={onPressLogOut}
-                                title={'Log off'}/>
+                        </ScrollView>
                     </Box>
                 </Animated.View>
             </Animated.View>
             {
                 isOpenLogout &&
-                <BaseBottomPopUp  text={'Do you want to log off'}
+                <BaseBottomPopUp text={'Do you want to log off'}
                                  onDelete={logOutHandler} visible={isOpenLogout}
                                  onClose={() => setIsLogout(false)}/>
             }
