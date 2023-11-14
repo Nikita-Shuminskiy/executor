@@ -13,16 +13,19 @@ import {StatusBar} from "expo-status-bar";
 import {routerConstants} from "../../../constants/routerConstants";
 import {useGoBack} from "../../../utils/hook/useGoBack";
 import AuthStore from "../../../store/AuthStore/auth-store";
+import rootStore from "../../../store/RootStore/root-store";
 
 type EducationalTestSProps = CommonScreenPropsType & {}
 const EducationalTestS = observer(({navigation, route}: EducationalTestSProps) => {
     const isExamPassed = route.params?.exam_passed
     const {getExamEducation, getExamNextQuestion} = AuthStore
+    const {AuthStoreService} = rootStore
     useEffect(() => {
         getExamEducation()
     }, []);
     const onPressStart = () => {
         if (!isExamPassed) return navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
+        AuthStoreService.getSettingExecutor(navigation.navigate)
     }
     const goBackPress = () => {
         return true
@@ -59,8 +62,8 @@ const EducationalTestS = observer(({navigation, route}: EducationalTestSProps) =
 });
 const styles = StyleSheet.create({
     imgLogo: {
-        width: 316,
-        height: 336,
+        width: 296,
+        height: 316,
     },
     styleContainerBtn: {
         borderRadius: 28,

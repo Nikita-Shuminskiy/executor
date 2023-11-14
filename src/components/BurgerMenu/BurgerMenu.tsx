@@ -20,11 +20,10 @@ import {routerConstants} from '../../constants/routerConstants'
 
 const BurgerMenu = observer(() => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
-
     const [isOpenLogout, setIsLogout] = useState<boolean>(false)
     const toValue = isMenuOpen ? 0 : -1000
     const menuPosition = useRef(new Animated.Value(toValue)).current
-    const {AuthStoreService} = rootStore
+    const {AuthStoreService, OrdersStoreService, ChatStoreService} = rootStore
     const {executorSettings, clearStore} = AuthStore
     const navigation = useNavigation<any>()
     const toggleMenu = () => {
@@ -53,6 +52,20 @@ const BurgerMenu = observer(() => {
     const onPressNavigateHandler = (routeName: any) => {
         navigation.navigate(routeName)
         setIsMenuOpen(false)
+    }
+    const onPressOrderHistoryHandler = () => {
+        OrdersStoreService.getOrdersHistory().then((data) => {
+            if (data) {
+                onPressNavigateHandler(routerConstants.ORDERS_HISTORY)
+            }
+        })
+    }
+    const onPressChatHandler = () => {
+        ChatStoreService.getDialog(true).then((data) => {
+            if (data) {
+                onPressNavigateHandler(routerConstants.CHAT_SUPPORT)
+            }
+        })
     }
     return (
         <>
@@ -109,12 +122,16 @@ const BurgerMenu = observer(() => {
                     {/*    <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)}
                                     img={repeatImg}
                                     text={dictionary[DictionaryEnum.OrderHistory]}/>*/}
-                       {/* <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CHAT_SUPPORT)}
-                                    img={questionMarkImg}
-                                    text={dictionary[DictionaryEnum.ContactSupport]}/>
+                       {/*
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)}
                                     img={walletImg}
                                     text={dictionary[DictionaryEnum.PaymentMethod]}/>*/}
+                        <BurgerLink onPress={onPressOrderHistoryHandler}
+                                    img={repeatImg}
+                                    text={'Order history'}/>
+                        <BurgerLink onPress={onPressChatHandler}
+                                    img={questionMarkImg}
+                                    text={'Contact support'}/>
                         <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
                                     img={exclamationMarkImg}
                                     text={'About swash'}/>

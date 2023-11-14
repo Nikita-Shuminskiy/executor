@@ -94,20 +94,19 @@ export const onDisplayNotification = async (data) => {
 }
 export const useNotification = (isAuth: boolean, navigate: (route: string) => void) => {
     useEffect(() => {
-        if (!isAuth) {
+        if (isAuth) {
             requestUserPermission().then((data) => {
                 if (data) {
                     messaging()
                         .getToken()
                         .then((token) => {
-                            console.log(token)
+                           // console.log(token)
                             sendToken(token);
                         });
                 }
             })
         }
         ;(async () => {
-
             //for ios
             await notifee.requestPermission({
                 sound: true,
@@ -126,7 +125,6 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
                 detail: {notification},
             } = event
             if (type === EventType.PRESS || event?.detail?.pressAction?.id) {
-                console.log(event.detail.pressAction.id, 'onForegroundEvent')
                 navigate(routerConstants[notification?.data.route as string])
                 await notifee.cancelNotification(notification.id)
             }
@@ -138,7 +136,6 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
                 detail: {notification},
             } = event
             if (type === EventType.PRESS || event?.detail?.pressAction?.id) {
-                console.log(event.detail.pressAction.id, 'onBackgroundEvent')
                 navigate(routerConstants[notification?.data.route as string])
                 await notifee.cancelNotification(notification.id)
             }

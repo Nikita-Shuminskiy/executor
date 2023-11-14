@@ -50,11 +50,6 @@ const RootNavigation = observer(() => {
                     // DictionaryStore.getDictionaryLocal()
                 }
             })
-            .finally(() => {
-                setTimeout(() => {
-                    setIsLoading(LoadingEnum.success)
-                }, 3000)
-            })
     }, [])
     return (
         <BurgerMenuProvider>

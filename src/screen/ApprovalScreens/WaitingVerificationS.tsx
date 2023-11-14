@@ -37,7 +37,7 @@ const WaitingVerificationS = observer(({navigation, route}: WaitingVerificationP
                        source={isMissingPhoto ? ListRedImg : SleepImg}/>
                 <Box justifyContent={'space-between'} w={'100%'}>
                     <Image style={{width: '100%', position: 'relative', top: 1}} source={imgBack}/>
-                    <Box paddingX={10} h={375} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
+                    <Box paddingX={10} h={365} w={'100%'} alignItems={'center'} justifyContent={'space-evenly'}
                          backgroundColor={colors.white}>
                         <Box alignItems={'center'} flex={1} justifyContent={'space-evenly'}>
                             <Text fontSize={27}
@@ -83,12 +83,12 @@ const WaitingVerificationS = observer(({navigation, route}: WaitingVerificationP
 });
 const styles = StyleSheet.create({
     imgWaiting: {
-        width: 232,
-        height: 278,
+        width: 212,
+        height: 258,
     },
     imgListRed: {
-        width: 300,
-        height: 300,
+        width: 250,
+        height: 250,
     },
     styleContainerBtn: {
         borderRadius: 50,

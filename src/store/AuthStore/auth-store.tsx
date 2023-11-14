@@ -8,7 +8,6 @@ import {
     PhotoPayloadType,
     UpdateExecutorPayloadType
 } from "../../api/type";
-import {Platform} from "react-native";
 
 export class AuthStore {
     isAuth: boolean = false
@@ -49,7 +48,6 @@ export class AuthStore {
     }
 
 
-
     setExecutorSettings = (executor: ExecutorSettingType) => {
         this.executorSettings = executor
     }
@@ -59,7 +57,6 @@ export class AuthStore {
         this.setExecutorSettings(data)
         return data
     }
-
     logout = async () => {
         //const { data } = await authApi.logout()
     }
@@ -95,7 +92,7 @@ export class AuthStore {
     }
 
     updateExecutorPhoto = async (photo: string) => {
-        const { data } = await authApi.updateExecutorPhoto(photo)
+        const {data} = await authApi.updateExecutorPhoto(photo)
         return data
     }
 

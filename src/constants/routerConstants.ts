@@ -2,7 +2,9 @@ export const routerConstants = {
     CHANGE_LANGUAGE: 'change-language',
     ORDERS: 'orders',
     CHANGE_COUNTRY: 'change-country',
+    ORDERS_HISTORY: 'orders-history',
     PROFILE: 'profile',
+    CHAT_SUPPORT: 'chat-support',
     //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',

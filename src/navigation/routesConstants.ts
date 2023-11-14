@@ -11,6 +11,8 @@ import ProfileUserS from "../screen/Main/ProfileUser/ProfileUserS";
 import ChangeLanguageS from "../screen/Main/ChangeLanguageS";
 import ChangeCountryS from "../screen/Main/ChangeCountryS";
 import OrdersS from "../screen/Main/OrdersS";
+import ChatS from "../screen/Main/Chat/ChatS";
+import OrdersHistoryS from "../screen/Main/OrdersHistory/OrdersHistoryS";
 
 type Route = {
     name: string;
@@ -29,6 +31,8 @@ const authenticatedRoutes: Route[] = [
     {component: ChangeLanguageS, name: routerConstants.CHANGE_LANGUAGE},
     {component: ChangeCountryS, name: routerConstants.CHANGE_COUNTRY},
     {component: OrdersS, name: routerConstants.ORDERS},
+    {component: ChatS, name: routerConstants.CHAT_SUPPORT},
+    {component: OrdersHistoryS, name: routerConstants.ORDERS_HISTORY},
 ];
 
 export default authenticatedRoutes;

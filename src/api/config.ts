@@ -1,7 +1,7 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export const BASE_URL = 'https://s-wash.com/'
+export const BASE_URL = 'https://s-wash.com/washapi.php/'
 
 export const instance = axios.create({
 	baseURL: BASE_URL,
