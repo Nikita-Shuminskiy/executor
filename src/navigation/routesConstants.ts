@@ -13,6 +13,7 @@ import ChangeCountryS from "../screen/Main/ChangeCountryS";
 import OrdersS from "../screen/Main/OrdersS";
 import ChatS from "../screen/Main/Chat/ChatS";
 import OrdersHistoryS from "../screen/Main/OrdersHistory/OrdersHistoryS";
+import ReceivingMethodS from "../screen/Main/ReceivingMethodS";
 
 type Route = {
     name: string;
@@ -33,6 +34,7 @@ const authenticatedRoutes: Route[] = [
     {component: OrdersS, name: routerConstants.ORDERS},
     {component: ChatS, name: routerConstants.CHAT_SUPPORT},
     {component: OrdersHistoryS, name: routerConstants.ORDERS_HISTORY},
+    {component: ReceivingMethodS, name: routerConstants.RECEIVING_METHOD},
 ];
 
 export default authenticatedRoutes;

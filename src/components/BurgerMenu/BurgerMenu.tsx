@@ -122,13 +122,12 @@ const BurgerMenu = observer(() => {
                     {/*    <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ORDER_HISTORY)}
                                     img={repeatImg}
                                     text={dictionary[DictionaryEnum.OrderHistory]}/>*/}
-                       {/*
-                        <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.PAYMENT_METHOD)}
-                                    img={walletImg}
-                                    text={dictionary[DictionaryEnum.PaymentMethod]}/>*/}
                         <BurgerLink onPress={onPressOrderHistoryHandler}
                                     img={repeatImg}
                                     text={'Order history'}/>
+                        <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.RECEIVING_METHOD)}
+                                    img={walletImg}
+                                    text={'Receiving method'}/>
                         <BurgerLink onPress={onPressChatHandler}
                                     img={questionMarkImg}
                                     text={'Contact support'}/>

@@ -5,6 +5,8 @@ export const routerConstants = {
     ORDERS_HISTORY: 'orders-history',
     PROFILE: 'profile',
     CHAT_SUPPORT: 'chat-support',
+    RECEIVING_METHOD: 'receiving-method',
+    OPEN_SHIFT: 'open-shift',
     //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',
