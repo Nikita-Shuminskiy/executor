@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react'
+import React, {forwardRef, useEffect} from 'react'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-import {GestureResponderEvent, Platform, SafeAreaView} from 'react-native'
+import {GestureResponderEvent, NativeScrollEvent, NativeSyntheticEvent, Platform, SafeAreaView} from 'react-native'
 import {colors} from '../assets/colors/colors'
 import {StatusBar} from 'expo-status-bar'
 
@@ -11,16 +11,18 @@ type BaseWrapperComponentType = {
     isKeyboardAwareScrollView?: boolean
     styleSafeArea?: any
     contentContainerStyle?: any
+    handleScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
 }
-export const BaseWrapperComponent = ({
+export const BaseWrapperComponent = forwardRef(({
                                          children,
                                          onTouchEnd,
                                          onTouchStart,
                                          isKeyboardAwareScrollView = false,
                                          styleSafeArea,
-                                         contentContainerStyle
-                                     }: BaseWrapperComponentType) => {
-    const ref = React.useRef(null)
+                                         contentContainerStyle,
+                                         handleScroll
+                                     }: BaseWrapperComponentType, ref) => {
+    //const ref = React.useRef(null)
 
     return (
         <SafeAreaView
@@ -31,6 +33,8 @@ export const BaseWrapperComponent = ({
             }}>
             {isKeyboardAwareScrollView ? (
                 <KeyboardAwareScrollView
+                    scrollEventThrottle={16}
+                    onScroll={handleScroll}
                     ref={ref}
                     enableOnAndroid={true}
                     keyboardShouldPersistTaps={'handled'}
@@ -49,4 +53,4 @@ export const BaseWrapperComponent = ({
             )}
         </SafeAreaView>
     )
-}
+})

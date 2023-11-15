@@ -14,6 +14,7 @@ import Link from '../../../components/Link'
 import AuthStore from "../../../store/AuthStore/auth-store";
 import {useGoBack} from "../../../utils/hook/useGoBack";
 import {routerConstants} from "../../../constants/routerConstants";
+import useKeyboardStatus from "../../../utils/hook/useKeyboardStatus";
 
 type ChatSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -37,15 +38,17 @@ const ChatS = observer(({navigation}: ChatSProps) => {
     }
     const scrollToBottom = () => {
         if (flatListRef?.current) {
-            flatListRef.current?.scrollToEnd({animated: true})
+            setTimeout(() => {
+                flatListRef.current?.scrollToEnd({animated: true})
+            }, 100)
         }
     }
+    useKeyboardStatus(scrollToBottom);
     useEffect(() => {
         const id = +setInterval(() => {
             ChatStoreService.getDialog()
-        }, 10000)
+        }, 15000)
         return () => {
-            setDialog([])
             clearInterval(id)
         }
     }, [])
@@ -54,28 +57,19 @@ const ChatS = observer(({navigation}: ChatSProps) => {
         return true
     }
     useGoBack(goBack)
-    const renderItem = useCallback(
-        ({item}: { item: DialogType }) => {
-            return <MessageViewer message={item}/>
-    }, [])
-
     return (
         <BaseWrapperComponent>
             <Box paddingX={4} mt={2} mb={2}>
                 <HeaderGoBackTitle title={'Support'} goBackPress={goBack}/>
             </Box>
             <ScrollView scrollEventThrottle={16} onScroll={handleScroll} ref={flatListRef}>
-                <Box paddingX={4} mb={6} flex={1}>
-                    <Box mt={4}>
-                        {
-                            !!dialog?.length &&
-                            dialog.map((message, key) => {
-                                return <Box key={`${message.message_id}-${key}`}>
-                                    {renderItem({item: message})}
-                                </Box>
-                            })
-                        }
-                    </Box>
+                <Box paddingX={4} mb={6} mt={4} flex={1}>
+                    {
+                        !!dialog?.length &&
+                        dialog.map((message, key) => {
+                            return <MessageViewer key={`${message.message_id}-${key}`} message={message}/>
+                        })
+                    }
                 </Box>
             </ScrollView>
             {!isAtBottom && (

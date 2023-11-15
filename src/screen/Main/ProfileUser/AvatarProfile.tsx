@@ -85,7 +85,7 @@ const AvatarProfile = ({photo}) => {
                 })();
             }
         }
-    }, [cameraPermission, isOpenCamera]);
+    }, [cameraPermission, isOpenCamera, cameraRef?.current]);
 
     return (
         <>

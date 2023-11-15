@@ -6,6 +6,9 @@ import HeaderGoBackTitle from "../../components/HeaderGoBackTitle";
 import InputCustom from "../../components/TextInput";
 import {colors} from "../../assets/colors/colors";
 import Button from "../../components/Button";
+import rootStore from "../../store/RootStore/root-store";
+import {useBurgerMenu} from "../../components/BurgerMenu/BurgerMenuContext";
+import {Keyboard} from "react-native";
 
 type ReceivingMethodSProps = CommonScreenPropsType & {}
 const ReceivingMethodS = ({navigation}: ReceivingMethodSProps) => {
@@ -14,6 +17,8 @@ const ReceivingMethodS = ({navigation}: ReceivingMethodSProps) => {
         name: '',
     })
     const isDisabledBtn = !data.accNumber || !data.name
+    const {setIsMenuOpen} = useBurgerMenu()
+    const {AuthStoreService} = rootStore
     const goBack = () => {
         navigation.goBack()
     }
@@ -26,11 +31,17 @@ const ReceivingMethodS = ({navigation}: ReceivingMethodSProps) => {
         })
     }
     const onPressSave = () => {
-        console.log(data)
+        Keyboard.dismiss()
+        const {accNumber, name} = data
+        AuthStoreService.updateExecutor({account_number: accNumber, full_name: name}).then((data) => {
+            if(data) {
+                setIsMenuOpen(true)
+            }
+        })
     }
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={false}>
-            <Box paddingX={4} mt={3}>
+            <Box paddingX={4} mt={3} mb={5}>
                 <HeaderGoBackTitle title={'Add receiving method'} goBackPress={goBack}/>
             </Box>
             <Box paddingX={4}>

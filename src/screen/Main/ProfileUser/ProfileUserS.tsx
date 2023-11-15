@@ -4,7 +4,7 @@ import {observer} from 'mobx-react-lite'
 import {NavigationProp, ParamListBase} from '@react-navigation/native'
 import {Box, Text} from 'native-base'
 import {colors} from '../../../assets/colors/colors'
-import {TouchableOpacity} from 'react-native'
+import {Keyboard, TouchableOpacity} from 'react-native'
 import InputCustom from '../../../components/TextInput'
 import Button from '../../../components/Button'
 import BtnDelete from '../../../components/btnDelete'
@@ -39,6 +39,7 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
         navigation.navigate(routerConstants.PHONE_VERIFY, {from: 'update'})
     }
     const onPressSave = () => {
+        Keyboard.dismiss()
         const {last_name, first_name, email} = dataInfo
         if (last_name === executorSettings?.executors?.last_name
             && first_name === executorSettings?.executors?.first_name

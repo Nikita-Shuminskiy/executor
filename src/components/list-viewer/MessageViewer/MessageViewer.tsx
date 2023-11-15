@@ -50,7 +50,7 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
                               fontSize={15}>{message.text}</Text>
                         <Text color={colors.grayLight} position={'absolute'} right={0} textAlign={'right'}
                               fontFamily={'regular'}
-                              fontSize={13}>{dateStringFormat('hh:mm', message.datetime_create)}</Text>
+                              fontSize={13}>{dateStringFormat( message.datetime_create, 'hh:mm')}</Text>
                     </Box>
                 </Box>
                 {isClientMessage &&

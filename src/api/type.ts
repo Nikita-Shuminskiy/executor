@@ -106,6 +106,8 @@ type UpdateExecutorPayloadType = {
     executor_logistic_partners_points_id?: string,
     patronymic_name?: string,
     consent_datetime?: string
+    account_number?: string
+    full_name?: string
 }
 
 enum PhotoCategoryEnum {

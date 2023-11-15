@@ -10,6 +10,7 @@ import notifee, {
 } from "@notifee/react-native";
 import * as Notifications from 'expo-notifications';
 import {routerConstants} from "../../constants/routerConstants";
+import {Platform} from "react-native";
 
 export async function allowsNotificationsAsync() {
     const settings = await Notifications.getPermissionsAsync();
@@ -156,7 +157,7 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
 const requestUserPermission = async () => {
     try {
         const authStatus = await messaging().requestPermission();
-        await messaging().registerDeviceForRemoteMessages();
+        // await messaging().registerDeviceForRemoteMessages();
         return authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     } catch (e) {

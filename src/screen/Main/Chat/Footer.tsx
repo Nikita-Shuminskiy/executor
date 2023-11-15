@@ -29,11 +29,13 @@ const Footer = ({scrollToBottomHandler, dialogLength}: FooterProps) => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                quality: 0.2,
                 allowsEditing: false
             })
             if (!result.canceled) {
                 const selectedAsset = result.assets[0]
                 setCurrentImg(selectedAsset.uri)
+                scrollToBottomHandler()
             }
         } catch (error) {
         }
@@ -92,6 +94,7 @@ const Footer = ({scrollToBottomHandler, dialogLength}: FooterProps) => {
                     </Box>
                     {
                         loading ? <ActivityIndicator
+                            style={{marginLeft: 10, marginBottom: 0}}
                             color={colors.blue}
                             size='large'
                         /> : <Link styleImg={styles.img} styleLink={{marginLeft: 10, marginBottom: 0}}

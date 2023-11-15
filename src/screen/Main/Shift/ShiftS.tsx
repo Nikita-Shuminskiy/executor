@@ -83,7 +83,7 @@ const ShiftS = observer(({navigation}: ShiftSProps) => {
     //executorSettings.executors.ready_for_orders
     const currentTitle = showDatePicker === '' ? 'Open a shift' : showDatePicker === 'snooze' ? 'Snooze shifts until' : 'Open a shift'
     return (
-        <BaseWrapperComponent>
+        <BaseWrapperComponent contentContainerStyle={{flex:1}} isKeyboardAwareScrollView={true}>
             <Box paddingX={4} mt={3}>
                 <HeaderGoBackTitle title={currentTitle}
                                    goBackPress={goBack}/>
