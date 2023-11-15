@@ -12,8 +12,10 @@ const checkInternet = async () => {
 	return netInfoState.isConnected
 }
 export const dateStringFormat = (date: string, formatDate: string) => {
+	console.log(date, 'date')
 	if(!date) return ''
 	const inputDate = new Date(date);
+	console.log(inputDate, 'inputDate')
 	return format(inputDate, formatDate, { locale: enUS })
 }
 export const getCurrentDate = (formats = 'DD/MM/YYYY') => {

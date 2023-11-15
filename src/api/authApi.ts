@@ -89,6 +89,9 @@ export const authApi = {
             }
         })
     },
+    async getStatusDocumentVerification() {
+        return await instance.get<ExamEducationResponseType<string>>(`executor_status`)
+    },
 }
 type ExamEducationResponseType<T> = {
     message: T

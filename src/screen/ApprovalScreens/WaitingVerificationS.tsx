@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {BaseWrapperComponent} from "../../components/baseWrapperComponent";
 import {observer} from "mobx-react-lite";
 import {CommonScreenPropsType} from "../../api/type";
@@ -13,18 +13,39 @@ import ListRedImg from "../../assets/Images/listRed.png";
 import Button from "../../components/Button";
 import {routerConstants} from "../../constants/routerConstants";
 import {useGoBack} from "../../utils/hook/useGoBack";
+import {authApi} from "../../api/authApi";
+import {useIsFocused} from "@react-navigation/native";
 
 type WaitingVerificationProps = CommonScreenPropsType & {}
 const WaitingVerificationS = observer(({navigation, route}: WaitingVerificationProps) => {
     const {executorSettings} = AuthStore
-    const isMissingPhoto = route?.params?.error //photos are missing
+    const [intervalId, setIntervalId] = useState<number | null>(null)
+    const isFocused = useIsFocused()
+    const [status, setStatus] = useState<{ message: string, status: 'ok' | 'waiting' | 'declined' } | null>(null)
     const onPressGoAddPhoto = () => {
         navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
     }
+    const isMissingPhoto = route?.params?.error || status?.status === 'declined' //photos are missing
     const goBackPress = () => {
         return true
     }
     useGoBack(goBackPress)
+    useEffect(() => {
+        if (isFocused) {
+            const intervalId = +setInterval(() => {
+                authApi.getStatusDocumentVerification().then((data: any) => {
+                    if (data.data.status === 'ok') {
+                        clearInterval(intervalId)
+                        return navigation.navigate(routerConstants.EDUCATIONAL_TEST, {exam_passed: false})
+                    }
+                    setStatus(data.data)
+                })
+            }, 10000)
+            setIntervalId(intervalId)
+        } else {
+            clearInterval(intervalId)
+        }
+    }, [isFocused]);
     return (
         <BaseWrapperComponent isKeyboardAwareScrollView={true} contentContainerStyle={{flexGrow: 1}} styleSafeArea={{
             backgroundColor: colors.white,
@@ -61,7 +82,7 @@ const WaitingVerificationS = observer(({navigation, route}: WaitingVerificationP
                                         Our admin marked photos that have troubles, you will be able to view marked photos
                                     </Text>
                                     <Text textAlign={'left'} mt={5} fontSize={17} fontFamily={'regular'}
-                                          color={colors.red}>“{executorSettings.executors.executor_approve_refuse_text}”</Text>
+                                          color={colors.red}>“{status?.message ?? executorSettings.executors.executor_approve_refuse_text}”</Text>
 
                                 </Box>
                             }
@@ -83,7 +104,7 @@ const WaitingVerificationS = observer(({navigation, route}: WaitingVerificationP
 });
 const styles = StyleSheet.create({
     imgWaiting: {
-        width: 212,
+        width: 216,
         height: 258,
     },
     imgListRed: {
