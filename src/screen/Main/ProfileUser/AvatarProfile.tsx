@@ -99,7 +99,7 @@ const AvatarProfile = ({photo}) => {
                 <Box position={'absolute'} w={24} borderRadius={50} zIndex={10} top={0} opacity={0.3} h={24}
                      backgroundColor={colors.black}/>
                 <Image alt={'photo'} w={6} h={6} position={'absolute'} zIndex={13} top={9} source={photoImg}/>
-                <Avatar  w={24} h={24} source={{
+                <Avatar w={24} h={24} source={{
                     uri: selectedImageUri,
                 }}/>
             </TouchableOpacity>

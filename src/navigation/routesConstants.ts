@@ -22,6 +22,7 @@ type Route = {
 };
 
 const authenticatedRoutes: Route[] = [
+    {component: OrdersS, name: routerConstants.ORDERS},
     {component: ApprovalInfoS, name: routerConstants.APPROVAL},
     {component: SelectLogisticPointS, name: routerConstants.SELECT_LOGISTIC_POINT},
     {component: DocumentsVerification, name: routerConstants.DOCUMENT_VERIFICATION},
@@ -32,7 +33,6 @@ const authenticatedRoutes: Route[] = [
     {component: ProfileUserS, name: routerConstants.PROFILE},
     {component: ChangeLanguageS, name: routerConstants.CHANGE_LANGUAGE},
     {component: ChangeCountryS, name: routerConstants.CHANGE_COUNTRY},
-    {component: OrdersS, name: routerConstants.ORDERS},
     {component: ChatS, name: routerConstants.CHAT_SUPPORT},
     {component: OrdersHistoryS, name: routerConstants.ORDERS_HISTORY},
     {component: ReceivingMethodS, name: routerConstants.RECEIVING_METHOD},

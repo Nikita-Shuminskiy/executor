@@ -62,8 +62,8 @@ const EducationalTestS = observer(({navigation, route}: EducationalTestSProps) =
 });
 const styles = StyleSheet.create({
     imgLogo: {
-        width: 296,
-        height: 316,
+        width: 276,
+        height: 296,
     },
     styleContainerBtn: {
         borderRadius: 28,

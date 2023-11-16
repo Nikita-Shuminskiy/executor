@@ -89,7 +89,7 @@ const Footer = ({scrollToBottomHandler, dialogLength}: FooterProps) => {
                      justifyContent={'space-evenly'}>
                     <Link styleImg={styles.img} styleLink={{marginRight: 10, marginBottom: 0}}
                           img={paperClippingImg} onPress={onGalleryHandler}/>
-                    <Box flex={1}>
+                    <Box flex={1} >
                         <TextInput multiline={true} value={message} onChangeText={setMessage} style={styles.input}/>
                     </Box>
                     {
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
         maxHeight: 140,
         paddingHorizontal: 16,
         paddingVertical: 7,
+        verticalAlign: 'middle'
     },
     img: {width: 40, height: 40},
 })

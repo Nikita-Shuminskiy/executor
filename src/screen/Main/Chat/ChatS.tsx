@@ -5,7 +5,7 @@ import rootStore from '../../../store/RootStore/root-store'
 import {NavigationProp, ParamListBase} from '@react-navigation/native'
 import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 import {Box} from 'native-base'
-import {ScrollView} from 'react-native'
+import {KeyboardAvoidingView, Platform, ScrollView} from 'react-native'
 import MessageViewer from '../../../components/list-viewer/MessageViewer/MessageViewer'
 import {DialogType} from '../../../api/ChatApi/type'
 import Footer from './Footer'
@@ -43,7 +43,7 @@ const ChatS = observer(({navigation}: ChatSProps) => {
             }, 100)
         }
     }
-    useKeyboardStatus(scrollToBottom);
+
     useEffect(() => {
         const id = +setInterval(() => {
             ChatStoreService.getDialog()
@@ -62,25 +62,27 @@ const ChatS = observer(({navigation}: ChatSProps) => {
             <Box paddingX={4} mt={2} mb={2}>
                 <HeaderGoBackTitle title={'Support'} goBackPress={goBack}/>
             </Box>
-            <ScrollView scrollEventThrottle={16} onScroll={handleScroll} ref={flatListRef}>
-                <Box paddingX={4} mb={6} mt={4} flex={1}>
-                    {
-                        !!dialog?.length &&
-                        dialog.map((message, key) => {
-                            return <MessageViewer key={`${message.message_id}-${key}`} message={message}/>
-                        })
-                    }
+            <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <ScrollView scrollEventThrottle={16} onScroll={handleScroll} ref={flatListRef}>
+                    <Box paddingX={4} mb={6} mt={4} flex={1}>
+                        {
+                            !!dialog?.length &&
+                            dialog.map((message, key) => {
+                                return <MessageViewer key={`${message.message_id}-${key}`} message={message}/>
+                            })
+                        }
+                    </Box>
+                </ScrollView>
+                {!isAtBottom && (
+                    <Box position={'absolute'} bottom={'15%'} right={5}>
+                        <Link onPress={scrollToBottom} img={arrowBottomImg} styleImg={{width: 42, height: 42}}/>
+                    </Box>
+                )}
+                <Box mb={2}>
+                    <Footer dialogLength={dialog?.length}
+                            scrollToBottomHandler={() => scrollToBottom()}/>
                 </Box>
-            </ScrollView>
-            {!isAtBottom && (
-                <Box position={'absolute'} bottom={'15%'} right={5}>
-                    <Link onPress={scrollToBottom} img={arrowBottomImg} styleImg={{width: 42, height: 42}}/>
-                </Box>
-            )}
-            <Box mb={2}>
-                <Footer dialogLength={dialog?.length}
-                        scrollToBottomHandler={() => scrollToBottom()}/>
-            </Box>
+            </KeyboardAvoidingView>
         </BaseWrapperComponent>
     )
 })
