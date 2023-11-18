@@ -17,7 +17,11 @@ export const authApi = {
     },
     async updateExecutorPhoto(photo: string) {
         const formData = await convertToFormDataImg(photo)
-        return await instance.post(`executor_register`, formData)
+        return await instance.post(`executor_register`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
     },
     async sendCode(payload: { phone: string }) {
         return await instance.post(`executor_code_send`, {}, {

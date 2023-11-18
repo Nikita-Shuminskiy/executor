@@ -41,7 +41,7 @@ const MessageViewer = memo(({message}: MessageViewerProps) => {
 
                     {message?.image &&
                         <TouchableOpacity onPress={() => setOpenImg(true)}>
-                            <Image style={styles.imgPhoto} source={{uri: imageUrl}}/>
+                            <Image style={styles.imgPhoto} resizeMethod={'auto'} resizeMode={'cover'} source={{uri: imageUrl}}/>
                         </TouchableOpacity>
                     }
                     <Box flexDirection={'row'} alignItems={'flex-end'} justifyContent={'space-between'}

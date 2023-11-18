@@ -33,6 +33,7 @@ const AvatarProfile = ({photo}) => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                quality: 0.4,
             })
 
             if (!result.canceled) {

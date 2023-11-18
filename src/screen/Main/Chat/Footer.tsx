@@ -23,7 +23,6 @@ const Footer = ({scrollToBottomHandler, dialogLength}: FooterProps) => {
     const onGalleryHandler = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
         if (permissionResult.granted === false) {
-            alert('Permission to access camera roll is required!')
             return
         }
         try {
@@ -77,7 +76,7 @@ const Footer = ({scrollToBottomHandler, dialogLength}: FooterProps) => {
                 }*/}
                 {
                     currentImg && <Box pt={2} flexDirection={'row'} alignItems={'center'} justifyContent={'flex-start'}>
-                        <ImageBackground alt={'img-gallery'} resizeMethod={'resize'} style={{width: 64, height: 64}}
+                        <ImageBackground alt={'img-gallery'}  style={{width: 64, height: 64}}
                                          borderRadius={16}
                                          source={{uri: currentImg}}>
                             <Link styleImg={{width: 24, height: 24}} styleLink={{position: 'absolute', right: -5, top: -10}}
