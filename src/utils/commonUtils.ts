@@ -1,7 +1,7 @@
 import * as Localization from 'expo-localization'
 import NetInfo from '@react-native-community/netinfo'
 import { enUS } from 'date-fns/locale'
-import { format, isBefore, subYears } from 'date-fns';
+import {format, isAfter, isBefore, parse, subYears} from 'date-fns';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {deviceStorage} from "./storage/storage";
 import {manipulateAsync, SaveFormat} from "expo-image-manipulator";
@@ -74,5 +74,16 @@ export const generateBoxShadowStyle = (
 			elevation,
 			shadowColor: shadowColorAndroid,
 		};
+	}
+};
+export const isFutureDate = (date: string) => {
+	if(!date) return false
+	try {
+		const currentDateTime = new Date();
+		const inputDateObj = parse(date, 'yyyy-MM-dd HH:mm:ss', currentDateTime);
+		return isAfter(inputDateObj, currentDateTime);
+
+	} catch (error) {
+		return false;
 	}
 };

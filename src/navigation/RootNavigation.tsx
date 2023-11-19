@@ -43,7 +43,6 @@ const RootNavigation = observer(() => {
     // ios eYrnYuEyREzoo6wPDtu4tn:APA91bEGbmKvFDSDSY1m5I8B7zJbddH9dnxKEhItD7h-j_bbbCt4uBxegutWh8fJSmwtaqGxgDCKbixjhpEYiRN6y9mlLkFAxozi2QCvOWJauQYGH4RZnFzdrWpDr8mf_Xwcg9aYhZbc
     useNotification(isAuth, navigate.navigate)
     useLayoutEffect(() => {
-        setIsLoading(LoadingEnum.fetching)
         AuthStoreService.getSettingExecutor(navigate?.navigate)
             .then((data) => {
                 if (data === 'not_token') {

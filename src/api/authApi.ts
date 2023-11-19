@@ -71,7 +71,10 @@ export const authApi = {
         return await instance.post(`executor_photos_for_approval`, formData, {
             params: {
                 type_of_photo: payload.type_of_photo
-            }
+            },
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
         })
     },
 

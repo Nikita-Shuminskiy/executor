@@ -14,17 +14,18 @@ type MessageViewerProps = {
 }
 const MessageViewer = memo(({message}: MessageViewerProps) => {
     const [openImg, setOpenImg] = useState(false)
+
     const isClientMessage = !message.admins_id
     const {executorSettings} = AuthStore
     const imageUrl = message.image
     const clientAvatar = executorSettings.executors.pic
-    const adminAvatar = `${BASE_URL}${message.admins_pic}`
+    const adminAvatar = message.admins_pic
     return (
         <>
             <Box flexDirection={'row'} mb={4} alignItems={'flex-end'}
                  justifyContent={isClientMessage ? 'flex-end' : 'flex-start'}>
                 {!isClientMessage &&
-                    <Image source={message.admins_pic ? {uri: adminAvatar} : mockImg}
+                    <Image source={message?.admins_pic ? {uri: adminAvatar} : mockImg}
                            resizeMode={'cover'}
                            style={{...styles.imgAvatar, marginRight: 4}}/>
                 }
