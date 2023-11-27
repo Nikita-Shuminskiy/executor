@@ -101,7 +101,7 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
                     messaging()
                         .getToken()
                         .then((token) => {
-                           // console.log(token)
+                            //console.log(token)
                             sendToken(token);
                         });
                 }

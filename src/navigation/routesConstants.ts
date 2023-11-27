@@ -10,11 +10,12 @@ import ExamS from "../screen/ApprovalScreens/EducationalTest/ExamS";
 import ProfileUserS from "../screen/Main/ProfileUser/ProfileUserS";
 import ChangeLanguageS from "../screen/Main/ChangeLanguageS";
 import ChangeCountryS from "../screen/Main/ChangeCountryS";
-import OrdersS from "../screen/Main/OrdersS";
+import OrdersS from "../screen/Main/Orders/OrdersS";
 import ChatS from "../screen/Main/Chat/ChatS";
 import OrdersHistoryS from "../screen/Main/OrdersHistory/OrdersHistoryS";
 import ReceivingMethodS from "../screen/Main/ReceivingMethodS";
-import ShiftS from "../screen/Main/Shift/ShiftS";
+import OpenShiftS from "../screen/Main/Shift/OpenShiftS";
+import CloseShiftS from "../screen/Main/Shift/CloseShiftS";
 
 type Route = {
     name: string;
@@ -36,7 +37,8 @@ const authenticatedRoutes: Route[] = [
     {component: ChatS, name: routerConstants.CHAT_SUPPORT},
     {component: OrdersHistoryS, name: routerConstants.ORDERS_HISTORY},
     {component: ReceivingMethodS, name: routerConstants.RECEIVING_METHOD},
-    {component: ShiftS, name: routerConstants.OPEN_SHIFT},
+    {component: OpenShiftS, name: routerConstants.OPEN_SHIFT},
+    {component: CloseShiftS, name: routerConstants.CLOSE_SHIFT},
 ];
 
 export default authenticatedRoutes;

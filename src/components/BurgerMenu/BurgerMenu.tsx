@@ -136,19 +136,16 @@ const BurgerMenu = observer(() => {
                                 text={'Change of logistics point'}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.OPEN_SHIFT)}
                                         img={exclamationMarkImg}
-                                        text={'Shift opening and freezing'}/>
+                                        text={'Open shift'}/>
+                            <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CLOSE_SHIFT)}
+                                        img={exclamationMarkImg}
+                                        text={'Close shift'}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
                                         img={exclamationMarkImg}
                                         text={'About swash'}/>
                             <Box mt={5} mb={3} alignItems={'center'}>
                                 <Button backgroundColor={colors.white} colorText={colors.black}
-                                        styleContainer={{
-                                            borderWidth: 1,
-                                            borderColor: colors.blue,
-                                            borderRadius: 28,
-                                            maxWidth: 280,
-                                            width: '100%',
-                                        }} styleText={{fontFamily: 'regular'}} onPress={onPressLogOut}
+                                        styleContainer={styles.btnContainer} styleText={{fontFamily: 'regular'}} onPress={onPressLogOut}
                                         title={'Log off'}/>
                             </Box>
                         </ScrollView>
@@ -167,6 +164,13 @@ const BurgerMenu = observer(() => {
 })
 
 const styles = StyleSheet.create({
+    btnContainer: {
+        borderWidth: 1,
+        borderColor: colors.blue,
+        borderRadius: 28,
+        maxWidth: 280,
+        width: '100%',
+    },
     background: {
         position: 'absolute',
         top: 0,

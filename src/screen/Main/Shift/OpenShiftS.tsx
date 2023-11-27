@@ -18,7 +18,7 @@ import {dateStringFormat} from "../../../utils/commonUtils";
 import {isNaN} from "formik";
 
 type ShiftSProps = CommonScreenPropsType & {}
-const ShiftS = observer(({navigation}: ShiftSProps) => {
+const OpenShiftS = observer(({navigation}: ShiftSProps) => {
     const {setIsMenuOpen} = useBurgerMenu()
     const {executorSettings} = AuthStore
     const {AuthStoreService} = rootStore
@@ -53,7 +53,7 @@ const ShiftS = observer(({navigation}: ShiftSProps) => {
         const formattedDateString = chosenDate ? chosenDate?.replace(/\//g, '-') + 'T00:00:00.000Z' : ''
         const dateObject = chosenDate ? new Date(formattedDateString) : new Date()
 
-        const formattedDate = isNaN(dateObject.getTime()) ? showDatePicker === 'snooze' ? executorSettings?.executors?.datetime_freeze_until : executorSettings?.executors?.datetime_workshift_until : format(dateObject, 'yyyy-MM-dd HH:mm:ss');
+        const formattedDate = isNaN(dateObject.getTime()) ? executorSettings?.executors?.datetime_workshift_until : format(dateObject, 'yyyy-MM-dd HH:mm:ss');
         const payload: ShiftSetupPayload = {}
 
         if (showDatePicker === 'open') {
@@ -61,9 +61,6 @@ const ShiftS = observer(({navigation}: ShiftSProps) => {
             if (numberShifts) {
                 payload["ready_for_orders"] = numberShifts
             }
-        }
-        if (showDatePicker === 'snooze') {
-            payload["datetime_freeze_until"] = formattedDate
         }
         AuthStoreService.sendShiftSetup(payload).then((data) => {
             if (data) {
@@ -90,38 +87,27 @@ const ShiftS = observer(({navigation}: ShiftSProps) => {
             </Box>
             <Box paddingX={10} flex={1} w={'100%'} justifyContent={'center'} alignItems={'center'}>
 
-                {
-                    showDatePicker ? <DatePicker onPressChoseDate={onOpenConfirmModal}
-                                                 onChangeDate={setChosenDate}
-                                                 values={chosenDate}
-                                                 amount={numberShifts}
-                                                 onChangeAmount={(val) => {
-                                                     setNumberShifts(String(val))
-                                                 }}
-                                                 inputNumber={showDatePicker === 'open'}
-                        /> :
-                        <>
-                            {
-                                (isFreeze || isWorkShift) && <Box alignItems={'center'} mb={10}>
-                                    <Text fontSize={22}
-                                          fontFamily={'regular'}>{isFreeze ? 'Snoozed until' : 'Shift is open until'}</Text>
-                                    <Text fontSize={32}
-                                          fontFamily={'semiBold'}>{dateStringFormat(isFreeze ? executorSettings?.executors?.datetime_freeze_until : executorSettings?.executors?.datetime_workshift_until, 'dd MMMM yyyy')}</Text>
-                                </Box>
-                            }
+                <>
+                    {
+                        (isFreeze || isWorkShift) && <Box alignItems={'center'} mb={10}>
+                            <Text fontSize={22}
+                                  fontFamily={'regular'}>{'Shift is open until'}</Text>
+                            <Text fontSize={32}
+                                  fontFamily={'semiBold'}>{dateStringFormat(isFreeze ? executorSettings?.executors?.datetime_freeze_until : executorSettings?.executors?.datetime_workshift_until, 'dd MMMM yyyy')}</Text>
+                        </Box>
+                    }
 
-                            <Box w={'100%'}>
-                                <Button onPress={onPressOpenShift} styleContainer={styles.styleContainerBtn}
-                                        title={isFreeze ? 'Stop snooze and open shift' : 'Open a shift'}
-                                        colorText={colors.white} backgroundColor={colors.blue}/>
-                            </Box>
-                            <Box w={'100%'}>
-                                <Button onPress={onPresSnoozeShift} styleContainer={styles.styleContainerBtn}
-                                        title={isFreeze ? 'Stop snooze' : 'Snooze shifts'}
-                                        colorText={colors.white} backgroundColor={colors.red}/>
-                            </Box>
-                        </>
-                }
+                    <Box w={'100%'}>
+                        <Button onPress={onPressOpenShift} styleContainer={styles.styleContainerBtn}
+                                title={isFreeze ? 'Stop snooze and open shift' : 'Open a shift'}
+                                colorText={colors.white} backgroundColor={colors.blue}/>
+                    </Box>
+                    <Box w={'100%'}>
+                        <Button onPress={onPresSnoozeShift} styleContainer={styles.styleContainerBtn}
+                                title={isFreeze ? 'Stop snooze' : 'Snooze shifts'}
+                                colorText={colors.white} backgroundColor={colors.red}/>
+                    </Box>
+                </>
             </Box>
             {
                 confirmFreeze &&
@@ -138,4 +124,4 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 })
-export default ShiftS;
+export default OpenShiftS;

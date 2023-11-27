@@ -7,6 +7,7 @@ export const routerConstants = {
     CHAT_SUPPORT: 'chat-support',
     RECEIVING_METHOD: 'receiving-method',
     OPEN_SHIFT: 'open-shift',
+    CLOSE_SHIFT: 'close-shifts',
     //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',

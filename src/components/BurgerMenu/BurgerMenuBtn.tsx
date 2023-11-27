@@ -19,14 +19,14 @@ const BergerMenuImg = observer(({openingForced}: any) => {
 	const toggleMenu = () => {
 		setIsMenuOpen(true)
 	}
-
+	const isFreeze = isFutureDate(executorSettings?.executors?.datetime_freeze_until) ||
+		!executorSettings?.executors?.datetime_workshift_until ||
+		!(+executorSettings.executors.ready_for_orders >= 1)
 	return (
 		<TouchableOpacity style={{ position: 'relative' }} onPress={toggleMenu}>
 			{
-				isFutureDate(executorSettings?.executors?.datetime_freeze_until) ||
-				!executorSettings?.executors?.datetime_workshift_until ||
-				+executorSettings.executors.ready_for_orders >=1 &&
-				<Box top={0} position={'absolute'} zIndex={1} left={'7%'} borderRadius={50} backgroundColor={colors.red} w={3} h={3}/>
+				isFreeze &&
+				<Box top={0} position={'absolute'} zIndex={10} left={'7%'} borderRadius={50} backgroundColor={colors.red} w={3} h={3}/>
 			}
 
 			<Image style={{width: 38, height: 38}} source={burgerImg}/>

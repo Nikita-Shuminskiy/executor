@@ -3,35 +3,37 @@ import {View, TextInput, TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyl
 import {Ionicons} from '@expo/vector-icons';
 import {colors} from "../assets/colors/colors";
 import {isNaN} from "formik";
-
+import plusImg from '../assets/Images/BurgerMenu/plus.png'
+import minusImg from '../assets/Images/BurgerMenu/minus.png'
+import {Image} from "native-base";
 const checkValidNumber = (value: string | number) => {
     const convertToNumber: number = typeof value === 'string' ? parseInt(value) : value
     return isNaN(convertToNumber) || convertToNumber < 0
 }
 type InputNumberProps = {
-    onChangeValue: (value: number) => void
+    onChangeValue: (value: string) => void
     values: number
     styleBtn?: StyleProp<ViewStyle>
 }
 const InputNumber = ({onChangeValue, values, styleBtn}: InputNumberProps) => {
     const handleIncrement = () => {
-        if (checkValidNumber(values)) return onChangeValue(1)
-        onChangeValue(values + 1)
+        if (checkValidNumber(values)) return onChangeValue(String(1))
+        onChangeValue(String(values + 1))
     };
 
     const handleDecrement = () => {
-        if (checkValidNumber(values) || values === 0) return onChangeValue(1)
-        onChangeValue(values - 1)
+        if (checkValidNumber(values) || values === 0) return onChangeValue(String(1))
+        onChangeValue(String(values - 1))
     };
     const onChangeText = (value: string) => {
         if(Number(value) > 365) return
-        if (checkValidNumber(value)) return onChangeValue(1)
-        onChangeValue(parseInt(value))
+        if (checkValidNumber(value)) return onChangeValue(String(1))
+        onChangeValue(String(value))
     }
     return (
         <View style={styles.container}>
             <TouchableOpacity style={[styles.button, styleBtn]} onPress={handleDecrement}>
-                <Ionicons name="ios-remove" size={22} color={colors.black}/>
+                <Image alt={'img-minus'} source={minusImg} w={8} h={8}/>
             </TouchableOpacity>
             <TextInput
                 style={styles.input}
@@ -40,7 +42,7 @@ const InputNumber = ({onChangeValue, values, styleBtn}: InputNumberProps) => {
                 onChangeText={onChangeText}
             />
             <TouchableOpacity style={[styles.button, styleBtn]} onPress={handleIncrement}>
-                <Ionicons name="ios-add" size={22} color={colors.black}/>
+                <Image alt={'img-plus'} source={plusImg} w={8} h={8}/>
             </TouchableOpacity>
         </View>
     );
@@ -48,6 +50,7 @@ const InputNumber = ({onChangeValue, values, styleBtn}: InputNumberProps) => {
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -57,18 +60,18 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        fontSize: 24,
+        fontSize: 56,
+        color: colors.blue,
+        fontFamily: 'semiBold',
         textAlign: 'center',
     },
     button: {
-        height: 40,
-        width: 40,
+        height: 72,
+        width: 72,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: colors.blue,
-        backgroundColor: 'transparent',
-        borderRadius: 12,
+        backgroundColor: colors.grayBright,
+        borderRadius: 36,
     },
 });
 
