@@ -1,21 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {BaseWrapperComponent} from "../../../components/baseWrapperComponent";
 import {Box, Image, Text} from "native-base";
 import {observer} from "mobx-react-lite";
-import {CommonScreenPropsType} from "../../../api/type";
+import {CommonScreenPropsType, LastStep} from "../../../api/type";
 import BurgerMenuBtn from "../../../components/BurgerMenu/BurgerMenuBtn";
 import {colors} from "../../../assets/colors/colors";
 import {StatusBar} from "expo-status-bar";
 import {useGoBack} from "../../../utils/hook/useGoBack";
 import {isFutureDate} from "../../../utils/commonUtils";
 import AuthStore from "../../../store/AuthStore/auth-store";
-import {ImageBackground, Platform, StyleSheet} from "react-native";
+import {Dimensions, FlatList, ImageBackground, Platform, StyleSheet} from "react-native";
 import FreezeModal from "./FreezeModal";
 import {routerConstants} from "../../../constants/routerConstants";
 import {useFocusEffect} from "@react-navigation/native";
 import OpenShiftModal from "../Shift/OpenShiftModal";
 import {useIsFocused} from '@react-navigation/native';
 import backgroundOrderImg from '../../../assets/Images/orders/backgroundOrder.png'
+import OrderViewer from "../../../components/list-viewer/OrderViewer/OrderViewer";
 
 type OrdersSProps = CommonScreenPropsType & {}
 const OrdersS = observer(({navigation, route}: OrdersSProps) => {
@@ -24,6 +25,7 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     const isFocused = useIsFocused();
     const isOpenMenu = route.params?.from === 'open_menu'
     const {executorSettings} = AuthStore
+    console.log(executorSettings.units)
     const goBackPress = () => {
         return true
     }
@@ -42,8 +44,14 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
         }
         setIsFreeze(false)
     }, [isFocused]);
-
-
+    const onPressDetails = useCallback((order: any) => {
+        //OrdersStoreService.getOrderReportDetail(order.id)
+        //onPressOrderDetails(navigation, order)
+    }, [])
+    const renderItem = useCallback(({item, index}: { item: any, index: number }) => {
+        if (item.last_step === LastStep.admin_closed_order || item.last_step === LastStep.client_confirm) return
+        return <OrderViewer onPressDetails={onPressDetails} order={item} index={index}/>
+    }, [])
     return (
         <>
             <BaseWrapperComponent styleSafeArea={{
@@ -59,57 +67,19 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
                                 <BurgerMenuBtn openingForced={isOpenMenu}/>
                                 <Box backgroundColor={colors.white} mt={3} alignItems={'center'} p={3} w={'50%'}
                                      borderRadius={50} borderWidth={5} borderColor={'#E8F5FE'}>
-                                    <Text color={colors.blue} fontSize={20} fontFamily={'semiBold'}>The shift is
+                                    <Text color={colors.blue} fontSize={17} fontFamily={'semiBold'}>The shift is
                                         open</Text>
                                 </Box>
                             </Box>
                         </ImageBackground>
 
                     </Box>
-                    <Box borderTopLeftRadius={16} p={4} borderTopRightRadius={16} backgroundColor={colors.white}>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
-                        <Text>12121212121212121</Text>
+                    <Box borderTopLeftRadius={16} mb={2} style={{minHeight:Dimensions.get('window').height - 191}} borderTopRightRadius={16} backgroundColor={colors.white}>
+                        <FlatList scrollEnabled={false} data={[1,2,3]} renderItem={renderItem}/>
                     </Box>
 
                 </Box>
-                {/*  <FreezeModal freezeDate={executorSettings?.executors?.datetime_freeze_until}
+                 {/* <FreezeModal freezeDate={executorSettings?.executors?.datetime_freeze_until}
                              onPress={() => {
                                  setIsFreeze(false)
                                  setIsOpenShiftModal(true)
@@ -123,11 +93,5 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
         </>
     );
 });
-const styles = StyleSheet.create({
-    styleContainerBtn: {
-        borderRadius: 28,
-        height: 40,
-        minHeight: 0
-    },
-})
+
 export default OrdersS;

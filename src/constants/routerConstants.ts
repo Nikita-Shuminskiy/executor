@@ -8,6 +8,9 @@ export const routerConstants = {
     RECEIVING_METHOD: 'receiving-method',
     OPEN_SHIFT: 'open-shift',
     CLOSE_SHIFT: 'close-shifts',
+    ///// statuses order
+    EXECUTOR_MAP: 'executor-map',
+    IN_PROGRESS: 'in-progress',
     //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',

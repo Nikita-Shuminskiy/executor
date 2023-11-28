@@ -25,10 +25,10 @@ const OpenShiftModal = ({visible, onClose}: OpenShiftModalProps) => {
         })
     }
     return (
-        <Modal isOpen={visible} paddingX={4} onClose={onClose}>
+        <Modal isOpen={visible} onClose={onClose}>
             <BlurView style={styles.blurView} intensity={40}>
                 <Background onClose={onClose}/>
-                <Box w={'100%'} style={{maxHeight: isConfirmation ? 344 : 407, height: '100%', borderWidth: 6}} padding={7}
+                <Box w={'95%'} style={{maxHeight: isConfirmation ? 344 : 407, height: '100%', borderWidth: 6}} padding={7}
                      borderColor={'#E4E4E4'} backgroundColor={colors.white} borderRadius={24}
                      justifyContent={'space-between'}
                      alignItems={'center'}>
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
+        alignItems: 'center',
         justifyContent: 'center'
     },
     styleContainerBtn: {
