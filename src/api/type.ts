@@ -75,8 +75,42 @@ type ExecutorSettingType = {
     units: UnitType[];
     executor_photos_for_approval: PhotosApprovalType[];
     message: string
+    orders: OrderType[]
 };
+export type OrderType = {
+    add_hypo: number;
+    add_iron: number;
+    amount: string;
+    basic_pay: string;
+    client_logistic_partners_points_id: number;
+    clients_id: number;
+    country: string;
+    date_estimated_ready: string | null;
+    datetime_closed: string | null;
+    datetime_register: string;
+    executors_id: number;
+    id: number;
+    last_step: LAST_STEP_ORDER_ENUM;
+    reward: string;
+    services_pay: string;
+};
+enum LAST_STEP_ORDER_ENUM {
+    client_received = 'client_received', // просим оценки
+    auction_open = 'auction_open', // ищем исполнителя
+    executor_perfomed = 'executor_perfomed',// отнеси и сдай
+    client_must_get = 'client_must_get',// забери
+    executor_confirm_client_must_pay = 'executor_confirm&client_must_pay',// оплати
+    executor_done_client_must_pay = 'executor_done&client_must_pay',// оплати
+    client_sent = 'client_sent',// в процессе
+    executor_must_get = 'executor_must_get',// в процессе
+    executor_received = 'executor_received',// в процессе
+    executor_confirm = 'executor_confirm',// в процессе
+    executor_done = 'executor_done',// в процессе
+    executor_sent = 'executor_sent',// в процессе
 
+    admin_closed_order = 'admin_closed_order',// не показывать
+    client_confirm = 'client_confirm',// не показывать
+}
 type LogisticsPointType = {
     id: string;
     logistic_partners_id: string;
@@ -134,27 +168,7 @@ type CommonScreenPropsType = {
     route: any
 }
 type PhotoType = { 'filename': string, 'id': string }
-enum LastStep {
-    client_received = 'client_received', // просим оценки
-    auction_open = 'auction_open', // ищем исполнителя
-    executor_perfomed = 'executor_perfomed',// отнеси и сдай
-    client_must_get = 'client_must_get',// забери
 
-    executor_confirm_client_must_pay = 'executor_confirm&client_must_pay',// оплати
-    executor_done_client_must_pay = 'executor_done&client_must_pay',// оплати
-
-
-    client_sent = 'client_sent',// в процессе
-    executor_must_get = 'executor_must_get',// в процессе
-    executor_received = 'executor_received',// в процессе
-    executor_confirm = 'executor_confirm',// в процессе
-    executor_done = 'executor_done',// в процессе
-    executor_sent = 'executor_sent',// в процессе
-
-    admin_closed_order = 'admin_closed_order',// не показывать
-    client_confirm = 'client_confirm',// не показывать
-
-}
  enum StatusOrder {
     EDITABLE = 'editable',
     IN_PROCESS = 'in_process',
@@ -163,7 +177,7 @@ enum LastStep {
 export {
     ShiftSetupPayload,
     StatusOrder,
-    LastStep,
+    LAST_STEP_ORDER_ENUM,
     PhotoType,
     ApprovedEnum,
     PhotosApprovalType,

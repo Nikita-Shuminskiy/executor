@@ -2,7 +2,7 @@ import RootStore from '../../RootStore'
 import {LoadingEnum} from '../../types/types'
 import {routerConstants} from '../../../constants/routerConstants'
 import {checkToken} from "../../../utils/commonUtils";
-import {LastStep, StatusOrder} from "../../../api/type";
+import {LAST_STEP_ORDER_ENUM, StatusOrder} from "../../../api/type";
 
 
 export class OrdersStoreService {
@@ -82,7 +82,7 @@ export class OrdersStoreService {
         }
     }
 
-    async getOrderReportDetail(orders_id: string) {
+    async getOrderReportDetail(orders_id: number) {
         try {
             await this.rootStore.OrdersStore.getOrderReportDetail(orders_id)
         } catch (e) {
@@ -109,7 +109,7 @@ export class OrdersStoreService {
         this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
         try {
             const data = await this.rootStore.OrdersStore.getOrdersHistory()
-            const closedOrders = data.orders.filter((order) => order.last_step === LastStep.admin_closed_order)
+            const closedOrders = data.orders.filter((order) => order.last_step === LAST_STEP_ORDER_ENUM.admin_closed_order)
             await this.rootStore.OrdersStore.setClosedOrder(closedOrders)
             return true
         } catch (e) {

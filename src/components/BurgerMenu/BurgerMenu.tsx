@@ -17,6 +17,7 @@ import AuthStore from '../../store/AuthStore/auth-store'
 import {observer} from 'mobx-react-lite'
 import {useNavigation} from '@react-navigation/native'
 import {routerConstants} from '../../constants/routerConstants'
+import {isFutureDate} from "../../utils/commonUtils";
 
 const BurgerMenu = observer(() => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
@@ -26,6 +27,9 @@ const BurgerMenu = observer(() => {
     const {AuthStoreService, OrdersStoreService, ChatStoreService} = rootStore
     const {executorSettings, clearStore} = AuthStore
     const navigation = useNavigation<any>()
+    const isFreeze = isFutureDate(executorSettings?.executors?.datetime_freeze_until) ||
+        !executorSettings?.executors?.datetime_workshift_until ||
+        !(+executorSettings.executors.ready_for_orders >= 1)
     const toggleMenu = () => {
         Animated.timing(menuPosition, {
             toValue,
@@ -135,11 +139,12 @@ const BurgerMenu = observer(() => {
                                 img={exclamationMarkImg}
                                 text={'Change of logistics point'}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.OPEN_SHIFT)}
+                                        isFreeze={isFreeze}
                                         img={exclamationMarkImg}
                                         text={'Open shift'}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CLOSE_SHIFT)}
                                         img={exclamationMarkImg}
-                                        text={'Close shift'}/>
+                                        text={'Freeze shift'}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
                                         img={exclamationMarkImg}
                                         text={'About swash'}/>
@@ -162,7 +167,7 @@ const BurgerMenu = observer(() => {
         </>
     )
 })
-
+/*добавить крастную точкy*/
 const styles = StyleSheet.create({
     btnContainer: {
         borderWidth: 1,

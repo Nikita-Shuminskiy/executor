@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {BaseWrapperComponent} from "../../../components/baseWrapperComponent";
-import {Box, Text} from "native-base";
+import {Box, Image, Text} from "native-base";
 import HeaderGoBackTitle from "../../../components/HeaderGoBackTitle";
 import {CommonScreenPropsType, ShiftSetupPayload} from "../../../api/type";
 import {useGoBack} from "../../../utils/hook/useGoBack";
@@ -16,103 +16,89 @@ import FreezeModal from "./FreezeModal";
 import {useBurgerMenu} from "../../../components/BurgerMenu/BurgerMenuContext";
 import {dateStringFormat} from "../../../utils/commonUtils";
 import {isNaN} from "formik";
+import arrowBackImg from "../../../assets/Images/arrowBackBlue.png";
+import InputNumber from "../../../components/InputNumber";
 
 type ShiftSProps = CommonScreenPropsType & {}
 const OpenShiftS = observer(({navigation}: ShiftSProps) => {
     const {setIsMenuOpen} = useBurgerMenu()
     const {executorSettings} = AuthStore
     const {AuthStoreService} = rootStore
-    const isFreeze = !!executorSettings?.executors?.datetime_freeze_until
-    const isWorkShift = !!executorSettings?.executors?.datetime_workshift_until
-    const [showDatePicker, setShowDatePicker] = useState<'open' | 'snooze' | ''>('')
-    const [confirmFreeze, setConfirmFreeze] = useState(false)
-    const [chosenDate, setChosenDate] = useState(
-        isFreeze ? executorSettings?.executors?.datetime_freeze_until : executorSettings?.executors?.datetime_workshift_until
-    )
-    const [numberShifts, setNumberShifts] = useState('1')
+    const [openShiftsValue, setOpenShiftsValue] = useState('1')
+    const [isConfirmation, setIsConfirmation] = useState(false)
     const goBack = () => {
-        if (showDatePicker) {
-            setShowDatePicker('')
-            setNumberShifts('')
-            return true
-        }
         navigation.goBack()
         return true
     }
     useGoBack(goBack)
+
     const onPressOpenShift = () => {
-        setChosenDate(executorSettings?.executors?.datetime_workshift_until)
-        setShowDatePicker('open')
-    }
-    const onPresSnoozeShift = () => {
-        setChosenDate(executorSettings?.executors?.datetime_freeze_until)
-        setShowDatePicker('snooze')
-    }
-    const onPressChoseDate = () => {
-        setConfirmFreeze(false)
-        const formattedDateString = chosenDate ? chosenDate?.replace(/\//g, '-') + 'T00:00:00.000Z' : ''
-        const dateObject = chosenDate ? new Date(formattedDateString) : new Date()
-
-        const formattedDate = isNaN(dateObject.getTime()) ? executorSettings?.executors?.datetime_workshift_until : format(dateObject, 'yyyy-MM-dd HH:mm:ss');
-        const payload: ShiftSetupPayload = {}
-
-        if (showDatePicker === 'open') {
-            payload["datetime_workshift_until"] = formattedDate
-            if (numberShifts) {
-                payload["ready_for_orders"] = numberShifts
-            }
-        }
-        AuthStoreService.sendShiftSetup(payload).then((data) => {
+        AuthStoreService.sendShiftSetup({ready_for_orders: openShiftsValue}).then((data) => {
             if (data) {
-                setShowDatePicker('')
-                setNumberShifts('1')
                 setIsMenuOpen(true)
             }
         })
     }
-    const onOpenConfirmModal = () => {
-        if (showDatePicker === 'open') {
-            onPressChoseDate()
-            return
-        }
-        setConfirmFreeze(true)
-    }
-    //executorSettings.executors.ready_for_orders
-    const currentTitle = showDatePicker === '' ? 'Open a shift' : showDatePicker === 'snooze' ? 'Snooze shifts until' : 'Open a shift'
+
     return (
-        <BaseWrapperComponent contentContainerStyle={{flex:1}} isKeyboardAwareScrollView={true}>
+        <BaseWrapperComponent>
             <Box paddingX={4} mt={3}>
-                <HeaderGoBackTitle title={currentTitle}
+                <HeaderGoBackTitle title={''}
                                    goBackPress={goBack}/>
             </Box>
-            <Box paddingX={10} flex={1} w={'100%'} justifyContent={'center'} alignItems={'center'}>
-
-                <>
-                    {
-                        (isFreeze || isWorkShift) && <Box alignItems={'center'} mb={10}>
-                            <Text fontSize={22}
-                                  fontFamily={'regular'}>{'Shift is open until'}</Text>
-                            <Text fontSize={32}
-                                  fontFamily={'semiBold'}>{dateStringFormat(isFreeze ? executorSettings?.executors?.datetime_freeze_until : executorSettings?.executors?.datetime_workshift_until, 'dd MMMM yyyy')}</Text>
+            <Box  paddingX={4}
+                 borderColor={'#E4E4E4'} backgroundColor={colors.white}
+                  flex={1}
+                 justifyContent={'center'}
+                 alignItems={'center'}>
+                {
+                    isConfirmation ? <>
+                        <Text fontSize={34} fontFamily={'semiBold'}>Confirmation</Text>
+                        <Text fontSize={16} color={colors.gray} textAlign={'center'} fontFamily={'regular'}>
+                            Are you sure you want to open a shift with{' '}
+                            <Text fontSize={17} fontFamily={'semiBold'} color={colors.black}>{openShiftsValue} orders?</Text> This number cannot be changed later
+                        </Text>
+                        <Box w={'80%'} mt={4} justifyContent={'center'} flexDirection={'row'} alignItems={'center'}>
+                            <Button styleContainer={{
+                                borderWidth: 1,
+                                width: 56,
+                                height: 56,
+                                borderColor: colors.blue,
+                                borderRadius: 28,
+                                marginRight: 8
+                            }} onPress={() => setIsConfirmation(false)}>
+                                <Image alt={'arrow-back'} source={arrowBackImg} w={5} h={5}/>
+                            </Button>
+                            <Button onPress={onPressOpenShift} styleContainer={styles.styleContainerBtn}
+                                    title={'Confirm'}
+                                    colorText={colors.white} backgroundColor={colors.blue}/>
                         </Box>
-                    }
+                    </> : <>
+                        <Box alignItems={'center'}>
+                            <Text fontSize={34} fontFamily={'semiBold'}>Open the shift</Text>
+                            <Text fontSize={16} color={colors.gray} fontFamily={'regular'}>Enter the number of
+                                orders in
+                                this
+                                shift</Text>
+                        </Box>
+                        {
+                            openShiftsValue && <Box w={'100%'} justifyContent={'center'} alignItems={'center'}>
+                                <InputNumber
+                                    values={Number(openShiftsValue)}
+                                    onChangeValue={setOpenShiftsValue}
+                                />
+                                <Box w={'100%'}  mt={4} justifyContent={'center'} alignItems={'center'}>
+                                    <Button onPress={() => setIsConfirmation(true)}
+                                            styleContainer={styles.styleContainerBtn}
+                                            title={'Open'}
+                                            colorText={colors.white} backgroundColor={colors.blue}/>
+                                </Box>
+                            </Box>
+                        }
+                    </>
+                }
 
-                    <Box w={'100%'}>
-                        <Button onPress={onPressOpenShift} styleContainer={styles.styleContainerBtn}
-                                title={isFreeze ? 'Stop snooze and open shift' : 'Open a shift'}
-                                colorText={colors.white} backgroundColor={colors.blue}/>
-                    </Box>
-                    <Box w={'100%'}>
-                        <Button onPress={onPresSnoozeShift} styleContainer={styles.styleContainerBtn}
-                                title={isFreeze ? 'Stop snooze' : 'Snooze shifts'}
-                                colorText={colors.white} backgroundColor={colors.red}/>
-                    </Box>
-                </>
             </Box>
-            {
-                confirmFreeze &&
-                <FreezeModal onSend={onPressChoseDate} visible={confirmFreeze} onClose={() => setConfirmFreeze(false)}/>
-            }
         </BaseWrapperComponent>
     );
 });

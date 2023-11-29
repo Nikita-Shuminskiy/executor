@@ -131,7 +131,6 @@ export class AuthStore {
     }
     sendShiftSetup = async (date: ShiftSetupPayload) => {
         const {data} = await authApi.sendShiftSetup(date)
-        console.log(data)
         return data
     }
     constructor() {

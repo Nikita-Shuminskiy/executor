@@ -12,7 +12,9 @@ export const colors: { [key: string]: string } = {
 	blue: '#0094FF',
 	aliceBlue: '#E8F5FE',
 	orangeVivid: '#FFAA04',
+	orangeVeryLight: 'rgba(255,138,0,0.08)',
 	orangeLight: '#FFF3E0',
 	orange: '#FF9900',
 	greenBright: '#19D72C',
+	greenVeryLight: 'rgba(12,200,26,0.08)',
 }

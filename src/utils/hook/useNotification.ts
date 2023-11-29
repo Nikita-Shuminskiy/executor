@@ -101,7 +101,7 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
                     messaging()
                         .getToken()
                         .then((token) => {
-                            //console.log(token)
+                           // console.log(token)
                             sendToken(token);
                         });
                 }
@@ -137,6 +137,7 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
                 detail: {notification},
             } = event
             if (type === EventType.PRESS || event?.detail?.pressAction?.id) {
+                console.log(notification, 'notification')
                 navigate(routerConstants[notification?.data.route as string])
                 await notifee.cancelNotification(notification.id)
             }

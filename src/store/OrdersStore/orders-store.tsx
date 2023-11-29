@@ -34,7 +34,7 @@ export class OrdersStore {
 		})
 	}
 
-	 getOrderReportDetail  = async (orders_id: string): Promise<any> => {
+	 getOrderReportDetail  = async (orders_id: number): Promise<any> => {
 		const { data } = await ordersApi.getOrderReportDetail({
 			orders_id,
 		})

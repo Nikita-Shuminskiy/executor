@@ -5,48 +5,49 @@ import waitingImg from '../../../assets/Images/orders/waiting.png'
 import {Text} from 'native-base'
 import {colors} from '../../../assets/colors/colors'
 import {dateStringFormat} from '../../../utils/commonUtils'
-import {LastStep} from "../../../api/type";
+import {LAST_STEP_ORDER_ENUM} from "../../../api/type";
 
 
-export function getLastStepStatusOrder(lastStep, date_esimated: string) {
+export function getLastStepStatusOrder(lastStep: string, date_esimated: string) {
     switch (lastStep) {
-        case LastStep.executor_perfomed:
+        case LAST_STEP_ORDER_ENUM.executor_perfomed:
             return {
                 img: takeYourThingsImg,
-                text: <Text color={colors.orangeVivid}>TakeYourThingsToParsel</Text>,
+                text: <Text color={colors.orangeVivid}>Take your things to parsel</Text>,
             }
-        case LastStep.client_must_get:
+        case LAST_STEP_ORDER_ENUM.client_must_get:
             return {
                 img: takeYourThingsFromImg,
-                text: <Text color={colors.greenBright}>TakeThingsFromParcelLocker</Text>,
+                text: <Text color={colors.greenBright}>TakeThings from parcelLocker</Text>,
             }
-        case LastStep.executor_confirm_client_must_pay:
+        case LAST_STEP_ORDER_ENUM.executor_confirm_client_must_pay:
             return {
                 img: paymentRedImg,
-                text: <Text color={colors.red}>PaymentRequired</Text>,
+                text: <Text color={colors.red}>Payment required</Text>,
             }
 
-        case LastStep.executor_done_client_must_pay:
-        case LastStep.auction_open:
-        case LastStep.client_received:
-        case LastStep.client_sent:
-        case LastStep.executor_received:
-        case LastStep.executor_confirm:
-        case LastStep.executor_done:
-        case LastStep.executor_must_get:
-        case LastStep.executor_sent:
+        case LAST_STEP_ORDER_ENUM.executor_done_client_must_pay:
+        case LAST_STEP_ORDER_ENUM.auction_open:
+        case LAST_STEP_ORDER_ENUM.client_received:
+        case LAST_STEP_ORDER_ENUM.client_sent:
+        case LAST_STEP_ORDER_ENUM.executor_received:
+        case LAST_STEP_ORDER_ENUM.executor_confirm:
+        case LAST_STEP_ORDER_ENUM.executor_done:
+        case LAST_STEP_ORDER_ENUM.executor_must_get:
+        case LAST_STEP_ORDER_ENUM.executor_sent:
             return {
                 img: takeYourThingsFromImg,
                 text: <Text
-                    color={colors.greenBright}>WillBeReady {dateStringFormat('dd MMMM yyyy', date_esimated)}</Text>,
+                    color={colors.greenBright}>Will be ready</Text>,
             }
-        case LastStep.admin_closed_order:
-        case LastStep.client_confirm:
+        case LAST_STEP_ORDER_ENUM.admin_closed_order:
+        case LAST_STEP_ORDER_ENUM.client_confirm:
             return {} // не показывать
         default:
+            console.log(lastStep)
             return {
                 img: waitingImg,
-                text: <Text color={colors.grayLight}>WaitingForContinuation</Text>,
+                text: <Text color={colors.grayLight}>Waiting for continuation</Text>,
             }
     }
 }

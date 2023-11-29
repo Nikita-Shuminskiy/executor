@@ -21,11 +21,14 @@ const CloseShiftS = observer(({navigation}: CloseShiftSProps) => {
     const {executorSettings} = AuthStore
     const {setIsMenuOpen} = useBurgerMenu()
     const {AuthStoreService} = rootStore
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const onPresSnoozeShift = () => {
-        setShowDatePicker(true)
-    }
+    const [chosenDate, setChosenDate] = useState('')
     const onChangeDateHandler = (chosenDate: string) => {
+        setChosenDate(chosenDate)
+    }
+    const goBack = () => {
+        navigation.goBack()
+    }
+    const sendData = () => {
         const formattedDateString = chosenDate ? chosenDate?.replace(/\//g, '-') + 'T00:00:00.000Z' : ''
         const dateObject = chosenDate ? new Date(formattedDateString) : new Date()
         const formattedDate = isNaN(dateObject.getTime()) ? executorSettings?.executors?.datetime_workshift_until : format(dateObject, 'yyyy-MM-dd HH:mm:ss');
@@ -35,15 +38,8 @@ const CloseShiftS = observer(({navigation}: CloseShiftSProps) => {
             }
         })
     }
-    const goBack = () => {
-        navigation.goBack()
-    }
-    const onClose = () => {
-        setShowDatePicker(false)
-    }
-    console.log(executorSettings?.executors?.datetime_freeze_until)
     return (
-        <BaseWrapperComponent>
+        <BaseWrapperComponent isKeyboardAwareScrollView={true}>
             <Box paddingX={4} mt={3}>
                 <HeaderGoBackTitle title={'Snooze shifts until'}
                                    goBackPress={goBack}/>
@@ -51,25 +47,26 @@ const CloseShiftS = observer(({navigation}: CloseShiftSProps) => {
                 <Text mt={2} fontSize={17} fontFamily={'regular'} color={colors.gray}>Specify by what date you will
                     stop
                     receiving notifications with an offer to open a shift</Text>
-                <Text mt={7} w={'70%'} fontSize={28} borderBottomWidth={1} borderColor={colors.grayLight}
-                      fontFamily={'semiBold'}
-                      color={colors.blue}>{dateStringFormat(executorSettings?.executors?.datetime_freeze_until, 'dd MMMM yyyy')}</Text>
-                <Box mt={9} w={'100%'}>
-                    <Button onPress={onPresSnoozeShift} styleContainer={styles.styleContainerBtn}
+                {
+                    executorSettings?.executors?.datetime_freeze_until &&
+                    <Text mt={7} w={'70%'} fontSize={28} borderBottomWidth={1} borderColor={colors.grayLight}
+                          fontFamily={'semiBold'}
+                          color={colors.blue}>{dateStringFormat(executorSettings?.executors?.datetime_freeze_until, 'dd MMMM yyyy')}</Text>
+                }
+                <Box mt={3}>
+                    <DatePicker
+                        onChangeDate={onChangeDateHandler}
+                        values={executorSettings?.executors?.datetime_freeze_until}
+                    />
+                </Box>
+                <Box mt={3} w={'100%'}>
+                    <Button onPress={sendData} styleContainer={styles.styleContainerBtn}
                             colorText={colors.white} backgroundColor={colors.red}>
                         <Image alt={'img'} style={{width: 24, height: 24}} source={snowflakeImg}/>
                         <Text ml={2} fontSize={15} color={colors.white} fontFamily={'semiBold'}>Suspend work</Text>
                     </Button>
                 </Box>
             </Box>
-            {
-                showDatePicker && <DatePicker
-                    onClose={onClose}
-                    onChangeDate={onChangeDateHandler}
-                    values={executorSettings?.executors?.datetime_freeze_until}
-                    isOpen={!!showDatePicker}
-                />
-            }
         </BaseWrapperComponent>
     );
 })

@@ -6,16 +6,15 @@ import arrowBlue from '../../../assets/Images/order/arrowRightBlue.png'
 import { getLastStepStatusOrder } from './utils'
 import { format } from 'date-fns'
 import {observer} from "mobx-react-lite";
-import {LastStep} from "../../../api/type";
+import {LAST_STEP_ORDER_ENUM, OrderType} from "../../../api/type";
 
 type OrderViewerProps = {
-	order: any
+	order: OrderType
 	index: number
 	onPressDetails: (order: any) => void
 }
 const OrderViewer = observer(({ order, onPressDetails, index }: OrderViewerProps) => {
-
-	const getCurrData = getLastStepStatusOrder(LastStep.executor_perfomed, order.date_estimated_ready)
+	const getCurrData = getLastStepStatusOrder(order.last_step?.trim(), order.date_estimated_ready)
 	return (
 		<Box p={2} mt={index === 0 ? 6 : 2} style={styles.shadow}  borderRadius={20}>
 			<Box flexDirection={'row'} mb={2} alignItems={'center'} justifyContent={'flex-start'}>
@@ -24,7 +23,7 @@ const OrderViewer = observer(({ order, onPressDetails, index }: OrderViewerProps
 				</Box>
 				<Box>
 					<Text fontFamily={'semiBold'} fontSize={17}>Swash{' '}#{order.id}</Text>
-					<Text fontFamily={'regular'} fontSize={13}>{getCurrData?.text}</Text>
+					<Text fontFamily={'regular'} fontSize={13}>{getCurrData?.text} {order.last_step?.trim()}</Text>
 				</Box>
 			</Box>
 			<Box>

@@ -7,7 +7,7 @@ import doneImg from '../../../assets/Images/orders/doneGreen.png'
 import closeImg from '../../../assets/Images/orders/closeRed.png'
 import {dateStringFormat} from '../../../utils/commonUtils'
 import {observer} from "mobx-react-lite";
-import {LastStep} from "../../../api/type";
+import {LAST_STEP_ORDER_ENUM} from "../../../api/type";
 
 
 type OrderHistoryViewerProps = {
@@ -15,7 +15,7 @@ type OrderHistoryViewerProps = {
     order: any
 }
 const OrderHistoryViewer = observer(({onPressDetails, order}: OrderHistoryViewerProps) => {
-    const isClosedOrder = order.last_step === LastStep.admin_closed_order
+    const isClosedOrder = order.last_step === LAST_STEP_ORDER_ENUM.admin_closed_order
     return (
         <Box borderWidth={1} p={2} mb={2} borderColor={colors.grayBright} borderRadius={20}>
             <Box flexDirection={'row'} mb={2} alignItems={'center'}>

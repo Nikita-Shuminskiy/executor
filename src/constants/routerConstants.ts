@@ -9,8 +9,8 @@ export const routerConstants = {
     OPEN_SHIFT: 'open-shift',
     CLOSE_SHIFT: 'close-shifts',
     ///// statuses order
-    EXECUTOR_MAP: 'executor-map',
     IN_PROGRESS: 'in-progress',
+    EXECUTOR_STATUSES: 'executor_statuses',
     //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',
