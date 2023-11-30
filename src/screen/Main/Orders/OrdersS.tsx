@@ -80,16 +80,6 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
                     </Box>
 
                 </Box>
-                {/* <FreezeModal freezeDate={executorSettings?.executors?.datetime_freeze_until}
-                             onPress={() => {
-                                 setIsFreeze(false)
-                                 setIsOpenShiftModal(true)
-                             }}
-                             visible={isFreeze}/>
-                <OpenShiftModal visible={isOpenShiftModal} onClose={() => {
-                    setIsFreeze(false)
-                    setIsOpenShiftModal(false)
-                }}/>*/}
             </BaseWrapperComponent>
         </>
     );

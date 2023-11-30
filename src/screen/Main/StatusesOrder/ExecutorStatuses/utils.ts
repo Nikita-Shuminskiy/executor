@@ -5,6 +5,7 @@ import takeThings from '../../../../assets/Images/orders/takeThingsGray.png'
 import packageDeliveryGreen from '../../../../assets/Images/orders/packageDeliveryGreen.png'
 import OnTheWay from '../../../../assets/Images/Executor/OnTheWay.png'
 import contractorGot from '../../../../assets/Images/Executor/ContractorGot.png'
+import handDropStar from '../../../../assets/Images/orders/handDropStar.png'
 import {colors} from "../../../../assets/colors/colors";
 import {ImageSourcePropType} from "react-native";
 
@@ -51,7 +52,14 @@ export const getStepData = (status: LAST_STEP_ORDER_ENUM): GetStepDataType => {
                 backColor: colors.greenVeryLight
             }
         }
-
+        case LAST_STEP_ORDER_ENUM.executor_confirm_client_must_pay:
+        case LAST_STEP_ORDER_ENUM.executor_confirm: {
+            return {
+                text: 'The order is in progress',
+                img: handDropStar,
+                backColor: 'rgba(0,148,255,0.08)'
+            }
+        }
         default: {
             return {
                 text: 'default',

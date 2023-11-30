@@ -17,7 +17,7 @@ import ReceivingMethodS from "../screen/Main/ReceivingMethodS";
 import OpenShiftS from "../screen/Main/Shift/OpenShiftS";
 import CloseShiftS from "../screen/Main/Shift/CloseShiftS";
 import ExecutorStatusesS from "../screen/Main/StatusesOrder/ExecutorStatuses/ExecutorStatusesS";
-import InProgressS from "../screen/Main/StatusesOrder/InProgressS";
+import OrderPlacementS from "../screen/Main/StatusesOrder/OrderPlacement/OrderPlacementS";
 
 type Route = {
     name: string;
@@ -41,7 +41,7 @@ const authenticatedRoutes: Route[] = [
     {component: ReceivingMethodS, name: routerConstants.RECEIVING_METHOD},
     {component: OpenShiftS, name: routerConstants.OPEN_SHIFT},
     {component: CloseShiftS, name: routerConstants.CLOSE_SHIFT},
-    {component: InProgressS, name: routerConstants.IN_PROGRESS},
+    {component: OrderPlacementS, name: routerConstants.ORDER_PLACEMENT},
     {component: ExecutorStatusesS, name: routerConstants.EXECUTOR_STATUSES},
 ];
 

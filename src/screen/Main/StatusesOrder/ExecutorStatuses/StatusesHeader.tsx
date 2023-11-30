@@ -21,11 +21,11 @@ export const StatusesHeader = ({statusOrder}: StatusesHeaderProps) => {
                 <Image style={{width: 244, height: 244}} source={stepData.bigImg}/>
             </Box>
         }
-        <Box borderRadius={16} p={4} backgroundColor={stepData.backColor} flexDirection={'row'}
+        <Box borderRadius={16} p={4} mt={10} backgroundColor={stepData.backColor} flexDirection={'row'}
              alignItems={'flex-start'} w={'100%'} justifyContent={'flex-start'}>
             <Image source={stepData.img} style={{width: 28, height: 28}}/>
             <Box ml={2}>
-                <Text fontSize={13} fontFamily={'semiBold'}>{stepData.text}</Text>
+                <Text fontSize={15} fontFamily={'regular'}>{stepData.text}</Text>
                 {
                     stepData?.date &&
                     <Box p={'1.5'} mt={1} maxHeight={8}

@@ -23,13 +23,13 @@ const ExecutorStatusesS = ({navigation, route}: ExecutorMapSProps) => {
     }
     useGoBack(goBack)
     return (
-        <BaseWrapperComponent contentContainerStyle={{ flex: 1, width: '100%' }} isKeyboardAwareScrollView={true}>
+        <BaseWrapperComponent  isKeyboardAwareScrollView={true}>
             <Box paddingX={4}>
                 <ArrowBack goBackPress={goBackPress}/>
                 <Box mt={2} mb={2}>
                     <Text fontSize={28} fontFamily={'semiBold'}>Swash #id</Text>
                 </Box>
-              <Box w={'100%'} h={'100%'}>
+              <Box w={'100%'} h={'100%'} mt={7}>
                   <StatusesHeader statusOrder={from}/>
               </Box>
             </Box>

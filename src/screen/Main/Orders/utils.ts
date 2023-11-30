@@ -27,12 +27,14 @@ export const onPressOrderDetails = (navigation, order) => {
             return navigation.navigate(routerConstants.EXECUTOR_STATUSES, {from: LAST_STEP_ORDER_ENUM.executor_received})
         }
         case LAST_STEP_ORDER_ENUM.executor_confirm: {
-            return navigation.navigate(routerConstants.EXECUTOR_STATUSES, {from: LAST_STEP_ORDER_ENUM.executor_confirm})
+            return navigation.navigate(routerConstants.ORDER_PLACEMENT, {from: LAST_STEP_ORDER_ENUM.executor_confirm})
         }
         case LAST_STEP_ORDER_ENUM.executor_sent: {
             return navigation.navigate(routerConstants.EXECUTOR_STATUSES, {from: LAST_STEP_ORDER_ENUM.executor_sent})
         }
-
+        case LAST_STEP_ORDER_ENUM.executor_confirm_client_must_pay: {
+            return navigation.navigate(routerConstants.ORDER_PLACEMENT, {from: LAST_STEP_ORDER_ENUM.executor_confirm_client_must_pay})
+        }
 
     /*    case LAST_STEP_ORDER_ENUM.client_received: {
             return navigation.navigate(routerConstants.CLIENT_RECEIVED)

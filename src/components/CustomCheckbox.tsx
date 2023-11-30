@@ -1,7 +1,11 @@
 import { TouchableOpacity, StyleSheet, Image } from 'react-native'
 import active from '../assets/Images/order/blue-circle.png'
 import unActive from '../assets/Images/circle-outline-gray.png'
-const CustomCheckbox = ({ checked, onPress }) => {
+type CustomCheckboxProps = {
+	checked: boolean
+	onPress?: () => void
+}
+const CustomCheckbox = ({ checked, onPress }: CustomCheckboxProps) => {
 	return (
 		<TouchableOpacity style={styles.checkboxContainer} onPress={onPress}>
 			<Image
