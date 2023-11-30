@@ -7,30 +7,39 @@ import Loaders from "react-native-pure-loaders";
 import {colors} from "../../../../assets/colors/colors";
 import Button from "../../../../components/Button";
 import {StyleSheet} from "react-native";
-import {getCurrentPositionHandler} from "../../../../components/MapViews/utils";
+import {allowLocation, getCurrentPositionHandler} from "../../../../components/MapViews/utils";
+import {useFocusEffect} from "@react-navigation/native";
+import {OrderDetailType} from "../../../../api/type";
 
 type Coordinates = {
     latitude: number;
     longitude: number;
+
 }
-type MapProps = {}
-const Map = ({}: MapProps) => {
-    const [myPosition, setMyPosition] = useState<Coordinates>(null)
+type MapProps = {
+    orderDetail: OrderDetailType
+}
+const Map = ({orderDetail}: MapProps) => {
+    const [mapRef, setMapRef] = useState(null)
+    const [myPosition, setMyPosition] = useState<Coordinates | null>(null)
     const getCurrentPosition = async () => {
         try {
             const {latitude, longitude} = await getCurrentPositionHandler()
             setMyPosition({latitude, longitude})
         } catch (e) {
+
         }
     }
-    useEffect(() => {
-        getCurrentPosition()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            getCurrentPosition()
+        }, [])
+    );
     let initialRegion = {
-        latitude: myPosition?.latitude,
-        longitude: myPosition?.longitude,
-        latitudeDelta: 0.0221,
-        longitudeDelta: 0.0221,
+        latitude: 52.2297,
+        longitude: 21.0122,
+        latitudeDelta: 1.0221,
+        longitudeDelta: 1.0221,
     }
     const onPressNavigate = () => {
         /*    if (!myPosition?.latitude) return
@@ -42,30 +51,35 @@ const Map = ({}: MapProps) => {
                 console.error('Error opening Google Maps: ', err),
             )*/
     }
+    useEffect(() => {
+        if (mapRef && myPosition?.latitude) {
+            mapRef.fitToCoordinates([{latitude: myPosition.latitude, longitude: myPosition.longitude}], {
+                edgePadding: {top: 50, right: 50, bottom: 50, left: 50},
+                animated: true,
+            })
+        }
+    }, [myPosition])
     return (
         <>
-            <Box mt={4} h={200}>
-                {
-                    myPosition ? <MapView
-                        style={styles.map}
-                        provider={PROVIDER_GOOGLE}
-                        initialRegion={initialRegion}
-                    >
-                        {
-                            !!myPosition?.latitude && <Marker
-                                focusable={true}
-                                style={{width: 30, height: 30}}
-                                coordinate={myPosition}
-                                title={''}
-                            >
-                                <SvgXml xml={userSvg} width="100%" height="100%"/>
-                                <SvgXml xml={homeSvg} width="100%" height="100%"/>
-                            </Marker>
-                        }
-                    </MapView> : <Box style={styles.containerLoading}>
-                        <Loaders.Ellipses color={colors.blue}/>
-                    </Box>
-                }
+            <Box mt={4} h={400}>
+                <MapView
+                    ref={(ref) => setMapRef(ref)}
+                    style={styles.map}
+                    provider={PROVIDER_GOOGLE}
+                    initialRegion={initialRegion}
+                >
+                    {
+                        !!myPosition?.latitude && <Marker
+                            focusable={true}
+                            style={{width: 30, height: 30}}
+                            coordinate={myPosition}
+                            title={''}
+                        >
+                          {/*  <SvgXml xml={userSvg} width="100%" height="100%"/>*/}
+                            <SvgXml xml={homeSvg} width="100%" height="100%"/>
+                        </Marker>
+                    }
+                </MapView>
             </Box>
             <Box mb={3} mt={2} alignItems={'center'}>
                 {/*  arrowUpSvg*/}
@@ -92,7 +106,7 @@ const styles = StyleSheet.create({
     },
     map: {
         width: '100%',
-        height: 200,
+        height: '100%',
     },
 })
 export default Map;

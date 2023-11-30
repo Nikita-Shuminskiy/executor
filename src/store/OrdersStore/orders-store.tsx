@@ -1,40 +1,28 @@
 import {action, makeAutoObservable, makeObservable, observable} from 'mobx'
 import {ordersApi} from "../../api/OrdersApi/ordersApi";
+import {OrderDetailType, OrderType} from "../../api/type";
 
 export class OrdersStore {
-	orderDetail: any = {} as any
-	orders: any[] = [] as any[]
-	closedOrders: any[] = [] as any[]
+	orderDetail: OrderDetailType | null = null
+	orders: OrderType[] = []
+	closedOrders: OrderType[] = []
 
-	setOrderDetail(order: any) {
+	setOrderDetail(order: OrderDetailType) {
 		this.orderDetail = order
 	}
 
-	setOrders(orders: any[]) {
+	setOrders(orders: OrderType[]) {
 		this.orders = orders
 	}
-	setClosedOrder(orders: any[]) {
+	setClosedOrder(orders: OrderType[]) {
 		this.closedOrders = orders
 	}
 	clearStore() {
 		this.orders = []
-		this.orderDetail = {} as any
-	}
-	 createOrderClient = async (payload: any) => {
-		const { data } = await ordersApi.createOrderClientPrev({
-			services: { ...payload },
-		})
-		return data.order_id
+		this.orderDetail = null
 	}
 
-	 deleteOrder  = async  (comment: string, orders_id: string) => {
-		const { data } = await ordersApi.deleteOrder({
-			orders_id,
-			comment,
-		})
-	}
-
-	 getOrderReportDetail  = async (orders_id: number): Promise<any> => {
+	 getOrderReportDetail  = async (orders_id: any): Promise<any> => {
 		const { data } = await ordersApi.getOrderReportDetail({
 			orders_id,
 		})

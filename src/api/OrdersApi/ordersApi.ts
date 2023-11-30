@@ -23,10 +23,12 @@ export const ordersApi = {
     async deleteOrder(payload: any) {
         return await instance.post(`order_client_delete`, {}, { params: payload })
     },
-    async getOrderReportDetail(payload: { orders_id: number }) {
-        return await instance.get(`order_report_client_detail`, { params: payload })
+    async getOrderReportDetail(payload: { orders_id: string }) {
+        return await instance.get(`order_report_executor_detail`, { params: payload })
     },
-
+    async getAllOrdersInProgress() {
+        return await instance.get(`order_report_executor`)
+    },
     async startOrder(payload: any) {
         return await instance.post(`order_client_start`, payload)
     },

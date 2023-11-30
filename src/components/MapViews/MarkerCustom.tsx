@@ -8,12 +8,12 @@ import {LogisticsPointType} from "../../api/type";
 
 type MarkerCustomProps = {
     point: LogisticsPointType
-    onPressCheckPoint: (id: string) => void
+    onPressCheckPoint: (point: LogisticsPointType) => void
 }
 const MarkerCustom = ({point, onPressCheckPoint}: MarkerCustomProps) => {
 
     return (
-        <Marker onPress={() => onPressCheckPoint(point.id)} title={point.point_name} description={point.address}
+        <Marker onPress={() => onPressCheckPoint(point)} title={point.point_name} description={point.address}
                 coordinate={{
                     latitude: +point.lat,
                     longitude: +point.lon,

@@ -9,16 +9,22 @@ import {StyleSheet} from "react-native";
 import {observer} from "mobx-react-lite";
 import {StatusesHeader} from "../ExecutorStatuses/StatusesHeader";
 import Selection from "./Selection";
+import OrdersStore from "../../../../store/OrdersStore/orders-store";
+import {routerConstants} from "../../../../constants/routerConstants";
 type InProgressSProps = CommonScreenPropsType & {
 
 }
 const OrderPlacementS = observer(({navigation, route}:InProgressSProps) => {
     const from: LAST_STEP_ORDER_ENUM = route.params?.from
+    const {orderDetail} = OrdersStore
     const goBackPress = () => {
         navigation.goBack()
     }
     const onPressComplete = () => {
 
+    }
+    const onPressChoseNewPaczkomat = () => {
+        navigation.navigate(routerConstants.SELECT_LOGISTIC_POINT, {from: 'update_order', status: route.params?.from})
     }
     return (
         <BaseWrapperComponent>
@@ -33,14 +39,14 @@ const OrderPlacementS = observer(({navigation, route}:InProgressSProps) => {
                     payment and may ask you to take the completed order to the post office. This is an irreversible step.
                 </Text>
                 <Box mt={2}>
-                    <StatusesHeader statusOrder={from}/>
+                    <StatusesHeader orderDetail={orderDetail} statusOrder={from}/>
                 </Box>
                 <Box mt={2} mb={2}>
-                    <Selection textSelection={'address'} textHeader={'Paczkomat'} onPress={() => {}}/>
+                    <Selection textSelection={String(orderDetail.client_logistic_partners_points_id)} textHeader={'Paczkomat'} onPress={() => {}}/>
                 </Box>
                 <Box mb={3} mt={6} alignItems={'center'}>
                     <Button backgroundColor={colors.blue} colorText={colors.white}
-                            styleContainer={styles.btnContainer} onPress={onPressComplete} title={`Choose new Paczkomat`}/>
+                            styleContainer={styles.btnContainer} onPress={onPressChoseNewPaczkomat} title={`Choose new Paczkomat`}/>
                 </Box>
             </Box>
                 <Box mb={4} mt={3} alignItems={'center'}>

@@ -5,26 +5,29 @@ import {SvgXml} from "react-native-svg";
 import {timeSvg} from "../../../../assets/Images/Svg";
 import React from "react";
 import {getStepData} from "./utils";
-import {LAST_STEP_ORDER_ENUM} from "../../../../api/type";
+import {LAST_STEP_ORDER_ENUM, OrderDetailType} from "../../../../api/type";
 import {colors} from "../../../../assets/colors/colors";
 
 type StatusesHeaderProps = {
     statusOrder?: LAST_STEP_ORDER_ENUM
+    orderDetail: OrderDetailType
 }
-export const StatusesHeader = ({statusOrder}: StatusesHeaderProps) => {
-    const stepData = getStepData(statusOrder)
+export const StatusesHeader = ({statusOrder, orderDetail}: StatusesHeaderProps) => {
+    const stepData = getStepData(statusOrder, orderDetail?.date_estimated_ready)
     return <>
         {
             stepData.bigImg &&
-            <Box mt={2} mb={7} alignItems={'center'} justifyContent={'center'}>
+            <>
                 <Text fontSize={28} mb={3} textAlign={'center'} fontFamily={'semiBold'}>{stepData.textHeader}</Text>
-                <Image style={{width: 244, height: 244}} source={stepData.bigImg}/>
-            </Box>
+                <Box alignItems={'center'} justifyContent={'center'}>
+                    <Image style={{width: 244, height: 244}} source={stepData.bigImg}/>
+                </Box>
+            </>
         }
-        <Box borderRadius={16} p={4} mt={10} backgroundColor={stepData.backColor} flexDirection={'row'}
+        <Box borderRadius={16} p={4} backgroundColor={stepData.backColor} flexDirection={'row'}
              alignItems={'flex-start'} w={'100%'} justifyContent={'flex-start'}>
             <Image source={stepData.img} style={{width: 28, height: 28}}/>
-            <Box ml={2}>
+            <Box ml={2} pr={4}>
                 <Text fontSize={15} fontFamily={'regular'}>{stepData.text}</Text>
                 {
                     stepData?.date &&

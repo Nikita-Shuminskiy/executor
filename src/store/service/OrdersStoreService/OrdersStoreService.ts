@@ -12,17 +12,6 @@ export class OrdersStoreService {
         this.rootStore = rootStore
     }
 
-    async deleteOrder(comment: string, orders_id: string, navigate) {
-        this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
-        try {
-            await this.rootStore.OrdersStore.deleteOrder(comment, orders_id)
-            await this.rootStore.AuthStore.getSettingExecutor()
-        } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
-        } finally {
-            this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
-        }
-    }
 
     async getOrderReportExecutor() {
         try {
@@ -59,7 +48,7 @@ export class OrdersStoreService {
         }
     }
 
-    async deleteOrderPhoto(photo_id: string) {
+    async deleteOrderPhoto(photo_id: number) {
         try {
             await this.rootStore.OrdersStore.deleteOrderPhoto(photo_id)
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)

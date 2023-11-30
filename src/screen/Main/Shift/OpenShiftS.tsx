@@ -2,20 +2,15 @@ import React, {useState} from 'react';
 import {BaseWrapperComponent} from "../../../components/baseWrapperComponent";
 import {Box, Image, Text} from "native-base";
 import HeaderGoBackTitle from "../../../components/HeaderGoBackTitle";
-import {CommonScreenPropsType, ShiftSetupPayload} from "../../../api/type";
+import {CommonScreenPropsType} from "../../../api/type";
 import {useGoBack} from "../../../utils/hook/useGoBack";
 import Button from "../../../components/Button";
 import {colors} from "../../../assets/colors/colors";
 import {StyleSheet} from "react-native";
-import DatePicker from "../../../components/date-picker";
 import {observer} from "mobx-react-lite";
 import AuthStore from "../../../store/AuthStore";
 import rootStore from "../../../store/RootStore/root-store";
-import {format} from "date-fns";
-import FreezeModal from "./FreezeModal";
 import {useBurgerMenu} from "../../../components/BurgerMenu/BurgerMenuContext";
-import {dateStringFormat} from "../../../utils/commonUtils";
-import {isNaN} from "formik";
 import arrowBackImg from "../../../assets/Images/arrowBackBlue.png";
 import InputNumber from "../../../components/InputNumber";
 
@@ -46,9 +41,9 @@ const OpenShiftS = observer(({navigation}: ShiftSProps) => {
                 <HeaderGoBackTitle title={''}
                                    goBackPress={goBack}/>
             </Box>
-            <Box  paddingX={4}
+            <Box paddingX={4}
                  borderColor={'#E4E4E4'} backgroundColor={colors.white}
-                  flex={1}
+                 flex={1}
                  justifyContent={'center'}
                  alignItems={'center'}>
                 {
@@ -56,7 +51,9 @@ const OpenShiftS = observer(({navigation}: ShiftSProps) => {
                         <Text fontSize={34} fontFamily={'semiBold'}>Confirmation</Text>
                         <Text fontSize={16} color={colors.gray} textAlign={'center'} fontFamily={'regular'}>
                             Are you sure you want to open a shift with{' '}
-                            <Text fontSize={17} fontFamily={'semiBold'} color={colors.black}>{openShiftsValue} orders?</Text> This number cannot be changed later
+                            <Text fontSize={17} fontFamily={'semiBold'}
+                                  color={colors.black}>{openShiftsValue} orders?</Text> This number cannot be changed
+                            later
                         </Text>
                         <Box w={'80%'} mt={4} justifyContent={'center'} flexDirection={'row'} alignItems={'center'}>
                             <Button styleContainer={{
@@ -77,9 +74,7 @@ const OpenShiftS = observer(({navigation}: ShiftSProps) => {
                         <Box alignItems={'center'}>
                             <Text fontSize={34} fontFamily={'semiBold'}>Open the shift</Text>
                             <Text fontSize={16} color={colors.gray} fontFamily={'regular'}>Enter the number of
-                                orders in
-                                this
-                                shift</Text>
+                                orders in this shift</Text>
                         </Box>
                         {
                             openShiftsValue && <Box w={'100%'} justifyContent={'center'} alignItems={'center'}>
@@ -87,7 +82,7 @@ const OpenShiftS = observer(({navigation}: ShiftSProps) => {
                                     values={Number(openShiftsValue)}
                                     onChangeValue={setOpenShiftsValue}
                                 />
-                                <Box w={'100%'}  mt={4} justifyContent={'center'} alignItems={'center'}>
+                                <Box w={'100%'} mt={4} justifyContent={'center'} alignItems={'center'}>
                                     <Button onPress={() => setIsConfirmation(true)}
                                             styleContainer={styles.styleContainerBtn}
                                             title={'Open'}

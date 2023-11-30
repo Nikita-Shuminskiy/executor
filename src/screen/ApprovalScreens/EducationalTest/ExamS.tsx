@@ -31,7 +31,6 @@ const ExamS = observer(({navigation}: QuestionSProps) => {
     }
     const onPressAnswer = () => {
         getExamAnswer(currentAnswer).then((data) => {
-            console.log(data, 'datadata')
             setStatusAnswer(data.message)
             setCurrentAnswer('')
         })

@@ -42,7 +42,7 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
         setIsFreeze(false)
     }, [isFocused]);
     const onPressDetails = useCallback((order: OrderType) => {
-       // OrdersStoreService.getOrderReportDetail(order.id)
+        OrdersStoreService.getOrderReportDetail(order.id)
         onPressOrderDetails(navigation, order)
     }, [])
     const renderItem = useCallback(({item, index}: { item: OrderType, index: number }) => {

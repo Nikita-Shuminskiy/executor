@@ -94,6 +94,19 @@ export type OrderType = {
     reward: string;
     services_pay: string;
 };
+type OrderDetailType = OrderType & {
+    balance: number;
+    last_step_datetime: string;
+    orders_id: string;
+    photos: any[]; // You might want to specify the type of elements in the photos array
+    status: string;
+    units_order: {
+        count: string;
+        id: string;
+        orders_id: string;
+        type_of_units_id: string;
+    }[];
+};
 enum LAST_STEP_ORDER_ENUM {
     client_received = 'client_received', // просим оценки
     auction_open = 'auction_open', // ищем исполнителя
@@ -175,6 +188,7 @@ type PhotoType = { 'filename': string, 'id': string }
     COMPLETED = 'completed'
 }
 export {
+    OrderDetailType,
     ShiftSetupPayload,
     StatusOrder,
     LAST_STEP_ORDER_ENUM,

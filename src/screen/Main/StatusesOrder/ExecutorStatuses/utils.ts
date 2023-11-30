@@ -8,6 +8,7 @@ import contractorGot from '../../../../assets/Images/Executor/ContractorGot.png'
 import handDropStar from '../../../../assets/Images/orders/handDropStar.png'
 import {colors} from "../../../../assets/colors/colors";
 import {ImageSourcePropType} from "react-native";
+import {dateStringFormat} from "../../../../utils/commonUtils";
 
 type GetStepDataType = {
     date?: string,
@@ -17,12 +18,12 @@ type GetStepDataType = {
     backColor: string
     textHeader?: string
 }
-export const getStepData = (status: LAST_STEP_ORDER_ENUM): GetStepDataType => {
+export const getStepData = (status: LAST_STEP_ORDER_ENUM, dateReady: string): GetStepDataType => {
     switch (status) {
         case LAST_STEP_ORDER_ENUM.client_sent: {
             return {
                 text: 'Order will be returned approximately at',
-                date: '22-11-22',
+                date: dateStringFormat(dateReady, 'dd MMMM yyyy'),
                 img: takeThingsImg,
                 bigImg: OnTheWay,
                 textHeader: 'The order is on its way to you now',

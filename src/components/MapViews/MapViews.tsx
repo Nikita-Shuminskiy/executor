@@ -9,10 +9,12 @@ import MarkerCustom from './MarkerCustom'
 import {LogisticsPointType} from "../../api/type";
 import {SvgXml} from "react-native-svg";
 import {userSvg} from "../../assets/Images/Svg";
+import Button from "../Button";
+import {colors} from "../../assets/colors/colors";
 
 type MapViewsProps = {
     logisticPoints?: LogisticsPointType[]
-    onPressPaczkomat: (id: string) => void
+    onPressPaczkomat: (point: LogisticsPointType) => void
 }
 type DataAutoCompleteType = {
     location: { latitude: number, longitude: number },
@@ -20,7 +22,6 @@ type DataAutoCompleteType = {
     address: { name: string, formatted_address: string }
 }
 export const MapViews = ({logisticPoints, onPressPaczkomat}: MapViewsProps) => {
-    const {setIsLoading, setLocalLoading} = NotificationStore
     const [mapRef, setMapRef] = useState(null)
     const [myPosition, setMyPosition] = useState<{ latitude: number, longitude: number }>()
 
@@ -55,8 +56,8 @@ export const MapViews = ({logisticPoints, onPressPaczkomat}: MapViewsProps) => {
         latitudeDelta: 12,
         longitudeDelta: 18,
     }
-    const onPressCheckPoint = useCallback((id: string) => {
-        onPressPaczkomat(id)
+    const onPressCheckPoint = useCallback((point: LogisticsPointType) => {
+        onPressPaczkomat(point)
     }, [])
     return <>
         <Box style={styles.container}>
@@ -101,5 +102,11 @@ const styles = StyleSheet.create({
     map: {
         width: '100%',
         height: '100%',
+    },
+    styleContainerBtn: {
+        width: '100%',
+        borderRadius: 50,
+        marginTop: 10,
+        marginBottom: 10,
     },
 })
