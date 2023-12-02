@@ -11,6 +11,7 @@ export const routerConstants = {
     ///// statuses order
     ORDER_PLACEMENT: 'order-placement',
     EXECUTOR_STATUSES: 'executor_statuses',
+    EVALUATE_ORDER: 'evaluate-order',
     //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',

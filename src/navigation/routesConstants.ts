@@ -18,6 +18,7 @@ import OpenShiftS from "../screen/Main/Shift/OpenShiftS";
 import CloseShiftS from "../screen/Main/Shift/CloseShiftS";
 import ExecutorStatusesS from "../screen/Main/StatusesOrder/ExecutorStatuses/ExecutorStatusesS";
 import OrderPlacementS from "../screen/Main/StatusesOrder/OrderPlacement/OrderPlacementS";
+import EvaluateTheOrderS from "../screen/Main/StatusesOrder/EvaluateTheOrder/EvaluateTheOrderS";
 
 type Route = {
     name: string;
@@ -43,6 +44,7 @@ const authenticatedRoutes: Route[] = [
     {component: CloseShiftS, name: routerConstants.CLOSE_SHIFT},
     {component: OrderPlacementS, name: routerConstants.ORDER_PLACEMENT},
     {component: ExecutorStatusesS, name: routerConstants.EXECUTOR_STATUSES},
+    {component: EvaluateTheOrderS, name: routerConstants.EVALUATE_ORDER},
 ];
 
 export default authenticatedRoutes;

@@ -6,7 +6,7 @@ import {homeSvg, userSvg} from "../../../../assets/Images/Svg";
 import Loaders from "react-native-pure-loaders";
 import {colors} from "../../../../assets/colors/colors";
 import Button from "../../../../components/Button";
-import {StyleSheet} from "react-native";
+import {Linking, StyleSheet} from "react-native";
 import {allowLocation, getCurrentPositionHandler} from "../../../../components/MapViews/utils";
 import {useFocusEffect} from "@react-navigation/native";
 import {OrderDetailType} from "../../../../api/type";
@@ -21,35 +21,41 @@ type MapProps = {
 }
 const Map = ({orderDetail}: MapProps) => {
     const [mapRef, setMapRef] = useState(null)
-    const [myPosition, setMyPosition] = useState<Coordinates | null>(null)
+    const latitude = Number(orderDetail.executor_logistic_partners_points_lat)
+    const longitude = Number(orderDetail.executor_logistic_partners_points_lon)
+    const [myPosition, setMyPosition] = useState<Coordinates | null>({
+        latitude,
+        longitude
+    })
     const getCurrentPosition = async () => {
         try {
-            const {latitude, longitude} = await getCurrentPositionHandler()
+            // const {latitude, longitude} = await getCurrentPositionHandler()
             setMyPosition({latitude, longitude})
         } catch (e) {
 
         }
     }
-    useFocusEffect(
-        React.useCallback(() => {
-            getCurrentPosition()
-        }, [])
-    );
+
+    /* useFocusEffect(
+         React.useCallback(() => {
+             getCurrentPosition()
+         }, [])
+     );*/
     let initialRegion = {
-        latitude: 52.2297,
-        longitude: 21.0122,
+        latitude: latitude ?? 52.2297,
+        longitude: longitude ?? 21.0122,
         latitudeDelta: 1.0221,
         longitudeDelta: 1.0221,
     }
     const onPressNavigate = () => {
-        /*    if (!myPosition?.latitude) return
-            const endLocation = [+orderDetail.client_logistic_partners_points_lat, +orderDetail.client_logistic_partners_points_lon]
+            if (!myPosition?.latitude) return
+            const endLocation = [latitude, longitude]
             const startLocation = [myPosition.latitude, myPosition.longitude]
 
             const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${startLocation}&destination=${endLocation}`
             Linking.openURL(googleMapsUrl).catch((err) =>
                 console.error('Error opening Google Maps: ', err),
-            )*/
+            )
     }
     useEffect(() => {
         if (mapRef && myPosition?.latitude) {
@@ -75,7 +81,7 @@ const Map = ({orderDetail}: MapProps) => {
                             coordinate={myPosition}
                             title={''}
                         >
-                          {/*  <SvgXml xml={userSvg} width="100%" height="100%"/>*/}
+                            {/*  <SvgXml xml={userSvg} width="100%" height="100%"/>*/}
                             <SvgXml xml={homeSvg} width="100%" height="100%"/>
                         </Marker>
                     }

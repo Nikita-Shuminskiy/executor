@@ -33,8 +33,8 @@ const ExecutorStatusesS = observer(({navigation, route}: ExecutorMapSProps) => {
                         {
                             from === LAST_STEP_ORDER_ENUM.executor_done &&
                             <Text fontSize={15} color={colors.grayLight} fontFamily={'regular'}>
-                                Expect payment of the order from the customer expect payment
-                                of the order from the customer payment of the order from order.
+                                It is necessary to take and place the completed order in the parcel locker so
+                                that it begins its journey back to the customer. Be extremely careful!
                             </Text>
                         }
                     </Box>

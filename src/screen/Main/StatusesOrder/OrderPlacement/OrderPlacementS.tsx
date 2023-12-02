@@ -11,17 +11,26 @@ import {StatusesHeader} from "../ExecutorStatuses/StatusesHeader";
 import Selection from "./Selection";
 import OrdersStore from "../../../../store/OrdersStore/orders-store";
 import {routerConstants} from "../../../../constants/routerConstants";
+import rootStore from "../../../../store/RootStore/root-store";
 type InProgressSProps = CommonScreenPropsType & {
 
 }
 const OrderPlacementS = observer(({navigation, route}:InProgressSProps) => {
     const from: LAST_STEP_ORDER_ENUM = route.params?.from
-    const {orderDetail} = OrdersStore
+    const {orderDetail, sendOrderComplete} = OrdersStore
+    const {OrdersStoreService} = rootStore
+
     const goBackPress = () => {
         navigation.goBack()
     }
     const onPressComplete = () => {
-
+        sendOrderComplete(orderDetail?.orders_id, String(orderDetail.client_logistic_partners_points_id)).then((data) => {
+            console.log(data)
+            if(data) {
+                OrdersStoreService.getOrderReportExecutor()
+                goBackPress()
+            }
+        })
     }
     const onPressChoseNewPaczkomat = () => {
         navigation.navigate(routerConstants.SELECT_LOGISTIC_POINT, {from: 'update_order', status: route.params?.from})
@@ -42,7 +51,7 @@ const OrderPlacementS = observer(({navigation, route}:InProgressSProps) => {
                     <StatusesHeader orderDetail={orderDetail} statusOrder={from}/>
                 </Box>
                 <Box mt={2} mb={2}>
-                    <Selection textSelection={String(orderDetail.client_logistic_partners_points_id)} textHeader={'Paczkomat'} onPress={() => {}}/>
+                    <Selection textSelection={orderDetail?.executor_logistic_partners_points_address?.trim()} textHeader={'Paczkomat'} onPress={() => {}}/>
                 </Box>
                 <Box mb={3} mt={6} alignItems={'center'}>
                     <Button backgroundColor={colors.blue} colorText={colors.white}

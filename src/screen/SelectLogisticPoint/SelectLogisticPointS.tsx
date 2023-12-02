@@ -13,6 +13,7 @@ import {StatusBar} from "expo-status-bar";
 import HeaderGoBackTitle from "../../components/HeaderGoBackTitle";
 import {routerConstants} from "../../constants/routerConstants";
 import ConfirmationLogisticsPointModal from "./ConfirmationLogisticsPointModal";
+import OrdersStore from "../../store/OrdersStore/orders-store";
 
 type SelectLogisticPointProps = CommonScreenPropsType & {}
 const SelectLogisticPointS = observer(({navigation, route}: SelectLogisticPointProps) => {
@@ -20,7 +21,8 @@ const SelectLogisticPointS = observer(({navigation, route}: SelectLogisticPointP
     const isFromUpdateOrder = route?.params?.from === 'update_order'
     const [chosenPaczkomat, setChosenPaczkomat] = useState<LogisticsPointType | null>(null)
     const {logisticPoints} = AuthStore
-    const {AuthStoreService} = rootStore
+    const {AuthStoreService, OrdersStoreService} = rootStore
+    const {orderDetail} = OrdersStore
     const onPressPaczkomat = (point: LogisticsPointType) => {
         setChosenPaczkomat(point)
     }
@@ -29,13 +31,20 @@ const SelectLogisticPointS = observer(({navigation, route}: SelectLogisticPointP
             executor_logistic_partners_points_id: chosenPaczkomat.id
         }).then((data) => {
             if (data) {
-                console.log(isFromUpdateOrder, 'isFromUpdateOrder')
+                if(isFromUpdateOrder) {
+                    OrdersStoreService.getOrderReportDetail(+orderDetail.orders_id).then((data) => {
+                        if(data) {
+                            goBackPress()
+                        }
+                    })
+                    return
+                }
                 AuthStoreService.getSettingExecutor(!isFromUpdate && navigation.navigate)
                 isFromUpdate && navigation.navigate(routerConstants.ORDERS, {from: 'open_menu'})
             }
         })
     }
-    const goBackPress = (routes) => {
+    const goBackPress = (routes?: string) => {
         if(isFromUpdateOrder) {
             navigation.navigate(routerConstants.ORDER_PLACEMENT, {from: route?.params?.status})
             return true

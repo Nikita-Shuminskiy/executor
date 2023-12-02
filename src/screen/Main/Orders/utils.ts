@@ -15,17 +15,9 @@ export const onPressOrderDetails = (navigation, order) => {
         }
         case LAST_STEP_ORDER_ENUM.executor_done: {
             return navigation.navigate(routerConstants.EXECUTOR_STATUSES, {from: LAST_STEP_ORDER_ENUM.executor_done})
-          /*  getCurrentPositionHandler().then((data) => {
-                if (data) {
-
-                }
-            })
-            return*/
         }
 
-        case LAST_STEP_ORDER_ENUM.executor_received: {
-            return navigation.navigate(routerConstants.EXECUTOR_STATUSES, {from: LAST_STEP_ORDER_ENUM.executor_received})
-        }
+
         case LAST_STEP_ORDER_ENUM.executor_confirm: {
             return navigation.navigate(routerConstants.ORDER_PLACEMENT, {from: LAST_STEP_ORDER_ENUM.executor_confirm})
         }
@@ -35,7 +27,9 @@ export const onPressOrderDetails = (navigation, order) => {
         case LAST_STEP_ORDER_ENUM.executor_confirm_client_must_pay: {
             return navigation.navigate(routerConstants.ORDER_PLACEMENT, {from: LAST_STEP_ORDER_ENUM.executor_confirm_client_must_pay})
         }
-
+        case LAST_STEP_ORDER_ENUM.executor_received: {
+            return navigation.navigate(routerConstants.EVALUATE_ORDER, {from: LAST_STEP_ORDER_ENUM.executor_received})
+        }
         /*    case LAST_STEP_ORDER_ENUM.client_received: {
                 return navigation.navigate(routerConstants.CLIENT_RECEIVED)
             }

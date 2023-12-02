@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyle} from 'react-native';
+import {View, TextInput, TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyle, TextStyle} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {colors} from "../assets/colors/colors";
 import {isNaN} from "formik";
@@ -14,13 +14,14 @@ type InputNumberProps = {
     onChangeValue: (value: string) => void
     values: number
     styleBtn?: StyleProp<ViewStyle>
+    styleInput?: StyleProp<TextStyle>
+    imgIcoSize?: 5 | 8
 }
-const InputNumber = ({onChangeValue, values, styleBtn}: InputNumberProps) => {
+const InputNumber = ({onChangeValue, values, styleBtn, styleInput, imgIcoSize = 8}: InputNumberProps) => {
     const handleIncrement = () => {
         if (checkValidNumber(values)) return onChangeValue(String(1))
         onChangeValue(String(values + 1))
     };
-
     const handleDecrement = () => {
         if (checkValidNumber(values) || values === 0) return onChangeValue(String(1))
         onChangeValue(String(values - 1))
@@ -33,16 +34,16 @@ const InputNumber = ({onChangeValue, values, styleBtn}: InputNumberProps) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={[styles.button, styleBtn]} onPress={handleDecrement}>
-                <Image alt={'img-minus'} source={minusImg} w={8} h={8}/>
+                <Image alt={'img-minus'} source={minusImg} w={imgIcoSize} h={imgIcoSize}/>
             </TouchableOpacity>
             <TextInput
-                style={styles.input}
+                style={[styles.input, styleInput]}
                 keyboardType="numeric"
                 value={values?.toString()}
                 onChangeText={onChangeText}
             />
             <TouchableOpacity style={[styles.button, styleBtn]} onPress={handleIncrement}>
-                <Image alt={'img-plus'} source={plusImg} w={8} h={8}/>
+                <Image alt={'img-plus'} source={plusImg} w={imgIcoSize} h={imgIcoSize}/>
             </TouchableOpacity>
         </View>
     );

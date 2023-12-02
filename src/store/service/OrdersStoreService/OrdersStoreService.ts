@@ -50,8 +50,9 @@ export class OrdersStoreService {
 
     async deleteOrderPhoto(photo_id: number) {
         try {
-            await this.rootStore.OrdersStore.deleteOrderPhoto(photo_id)
+            const data = await this.rootStore.OrdersStore.deleteOrderPhoto(photo_id)
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
+            return true
         } catch (e) {
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
         } finally {
@@ -61,9 +62,9 @@ export class OrdersStoreService {
 
     async saveOrderPhoto(photo) {
         try {
-            const data = await this.rootStore.OrdersStore.saveOrderPhoto(photo)
-
+            const data = await this.rootStore.OrdersStore.sendOrderReviewPhoto(photo)
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
+            return true
         } catch (e) {
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
         } finally {
@@ -74,6 +75,7 @@ export class OrdersStoreService {
     async getOrderReportDetail(orders_id: number) {
         try {
             await this.rootStore.OrdersStore.getOrderReportDetail(orders_id)
+            return true
         } catch (e) {
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
         } finally {

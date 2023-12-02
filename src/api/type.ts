@@ -83,6 +83,10 @@ export type OrderType = {
     amount: string;
     basic_pay: string;
     client_logistic_partners_points_id: number;
+    executor_logistic_partners_points_address: string;
+    executor_logistic_partners_points_lat: string;
+    executor_logistic_partners_points_lon: string;
+    executor_logistic_partners_points_name: string;
     clients_id: number;
     country: string;
     date_estimated_ready: string | null;

@@ -172,7 +172,7 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
                         </Box>
                         <Box position={'absolute'} bottom={5}>
                             <TouchableOpacity onPress={takePicture}>
-                                <Image source={btnCamera}/>
+                                <Image alt={'btn'} source={btnCamera}/>
                             </TouchableOpacity>
                         </Box>
                         <Box position={'absolute'} bottom={5} right={5}>

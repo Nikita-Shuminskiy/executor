@@ -5,6 +5,7 @@ import takeThings from '../../../../assets/Images/orders/takeThingsGray.png'
 import packageDeliveryGreen from '../../../../assets/Images/orders/packageDeliveryGreen.png'
 import OnTheWay from '../../../../assets/Images/Executor/OnTheWay.png'
 import contractorGot from '../../../../assets/Images/Executor/ContractorGot.png'
+import checkListPurpureImg from '../../../../assets/Images/check-list-purpure.png'
 import handDropStar from '../../../../assets/Images/orders/handDropStar.png'
 import {colors} from "../../../../assets/colors/colors";
 import {ImageSourcePropType} from "react-native";
@@ -48,7 +49,7 @@ export const getStepData = (status: LAST_STEP_ORDER_ENUM, dateReady: string): Ge
         }
         case LAST_STEP_ORDER_ENUM.executor_done: {
             return {
-                text: 'Take the order to the Paczkomat',
+                text: 'Place the completed order in the parcel locker',
                 img: packageDeliveryGreen,
                 backColor: colors.greenVeryLight
             }
@@ -59,6 +60,13 @@ export const getStepData = (status: LAST_STEP_ORDER_ENUM, dateReady: string): Ge
                 text: 'The order is in progress',
                 img: handDropStar,
                 backColor: 'rgba(0,148,255,0.08)'
+            }
+        }
+        case LAST_STEP_ORDER_ENUM.executor_received: {
+            return {
+                text: 'Evaluate the composition of the order',
+                img: checkListPurpureImg,
+                backColor: 'rgba(164,93,254,0.08)'
             }
         }
         default: {
