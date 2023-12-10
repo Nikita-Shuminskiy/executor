@@ -29,6 +29,7 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     useGoBack(goBackPress)
     useEffect(() => {
         if (isFocused) {
+            OrdersStoreService.getOrderReportExecutor()
             const isFreeze = isFutureDate(executorSettings?.executors?.datetime_freeze_until) ||
                 !executorSettings?.executors?.datetime_workshift_until ||
                 !(+executorSettings.executors.ready_for_orders >= 1)
@@ -42,8 +43,11 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
         setIsFreeze(false)
     }, [isFocused]);
     const onPressDetails = useCallback((order: OrderType) => {
-        OrdersStoreService.getOrderReportDetail(order.id)
-        processingNavigationOrderStatus(navigation, order)
+        OrdersStoreService.getOrderReportDetail(order.id).then((data) => {
+            if(data) {
+                processingNavigationOrderStatus(navigation, order)
+            }
+        })
     }, [])
     const renderItem = useCallback(({item, index}: { item: OrderType, index: number }) => {
         if (item.last_step === LAST_STEP_ORDER_ENUM.admin_closed_order
