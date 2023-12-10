@@ -6,14 +6,18 @@ import {CommonScreenPropsType} from "../../../api/type";
 import {observer} from "mobx-react-lite";
 import AuthStore from "../../../store/AuthStore/auth-store";
 import OrdersStore from "../../../store/OrdersStore/orders-store";
+import {useGoBack} from "../../../utils/hook/useGoBack";
+import {routerConstants} from "../../../constants/routerConstants";
 type ClientMustPaySProps = CommonScreenPropsType & {
 
 }
 const ClientMustPayS = observer(({navigation, route} : ClientMustPaySProps) => {
     const {orderDetail} = OrdersStore
     const goBackPress = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBackPress)
     return (
         <BaseWrapperComponent>
             <Box paddingX={4} justifyContent={'space-between'}>

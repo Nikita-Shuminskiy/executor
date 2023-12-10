@@ -132,6 +132,7 @@ const BurgerMenu = observer(() => {
                                         img={walletImg}
                                         text={'Receiving method'}/>
                             <BurgerLink onPress={onPressChatHandler}
+                                        isRedDot={executorSettings?.unread_messages > 0}
                                         img={questionMarkImg}
                                         text={'Contact support'}/>
                             <BurgerLink
@@ -139,7 +140,7 @@ const BurgerMenu = observer(() => {
                                 img={exclamationMarkImg}
                                 text={'Change of logistics point'}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.OPEN_SHIFT)}
-                                        isFreeze={isFreeze}
+                                        isRedDot={isFreeze}
                                         img={exclamationMarkImg}
                                         text={'Open shift'}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CLOSE_SHIFT)}

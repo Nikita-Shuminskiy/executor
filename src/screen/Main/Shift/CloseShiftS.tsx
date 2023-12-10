@@ -15,6 +15,8 @@ import {isNaN} from "formik";
 import {format} from "date-fns";
 import rootStore from "../../../store/RootStore/root-store";
 import {useBurgerMenu} from "../../../components/BurgerMenu/BurgerMenuContext";
+import {routerConstants} from "../../../constants/routerConstants";
+import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type CloseShiftSProps = CommonScreenPropsType & {}
 const CloseShiftS = observer(({navigation}: CloseShiftSProps) => {
@@ -26,8 +28,10 @@ const CloseShiftS = observer(({navigation}: CloseShiftSProps) => {
         setChosenDate(chosenDate)
     }
     const goBack = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBack)
     const sendData = () => {
         const formattedDateString = chosenDate ? chosenDate?.replace(/\//g, '-') + 'T00:00:00.000Z' : ''
         const dateObject = chosenDate ? new Date(formattedDateString) : new Date()

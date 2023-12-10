@@ -9,6 +9,8 @@ import Button from "../../components/Button";
 import rootStore from "../../store/RootStore/root-store";
 import {useBurgerMenu} from "../../components/BurgerMenu/BurgerMenuContext";
 import {Keyboard} from "react-native";
+import {routerConstants} from "../../constants/routerConstants";
+import {useGoBack} from "../../utils/hook/useGoBack";
 
 type ReceivingMethodSProps = CommonScreenPropsType & {}
 const ReceivingMethodS = ({navigation}: ReceivingMethodSProps) => {
@@ -20,8 +22,10 @@ const ReceivingMethodS = ({navigation}: ReceivingMethodSProps) => {
     const {setIsMenuOpen} = useBurgerMenu()
     const {AuthStoreService} = rootStore
     const goBack = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBack)
     const onChangeData = (text: string, key) => {
         setData(prev => {
             return {

@@ -16,6 +16,7 @@ import AvatarProfile from './AvatarProfile'
 import {useBurgerMenu} from '../../../components/BurgerMenu/BurgerMenuContext'
 import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 import InputChange from "./InputChange";
+import {useGoBack} from "../../../utils/hook/useGoBack";
 
 type ProfileUserSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -33,8 +34,10 @@ const ProfileUserS = observer(({navigation}: ProfileUserSProps) => {
     })
 
     const goBackPress = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBackPress)
     const onPressChangePhone = () => {
         navigation.navigate(routerConstants.PHONE_VERIFY, {from: 'update'})
     }

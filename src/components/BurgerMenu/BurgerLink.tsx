@@ -7,11 +7,11 @@ import {ImageSourcePropType, TouchableOpacity} from 'react-native'
 type BurgerLinkProps = {
     img: ImageSourcePropType
     text: string
-    isFreeze?: boolean
+    isRedDot?: boolean
     countryName?: string
     onPress?: () => void
 }
-const BurgerLink = ({img, text, onPress, countryName, isFreeze}: BurgerLinkProps) => {
+const BurgerLink = ({img, text, onPress, countryName, isRedDot}: BurgerLinkProps) => {
     return (
         <TouchableOpacity onPress={onPress}>
             <Box justifyContent={'space-between'}
@@ -34,7 +34,7 @@ const BurgerLink = ({img, text, onPress, countryName, isFreeze}: BurgerLinkProps
                         <Text fontSize={15} fontWeight={'regular'} color={colors.grayLight}>{countryName}</Text>
                     }
                     <Image w={6} h={6} alt={'img'} source={arrowImg}/>
-                    {isFreeze && <Box position={'absolute'} zIndex={10} right={10} borderRadius={50}
+                    {isRedDot && <Box position={'absolute'} zIndex={10} right={10} borderRadius={50}
                                       backgroundColor={colors.red} w={3} h={3}/>
                     }
 

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {BaseWrapperComponent} from '../../../components/baseWrapperComponent'
 import {observer} from 'mobx-react-lite'
 import rootStore from '../../../store/RootStore/root-store'
@@ -7,14 +7,12 @@ import HeaderGoBackTitle from '../../../components/HeaderGoBackTitle'
 import {Box} from 'native-base'
 import {KeyboardAvoidingView, Platform, ScrollView} from 'react-native'
 import MessageViewer from '../../../components/list-viewer/MessageViewer/MessageViewer'
-import {DialogType} from '../../../api/ChatApi/type'
 import Footer from './Footer'
 import arrowBottomImg from '../../../assets/Images/Chat/arrowBottomBackground.png'
 import Link from '../../../components/Link'
 import AuthStore from "../../../store/AuthStore/auth-store";
 import {useGoBack} from "../../../utils/hook/useGoBack";
 import {routerConstants} from "../../../constants/routerConstants";
-import useKeyboardStatus from "../../../utils/hook/useKeyboardStatus";
 
 type ChatSProps = {
     navigation: NavigationProp<ParamListBase>
@@ -22,7 +20,6 @@ type ChatSProps = {
 const ChatS = observer(({navigation}: ChatSProps) => {
     const {ChatStore, ChatStoreService} = rootStore
     const {dialog, setDialog} = ChatStore
-    const {executorSettings} = AuthStore
     const flatListRef = useRef<any>()
     const [isAtBottom, setIsAtBottom] = useState(true)
     const handleScroll = (event: any) => {

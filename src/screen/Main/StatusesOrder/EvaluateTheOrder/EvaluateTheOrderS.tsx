@@ -14,6 +14,8 @@ import PriceViewer from "../../../../components/list-viewer/PriceViewer/PriceVie
 import ShowListPhoto from "../../../../components/ShowListPhotoComponent/ShowListPhoto";
 import {StatusesHeader} from "../ExecutorStatuses/StatusesHeader";
 import ModalEvaluateOrder from "./ModalEvaluateOrder";
+import {useGoBack} from "../../../../utils/hook/useGoBack";
+import {routerConstants} from "../../../../constants/routerConstants";
 
 export type priceDataPayloadType = {
     [key: string]: number
@@ -38,9 +40,10 @@ const EvaluateTheOrderS = observer(({navigation, route}: EvaluateTheOrderSProps)
     const [priceDataPayload, setPriceDataPayload] = useState<priceDataPayloadType>(DEFAULT_DATA_PRICE)
     const {OrdersStoreService} = rootStore
     const goBackPress = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
-
+    useGoBack(goBackPress)
     const onChangeValuesPrice = useCallback((id: string, price: UnitType, val: string) => {
         setPriceDataPayload(prevState => {
             return {

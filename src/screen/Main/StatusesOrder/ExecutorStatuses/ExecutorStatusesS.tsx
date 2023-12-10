@@ -10,6 +10,7 @@ import OrdersStore from "../../../../store/OrdersStore/orders-store";
 import {observer} from "mobx-react-lite";
 import Map from "./Map";
 import {colors} from "../../../../assets/colors/colors";
+import {routerConstants} from "../../../../constants/routerConstants";
 
 
 type ExecutorMapSProps = CommonScreenPropsType & {}
@@ -20,6 +21,7 @@ const ExecutorStatusesS = observer(({navigation, route}: ExecutorMapSProps) => {
         navigation.goBack()
     }
     const goBack = () => {
+        navigation.navigate(routerConstants.ORDERS)
         return true
     }
     useGoBack(goBack)

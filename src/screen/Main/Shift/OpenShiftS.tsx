@@ -13,6 +13,7 @@ import rootStore from "../../../store/RootStore/root-store";
 import {useBurgerMenu} from "../../../components/BurgerMenu/BurgerMenuContext";
 import arrowBackImg from "../../../assets/Images/arrowBackBlue.png";
 import InputNumber from "../../../components/InputNumber";
+import {routerConstants} from "../../../constants/routerConstants";
 
 type ShiftSProps = CommonScreenPropsType & {}
 const OpenShiftS = observer(({navigation}: ShiftSProps) => {
@@ -22,7 +23,7 @@ const OpenShiftS = observer(({navigation}: ShiftSProps) => {
     const [openShiftsValue, setOpenShiftsValue] = useState('1')
     const [isConfirmation, setIsConfirmation] = useState(false)
     const goBack = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
         return true
     }
     useGoBack(goBack)

@@ -12,6 +12,7 @@ import Selection from "./Selection";
 import OrdersStore from "../../../../store/OrdersStore/orders-store";
 import {routerConstants} from "../../../../constants/routerConstants";
 import rootStore from "../../../../store/RootStore/root-store";
+import {useGoBack} from "../../../../utils/hook/useGoBack";
 
 type InProgressSProps = CommonScreenPropsType & {}
 const OrderPlacementS = observer(({navigation, route}: InProgressSProps) => {
@@ -20,8 +21,10 @@ const OrderPlacementS = observer(({navigation, route}: InProgressSProps) => {
     const {OrdersStoreService} = rootStore
 
     const goBackPress = () => {
-        navigation.goBack()
+        navigation.navigate(routerConstants.ORDERS)
+        return true
     }
+    useGoBack(goBackPress)
     const onPressComplete = () => {
         sendOrderComplete(orderDetail?.orders_id, String(orderDetail.client_logistic_partners_points_id)).then((data) => {
             if (data) {

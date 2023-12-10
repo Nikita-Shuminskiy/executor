@@ -79,7 +79,7 @@ type ExecutorSettingType = {
     units: UnitType[];
     executor_photos_for_approval: PhotosApprovalType[];
     message: string
-    unread_messages: string
+    unread_messages: number
     orders: OrderType[]
 };
 export type OrderType = {

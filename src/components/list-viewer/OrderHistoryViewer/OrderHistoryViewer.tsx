@@ -30,7 +30,7 @@ const OrderHistoryViewer = observer(({onPressDetails, order}: OrderHistoryViewer
                     </Box>
                     <Box>
                         <Text fontFamily={'regular'} color={colors.grayLight}
-                              fontSize={15}>{dateStringFormat('dd.MM.yyyy', 'order.date_estimated_ready')}</Text>
+                              fontSize={15}>{dateStringFormat(order?.datetime_register, 'dd MMMM yyyy')}</Text>
                     </Box>
                 </Box>
             </Box>
