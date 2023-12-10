@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { LoadingEnum } from '../../store/types/types'
 import NetInfo from '@react-native-community/netinfo'
-import NotificationStore from '../../store/NotificationStore/notification-store'
+import NotificationStore from '../../store/CommonStore/common-store'
 
 export const useInternetConnected = () => {
 	const [isConnected, setIsConnected] = useState(true)

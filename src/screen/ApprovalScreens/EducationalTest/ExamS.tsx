@@ -15,7 +15,7 @@ import {generateBoxShadowStyle} from "../../../utils/commonUtils";
 import ModalExit from "./ModalExit";
 import {observer} from "mobx-react-lite";
 import AuthStore from "../../../store/AuthStore/auth-store";
-import NotificationStore from "../../../store/NotificationStore/notification-store";
+import NotificationStore from "../../../store/CommonStore/common-store";
 import {LoadingEnum} from "../../../store/types/types";
 import {routerConstants} from "../../../constants/routerConstants";
 

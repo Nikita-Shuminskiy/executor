@@ -1,7 +1,7 @@
 import React from 'react'
 import {Alert, Box, CloseIcon, Heading, HStack, IconButton, VStack} from 'native-base'
 import {colors} from '../assets/colors/colors'
-import NotificationStore from '../store/NotificationStore/notification-store'
+import NotificationStore from '../store/CommonStore/common-store'
 
 type AlertProps = {
     text: string

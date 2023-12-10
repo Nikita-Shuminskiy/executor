@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
 import {StyleSheet} from 'react-native'
 import {Box} from 'native-base'
-import NotificationStore from '../../store/NotificationStore/notification-store'
+import NotificationStore from '../../store/CommonStore/common-store'
 import {getCurrentPositionHandler} from './utils'
 import AddressAutocomplete from '../AddressAutocomplete'
 import MarkerCustom from './MarkerCustom'
@@ -31,8 +31,6 @@ export const MapViews = ({logisticPoints, onPressPaczkomat}: MapViewsProps) => {
             setMyPosition({latitude, longitude})
         } catch (e) {
             console.log(e, 'catch')
-        } finally {
-            console.log('finally')
         }
     }
     useEffect(() => {

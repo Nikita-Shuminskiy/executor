@@ -99,6 +99,9 @@ export const authApi = {
     async getStatusDocumentVerification() {
         return await instance.get<ExamEducationResponseType<string>>(`executor_status`)
     },
+    async sendPushReport(push_id: string) {
+        return await instance.post(`push_report`, {}, {params: {push_id}})
+    },
 }
 type ExamEducationResponseType<T> = {
     message: T

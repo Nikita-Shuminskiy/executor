@@ -60,7 +60,7 @@ const Map = ({orderDetail}: MapProps) => {
     }
     useEffect(() => {
         if (mapRef && myPosition?.latitude) {
-            mapRef.fitToCoordinates([{latitude: myPosition.latitude, longitude: myPosition.longitude}], {
+            mapRef.fitToCoordinates([{latitude: myPosition?.latitude, longitude: myPosition?.longitude}], {
                 edgePadding: {top: 50, right: 50, bottom: 50, left: 50},
                 animated: true,
             })

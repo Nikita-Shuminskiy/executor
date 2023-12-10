@@ -1,6 +1,6 @@
 import * as Location from 'expo-location'
 import {LocationAccuracy} from 'expo-location'
-import NotificationStore from "../../store/NotificationStore/notification-store";
+import NotificationStore from "../../store/CommonStore/common-store";
 
 export const allowLocation = async () => {
 	const {setServerErrorText} = NotificationStore
@@ -26,7 +26,5 @@ export const getCurrentPositionHandler = async () => {
 		}
 	} catch (e) {
 		console.log(e, 'catch')
-	} finally {
-		console.log('finally')
 	}
 }

@@ -12,7 +12,7 @@ import {Dimensions, FlatList, ImageBackground, Platform} from "react-native";
 import {useIsFocused} from "@react-navigation/native";
 import backgroundOrderImg from '../../../assets/Images/orders/backgroundOrder.png'
 import OrderViewer from "../../../components/list-viewer/OrderViewer/OrderViewer";
-import {onPressOrderDetails} from "./utils";
+import {processingNavigationOrderStatus} from "./utils";
 import rootStore from "../../../store/RootStore/root-store";
 
 type OrdersSProps = CommonScreenPropsType & {}
@@ -43,7 +43,7 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     }, [isFocused]);
     const onPressDetails = useCallback((order: OrderType) => {
         OrdersStoreService.getOrderReportDetail(order.id)
-        onPressOrderDetails(navigation, order)
+        processingNavigationOrderStatus(navigation, order)
     }, [])
     const renderItem = useCallback(({item, index}: { item: OrderType, index: number }) => {
         if (item.last_step === LAST_STEP_ORDER_ENUM.admin_closed_order

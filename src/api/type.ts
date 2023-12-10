@@ -1,9 +1,11 @@
 import {NavigationProp, ParamListBase} from "@react-navigation/native";
+
 type ShiftSetupPayload = {
     datetime_freeze_until?: string
     datetime_workshift_until?: string
     ready_for_orders?: string
 }
+
 export enum LanguageEnum {
     EN = 'EN',
     PL = 'PL',
@@ -52,10 +54,12 @@ type ExecutorType = {
     pic: string
     phone_verify_datetime: string;
 }
-enum ApprovedEnum  {
+
+enum ApprovedEnum {
     APPROVED = 1,
     DONT_APPROVED = 0
 }
+
 type PhotosApprovalType = {
     admins_id?: null,
     approved?: null | ApprovedEnum,
@@ -75,6 +79,7 @@ type ExecutorSettingType = {
     units: UnitType[];
     executor_photos_for_approval: PhotosApprovalType[];
     message: string
+    unread_messages: string
     orders: OrderType[]
 };
 export type OrderType = {
@@ -111,6 +116,7 @@ type OrderDetailType = OrderType & {
         type_of_units_id: string;
     }[];
 };
+
 enum LAST_STEP_ORDER_ENUM {
     client_received = 'client_received', // просим оценки
     auction_open = 'auction_open', // ищем исполнителя
@@ -128,6 +134,7 @@ enum LAST_STEP_ORDER_ENUM {
     admin_closed_order = 'admin_closed_order',// не показывать
     client_confirm = 'client_confirm',// не показывать
 }
+
 type LogisticsPointType = {
     id: string;
     logistic_partners_id: string;
@@ -186,13 +193,26 @@ type CommonScreenPropsType = {
 }
 type PhotoType = { 'filename': string, 'id': string }
 
- enum StatusOrder {
+enum StatusOrder {
     EDITABLE = 'editable',
     IN_PROCESS = 'in_process',
     COMPLETED = 'completed'
 }
+
+type NotificationResponse = {
+    "0": string,
+    "executor_id": string,
+    "need_to_reading_report": 0 | 1 | null,
+    "push_id": string,
+    "text": string,
+    "order_id": number | null,
+    "type": 'message',
+    "type_of_picture": "go" | "pay" | "alarm" | "bench" | "perfect" | "message" | null
+}
+
 export {
     OrderDetailType,
+    NotificationResponse,
     ShiftSetupPayload,
     StatusOrder,
     LAST_STEP_ORDER_ENUM,

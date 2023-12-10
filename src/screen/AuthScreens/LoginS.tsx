@@ -9,7 +9,7 @@ import {colors} from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import {observer} from 'mobx-react-lite'
 import {GoogleSignin, statusCodes,} from '@react-native-google-signin/google-signin';
-import NotificationStore from "../../store/NotificationStore/notification-store";
+import NotificationStore from "../../store/CommonStore/common-store";
 import rootStore from "../../store/RootStore/root-store";
 import {routerConstants} from "../../constants/routerConstants";
 import * as Facebook from "expo-auth-session/providers/facebook";

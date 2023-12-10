@@ -19,7 +19,6 @@ const AboutUsS = ({navigation}: AboutUsSProps) => {
     const onPressLink = async (link: string) => {
         try {
             await openBrowserAsync(link)
-
         } catch (error) {
             console.log(error.message)
         }

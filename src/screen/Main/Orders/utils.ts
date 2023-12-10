@@ -2,7 +2,7 @@ import {routerConstants} from "../../../constants/routerConstants";
 import {allowLocation, getCurrentPositionHandler} from "../../../components/MapViews/utils";
 import {LAST_STEP_ORDER_ENUM} from "../../../api/type";
 
-export const onPressOrderDetails = (navigation, order) => {
+export const processingNavigationOrderStatus = (navigation, order) => {
     switch (order.last_step?.trim()) {
         case LAST_STEP_ORDER_ENUM.client_sent: {
             return navigation.navigate(routerConstants.EXECUTOR_STATUSES, {from: LAST_STEP_ORDER_ENUM.client_sent})

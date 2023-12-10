@@ -15,7 +15,7 @@ export class OrdersStoreService {
         try {
             await this.rootStore.OrdersStore.getOrderReportClient()
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
         }
     }
@@ -25,7 +25,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.sendOrderRegister(payload)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }
@@ -37,7 +37,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
 
         }
@@ -49,7 +49,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
 
         }
@@ -60,7 +60,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.getOrderReportDetail(orders_id)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
 
         }
@@ -74,7 +74,7 @@ export class OrdersStoreService {
             await this.rootStore.OrdersStore.setClosedOrder(data.orders)
             return true
         } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
+            this.rootStore.Notification.setServerResponse({serverResponse: e?.message})
         } finally {
             this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
         }

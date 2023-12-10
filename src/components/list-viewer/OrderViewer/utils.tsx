@@ -44,7 +44,6 @@ export function getLastStepStatusOrder(lastStep: string, date_esimated: string) 
         case LAST_STEP_ORDER_ENUM.client_confirm:
             return {} // не показывать
         default:
-            console.log(lastStep)
             return {
                 img: waitingImg,
                 text: <Text color={colors.grayLight}>Waiting for continuation</Text>,

@@ -7,7 +7,6 @@ export const ordersApi = {
         return await instance.post(`order_executor_photo_delete`, payload)
     },
     async sendOrderRegister(payload: SendOrderRegisterType) {
-        console.log(payload)
         return await instance.post(`order_executor_register`, payload)
     },
     async sendOrderReviewPhoto(payload: { photo: string, order_id: string }) {

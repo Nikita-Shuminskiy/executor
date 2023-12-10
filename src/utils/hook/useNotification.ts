@@ -11,6 +11,9 @@ import notifee, {
 import * as Notifications from 'expo-notifications';
 import {routerConstants} from "../../constants/routerConstants";
 import {Platform} from "react-native";
+import NavigationStore from "../../store/NavigationStore/navigation-store";
+import {NotificationResponse} from "../../api/type";
+import rootStore from "../../store/RootStore/root-store";
 
 export async function allowsNotificationsAsync() {
     const settings = await Notifications.getPermissionsAsync();
@@ -94,6 +97,7 @@ export const onDisplayNotification = async (data) => {
     })
 }
 export const useNotification = (isAuth: boolean, navigate: (route: string) => void) => {
+    const {AuthStoreService} = rootStore
     useEffect(() => {
         if (isAuth) {
             requestUserPermission().then((data) => {
@@ -125,8 +129,12 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
                 type,
                 detail: {notification},
             } = event
+            const dataPush: NotificationResponse = JSON.parse(<string>notification.data.route)
+            if(dataPush?.type === 'message') {
+                await notifee.cancelNotification(notification.id)
+            }
             if (type === EventType.PRESS || event?.detail?.pressAction?.id) {
-                navigate(routerConstants[notification?.data.route as string])
+                await AuthStoreService.processingNotificationResponse(JSON.parse(<string>notification.data.route))
                 await notifee.cancelNotification(notification.id)
             }
         })
@@ -137,8 +145,7 @@ export const useNotification = (isAuth: boolean, navigate: (route: string) => vo
                 detail: {notification},
             } = event
             if (type === EventType.PRESS || event?.detail?.pressAction?.id) {
-                console.log(notification, 'notification')
-                navigate(routerConstants[notification?.data.route as string])
+                await AuthStoreService.processingNotificationResponse(JSON.parse(<string>notification.data.route))
                 await notifee.cancelNotification(notification.id)
             }
         })

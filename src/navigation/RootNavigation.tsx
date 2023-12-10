@@ -2,7 +2,7 @@ import React, {useLayoutEffect} from 'react'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {observer} from 'mobx-react-lite'
 import AuthStore from '../store/AuthStore'
-import NotificationStore from '../store/NotificationStore/notification-store'
+import NotificationStore from '../store/CommonStore/common-store'
 import {LoadingEnum} from '../store/types/types'
 import LoadingGlobal from '../components/LoadingGlobal'
 import {routerConstants} from '../constants/routerConstants'
@@ -94,8 +94,6 @@ const RootNavigation = observer(() => {
                         />
                     })
                 }
-
-
             </RootStack.Navigator>
         </BurgerMenuProvider>
     )

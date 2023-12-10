@@ -25,7 +25,7 @@ export class OrdersStore {
         this.orderDetail = null
     }
 
-    getOrderReportDetail = async (orders_id: any): Promise<any> => {
+    getOrderReportDetail = async (orders_id: any): Promise<OrderDetailType> => {
         const {data} = await ordersApi.getOrderReportDetail({
             orders_id,
         })
@@ -38,7 +38,6 @@ export class OrdersStore {
             orders_id: orders_id,
             executor_logistic_partners_points_id,
         })
-        console.log(data, 'datadatadata')
         return data
     }
     saveOrderPhoto = async (photo) => {
@@ -105,7 +104,7 @@ export class OrdersStore {
     }
     sendOrderRegister = async (payload: SendOrderRegisterType) => {
         const {data} = await ordersApi.sendOrderRegister(payload)
-        console.log(data)
+        return data
        // this.setOrders(data.orders)
     }
     constructor() {

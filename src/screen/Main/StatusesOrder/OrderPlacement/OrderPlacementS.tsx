@@ -24,7 +24,6 @@ const OrderPlacementS = observer(({navigation, route}: InProgressSProps) => {
     }
     const onPressComplete = () => {
         sendOrderComplete(orderDetail?.orders_id, String(orderDetail.client_logistic_partners_points_id)).then((data) => {
-            console.log(data)
             if (data) {
                 OrdersStoreService.getOrderReportExecutor()
                 goBackPress()
