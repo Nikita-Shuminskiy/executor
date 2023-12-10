@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {FlatList, Image, Modal, Platform, StyleSheet, TouchableOpacity, View} from 'react-native'
+import {FlatList, Image, Modal, Platform, StyleSheet, TouchableOpacity, View,} from 'react-native'
 import {Camera, CameraType, FlashMode,} from 'expo-camera'
 import {observer} from 'mobx-react-lite'
 import btnCamera from '../../assets/Images/order/blue-circle.png'
@@ -40,11 +40,12 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
     }
     const takePicture = async () => {
         try {
-            const photo = await cameraRef.current.takePictureAsync()
+            const photo = await cameraRef.current.takePictureAsync({quality: 3, skipProcessing: true})
             savePhoto(photo.uri)
-            setIsOpenCamera(false)
         } catch (e) {
             console.log(e, 'takePicture')
+        } finally {
+            setIsOpenCamera(false)
         }
     }
     const onCloseModalDelete = () => {
@@ -56,8 +57,8 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
+                quality: 0,
             })
-            setIsOpenCamera(false)
             if (!result.canceled) {
                 const selectedAsset = result.assets[0]
                 const selectedImageUri = selectedAsset.uri
@@ -65,6 +66,8 @@ const ShowListPhoto = observer(({deletePhoto, savePhoto, data}: AddPhotoComponen
             }
         } catch (error) {
             console.log('Error selecting image from gallery:', error)
+        } finally {
+            setIsOpenCamera(false)
         }
     }
     const onPressDeletePhoto = useCallback((photoId: number) => {

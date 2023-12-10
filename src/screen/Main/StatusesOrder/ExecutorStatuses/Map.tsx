@@ -21,8 +21,9 @@ type MapProps = {
 }
 const Map = ({orderDetail}: MapProps) => {
     const [mapRef, setMapRef] = useState(null)
-    const latitude = Number(orderDetail.executor_logistic_partners_points_lat)
-    const longitude = Number(orderDetail.executor_logistic_partners_points_lon)
+    const latitude = Number(orderDetail?.executor_logistic_partners_points_lat)
+    const longitude = Number(orderDetail?.executor_logistic_partners_points_lon)
+
     const [myPosition, setMyPosition] = useState<Coordinates | null>({
         latitude,
         longitude

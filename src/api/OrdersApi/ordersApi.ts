@@ -1,9 +1,14 @@
 import {instance} from '../config'
 import {convertToFormDataImg} from "../../utils/commonUtils";
+import {SendOrderRegisterType} from "./type";
 
 export const ordersApi = {
     async deleteOrderPhoto(payload: { photo_id: number }) {
         return await instance.post(`order_executor_photo_delete`, payload)
+    },
+    async sendOrderRegister(payload: SendOrderRegisterType) {
+        console.log(payload)
+        return await instance.post(`order_executor_register`, payload)
     },
     async sendOrderReviewPhoto(payload: { photo: string, order_id: string }) {
         const {order_id, photo} = payload
@@ -18,8 +23,7 @@ export const ordersApi = {
         })
     },
     async sendOrderComplete(payload: { orders_id: string, executor_logistic_partners_points_id: string }) {
-        console.log(payload, 'sendOrderComplete')
-        return await instance.post(`order_executor_completed`, payload)
+        return await instance.get(`order_executor_completed`, {params: payload})
     },
     async saveOrderPhoto(payload: { orders_id: string, photo: string }) {
         const {orders_id, photo} = payload

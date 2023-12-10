@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {colors} from "../../../assets/colors/colors";
 import {Image, StyleSheet} from "react-native";
 import {Box, Text} from "native-base";
 import hypoallergenicBlueImg from "../../../assets/Images/order/quill-blue.png";
 import ironBlueImg from "../../../assets/Images/order/iron-blue.png";
 import InputNumber from "../../InputNumber";
+import {getInfoPriceElement} from "./utils";
 
-const PriceViewer = ({getInfo, onChangeValuesPrice, price, priceDataPayload}: any) => {
+const PriceViewer = memo(({ onChangeValuesPrice, price, priceDataPayload}: any) => {
+    const getInfo = getInfoPriceElement(price?.id)
     const onChangeValue = (val: string) => {
         onChangeValuesPrice(price.id, price, val)
     }
@@ -29,14 +31,14 @@ const PriceViewer = ({getInfo, onChangeValuesPrice, price, priceDataPayload}: an
                         imgIcoSize={5}
                         styleInput={styles.styleInput}
                         styleBtn={styles.styleBtn}
-                        values={priceDataPayload[price.id] ?? 0}
+                        values={priceDataPayload}
                         onChangeValue={onChangeValue}
                     />
                 </Box>
             </Box>
         </Box>
     );
-}
+})
 const styles = StyleSheet.create({
     styleInput: {
         color: colors.black,

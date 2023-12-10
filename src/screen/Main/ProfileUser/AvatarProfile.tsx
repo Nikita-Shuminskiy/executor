@@ -60,7 +60,7 @@ const AvatarProfile = ({photo}) => {
     }
     const takePicture = async () => {
         try {
-            const photo = await cameraRef.current.takePictureAsync()
+            const photo = await cameraRef.current.takePictureAsync({quality: 0, skipProcessing: true})
             setSelectedImageUri(photo.uri)
             setIsOpenCamera(false)
             AuthStoreService.updateExecutorPhoto(photo.uri).then((data) => {

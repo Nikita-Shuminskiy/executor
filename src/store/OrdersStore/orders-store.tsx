@@ -1,6 +1,7 @@
 import {action, makeAutoObservable, makeObservable, observable} from 'mobx'
 import {ordersApi} from "../../api/OrdersApi/ordersApi";
 import {OrderDetailType, OrderType} from "../../api/type";
+import {SendOrderRegisterType} from "../../api/OrdersApi/type";
 
 export class OrdersStore {
     orderDetail: OrderDetailType | null = null
@@ -28,21 +29,21 @@ export class OrdersStore {
         const {data} = await ordersApi.getOrderReportDetail({
             orders_id,
         })
-        console.log(data, 'order')
         this.setOrderDetail(data)
         return data
     }
 
     sendOrderComplete = async (orders_id: string, executor_logistic_partners_points_id: string) => {
         const {data} = await ordersApi.sendOrderComplete({
-            orders_id,
+            orders_id: orders_id,
             executor_logistic_partners_points_id,
         })
+        console.log(data, 'datadatadata')
         return data
     }
     saveOrderPhoto = async (photo) => {
         const {data} = await ordersApi.saveOrderPhoto({
-            order_id: this.orderDetail?.orders_id,
+            orders_id: this.orderDetail?.orders_id,
             photo,
         })
     }
@@ -102,7 +103,11 @@ export class OrdersStore {
         const {data} = await ordersApi.getAllOrdersInProgress()
         this.setOrders(data.orders)
     }
-
+    sendOrderRegister = async (payload: SendOrderRegisterType) => {
+        const {data} = await ordersApi.sendOrderRegister(payload)
+        console.log(data)
+       // this.setOrders(data.orders)
+    }
     constructor() {
         makeAutoObservable(this)
     }

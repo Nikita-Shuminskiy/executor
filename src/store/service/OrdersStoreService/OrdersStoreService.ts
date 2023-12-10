@@ -1,8 +1,6 @@
 import RootStore from '../../RootStore'
 import {LoadingEnum} from '../../types/types'
-import {routerConstants} from '../../../constants/routerConstants'
-import {checkToken} from "../../../utils/commonUtils";
-import {LAST_STEP_ORDER_ENUM, StatusOrder} from "../../../api/type";
+import {SendOrderRegisterType} from "../../../api/OrdersApi/type";
 
 
 export class OrdersStoreService {
@@ -21,25 +19,10 @@ export class OrdersStoreService {
         } finally {
         }
     }
-
-    async startOrder() {
+    async sendOrderRegister(payload: SendOrderRegisterType) {
         this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
         try {
-            await this.rootStore.OrdersStore.startOrder()
-            return true
-        } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
-        } finally {
-            this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
-        }
-    }
-
-    async reviewOrder(payload: Omit<any, 'orders_id'>) {
-        this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
-        try {
-            await this.rootStore.OrdersStore.reviewOrder(payload)
-            const data = await this.rootStore.AuthStore.getSettingExecutor()
-           // this.rootStore.OrdersStore.setOrders(data.orders)
+            await this.rootStore.OrdersStore.sendOrderRegister(payload)
             return true
         } catch (e) {
             this.rootStore.Notification.setNotification({serverResponse: e?.message})
@@ -83,25 +66,12 @@ export class OrdersStoreService {
         }
     }
 
-    async updateOrder(payload: any) {
-        this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
-        try {
-           const data = await this.rootStore.OrdersStore.updateOrder(payload)
-            await this.rootStore.OrdersStore.getOrderReportDetail(this.rootStore.OrdersStore.orderDetail.orders_id)
-            return true
-        } catch (e) {
-            this.rootStore.Notification.setNotification({serverResponse: e?.message})
-        } finally {
-            this.rootStore.Notification.setLocalLoading(LoadingEnum.success)
-        }
-    }
-
     async getOrdersHistory() {
         this.rootStore.Notification.setLocalLoading(LoadingEnum.fetching)
         try {
             const data = await this.rootStore.OrdersStore.getOrdersHistory()
-            const closedOrders = data.orders.filter((order) => order.last_step === LAST_STEP_ORDER_ENUM.admin_closed_order)
-            await this.rootStore.OrdersStore.setClosedOrder(closedOrders)
+            //const closedOrders = .filter((order) => order.last_step === LAST_STEP_ORDER_ENUM.admin_closed_order)
+            await this.rootStore.OrdersStore.setClosedOrder(data.orders)
             return true
         } catch (e) {
             this.rootStore.Notification.setNotification({serverResponse: e?.message})

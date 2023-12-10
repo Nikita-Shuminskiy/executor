@@ -12,6 +12,7 @@ export const routerConstants = {
     ORDER_PLACEMENT: 'order-placement',
     EXECUTOR_STATUSES: 'executor_statuses',
     EVALUATE_ORDER: 'evaluate-order',
+    CLIENT_PAY: 'client_pay',
     //////////////
     REGISTRATION: 'registration',
     ABOUT_US: 'about-us',

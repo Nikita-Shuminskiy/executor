@@ -20,8 +20,13 @@ type ResponseDialogType = {
 	status: string,
 	messages: DialogType[]
 }
+type SendOrderRegisterType = {
+	"orders_id": string,
+	"units_order": { [key:string]: string }[]
+}
 export {
 	DialogType,
+	SendOrderRegisterType,
 	SendMessagePayloadType,
 	ResponseDialogType,
 }
