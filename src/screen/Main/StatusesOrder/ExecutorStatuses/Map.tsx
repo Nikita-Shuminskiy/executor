@@ -20,28 +20,10 @@ type MapProps = {
     orderDetail: OrderDetailType
 }
 const Map = ({orderDetail}: MapProps) => {
-    const [mapRef, setMapRef] = useState(null)
     const latitude = Number(orderDetail?.executor_logistic_partners_points_lat)
     const longitude = Number(orderDetail?.executor_logistic_partners_points_lon)
 
-    const [myPosition, setMyPosition] = useState<Coordinates | null>({
-        latitude,
-        longitude
-    })
-    const getCurrentPosition = async () => {
-        try {
-            // const {latitude, longitude} = await getCurrentPositionHandler()
-            setMyPosition({latitude, longitude})
-        } catch (e) {
 
-        }
-    }
-
-    /* useFocusEffect(
-         React.useCallback(() => {
-             getCurrentPosition()
-         }, [])
-     );*/
     let initialRegion = {
         latitude: latitude ?? 52.2297,
         longitude: longitude ?? 21.0122,
@@ -49,40 +31,31 @@ const Map = ({orderDetail}: MapProps) => {
         longitudeDelta: 1.0221,
     }
     const onPressNavigate = () => {
-            if (!myPosition?.latitude) return
-            const endLocation = [latitude, longitude]
-            const startLocation = [myPosition.latitude, myPosition.longitude]
-
-            const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${startLocation}&destination=${endLocation}`
+        if (!latitude) return
+        const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${[latitude, longitude]}`
             Linking.openURL(googleMapsUrl).catch((err) =>
                 console.error('Error opening Google Maps: ', err),
             )
     }
-    useEffect(() => {
-        if (mapRef && myPosition?.latitude) {
-            mapRef.fitToCoordinates([{latitude: myPosition?.latitude, longitude: myPosition?.longitude}], {
-                edgePadding: {top: 50, right: 50, bottom: 50, left: 50},
-                animated: true,
-            })
-        }
-    }, [myPosition])
+
     return (
         <>
             <Box mt={4} h={400}>
                 <MapView
-                    ref={(ref) => setMapRef(ref)}
                     style={styles.map}
                     provider={PROVIDER_GOOGLE}
                     initialRegion={initialRegion}
                 >
                     {
-                        !!myPosition?.latitude && <Marker
+                        !!latitude && <Marker
                             focusable={true}
                             style={{width: 30, height: 30}}
-                            coordinate={myPosition}
+                            coordinate={{
+                                latitude: latitude,
+                                longitude: longitude
+                            }}
                             title={''}
                         >
-                            {/*  <SvgXml xml={userSvg} width="100%" height="100%"/>*/}
                             <SvgXml xml={homeSvg} width="100%" height="100%"/>
                         </Marker>
                     }

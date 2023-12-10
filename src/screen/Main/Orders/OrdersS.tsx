@@ -17,8 +17,6 @@ import rootStore from "../../../store/RootStore/root-store";
 
 type OrdersSProps = CommonScreenPropsType & {}
 const OrdersS = observer(({navigation, route}: OrdersSProps) => {
-    const [isFreeze, setIsFreeze] = useState(false)
-    const [isOpenShiftModal, setIsOpenShiftModal] = useState(false)
     const isFocused = useIsFocused();
     const isOpenMenu = route.params?.from === 'open_menu'
     const {executorSettings} = AuthStore
@@ -30,17 +28,7 @@ const OrdersS = observer(({navigation, route}: OrdersSProps) => {
     useEffect(() => {
         if (isFocused) {
             OrdersStoreService.getOrderReportExecutor()
-            const isFreeze = isFutureDate(executorSettings?.executors?.datetime_freeze_until) ||
-                !executorSettings?.executors?.datetime_workshift_until ||
-                !(+executorSettings.executors.ready_for_orders >= 1)
-            if (isFreeze) {
-                setTimeout(() => {
-                    setIsFreeze(true)
-                }, 500)
-            }
-            return
         }
-        setIsFreeze(false)
     }, [isFocused]);
     const onPressDetails = useCallback((order: OrderType) => {
         OrdersStoreService.getOrderReportDetail(order.id).then((data) => {
