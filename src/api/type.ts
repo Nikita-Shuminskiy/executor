@@ -202,7 +202,7 @@ enum StatusOrder {
 type NotificationResponse = {
     "0": string,
     "executor_id": string,
-    "need_to_reading_report": 0 | 1 | null,
+    "need_to_reading_report": "0" | "1" | null,
     "push_id": string,
     "text": string,
     "order_id": number | null,

@@ -7,12 +7,15 @@ import {Image, Modal, StyleSheet} from 'react-native'
 import {colors} from '../assets/colors/colors'
 import Button from './Button'
 import {StatusBar} from 'expo-status-bar'
+import {DictionaryType} from "../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../store/DictionaryStore/type";
 
 type WifiReconnectProps = {
     visible?: boolean
+    dictionary: DictionaryType
     checkInternet?: () => void
 }
-const WifiReconnect = ({visible, checkInternet}: WifiReconnectProps) => {
+const WifiReconnect = ({visible, checkInternet, dictionary}: WifiReconnectProps) => {
     const onPressReconnect = () => {
         checkInternet()
     }
@@ -32,15 +35,15 @@ const WifiReconnect = ({visible, checkInternet}: WifiReconnectProps) => {
                              backgroundColor={colors.white}>
                             <Box flex={1} alignItems={'center'}>
                                 <Text fontSize={28}
-                                      fontFamily={'semiBold'}>Bad Connection</Text>
+                                      fontFamily={'semiBold'}>{dictionary[DictionaryEnum.BadConnection]}</Text>
                                 <Text textAlign={'center'} fontSize={15} fontFamily={'regular'}
                                       color={colors.grayLight}>
-                                    Check Internet Connection
+                                    {dictionary[DictionaryEnum.CheckInternetConnection]}
                                 </Text>
                             </Box>
                             <Box flex={1} w={'100%'}>
                                 <Button onPress={onPressReconnect} styleContainer={styles.styleContainerBtn}
-                                        title={'Reconnect'}
+                                        title={dictionary[DictionaryEnum.Reconnect]}
                                         colorText={colors.white} backgroundColor={colors.red}/>
                             </Box>
 

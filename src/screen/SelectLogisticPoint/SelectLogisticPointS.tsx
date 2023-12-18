@@ -14,6 +14,8 @@ import HeaderGoBackTitle from "../../components/HeaderGoBackTitle";
 import {routerConstants} from "../../constants/routerConstants";
 import ConfirmationLogisticsPointModal from "./ConfirmationLogisticsPointModal";
 import OrdersStore from "../../store/OrdersStore/orders-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
 
 type SelectLogisticPointProps = CommonScreenPropsType & {}
 const SelectLogisticPointS = observer(({navigation, route}: SelectLogisticPointProps) => {
@@ -23,6 +25,7 @@ const SelectLogisticPointS = observer(({navigation, route}: SelectLogisticPointP
     const {logisticPoints} = AuthStore
     const {AuthStoreService, OrdersStoreService} = rootStore
     const {orderDetail} = OrdersStore
+    const {dictionary} = DictionaryStore
     const onPressPaczkomat = (point: LogisticsPointType) => {
         setChosenPaczkomat(point)
     }
@@ -59,8 +62,8 @@ const SelectLogisticPointS = observer(({navigation, route}: SelectLogisticPointP
             <Box paddingX={3} h={58} backgroundColor={colors.white} flexDirection={'row'} alignItems={'center'}
                  justifyContent={'center'}>
                 {
-                    !(!isFromUpdate || !isFromUpdateOrder) ? <Text fontSize={17} fontFamily={'semiBold'}>Select your nearest Paczkomat</Text> :
-                        <HeaderGoBackTitle title={'Select your nearest Paczkomat'}
+                    !(!isFromUpdate || !isFromUpdateOrder) ? <Text fontSize={17} fontFamily={'semiBold'}>{dictionary[DictionaryEnum.SelectYourNearestPaczkomat]}</Text> :
+                        <HeaderGoBackTitle title={dictionary[DictionaryEnum.SelectYourNearestPaczkomat]}
                                            goBackPress={() => goBackPress(routerConstants.ORDERS)}/>
                 }
             </Box>
@@ -75,10 +78,9 @@ const SelectLogisticPointS = observer(({navigation, route}: SelectLogisticPointP
                                       position={'absolute'}
                                       bottom={Platform.OS === 'ios' ? 10 : 0}
                                       backgroundColor={colors.white}>
-                    <Text fontSize={15} textAlign={'center'} fontFamily={'regular'}>You would need to use this Paczkomat to
-                        return washed clothes</Text>
+                    <Text fontSize={15} textAlign={'center'} fontFamily={'regular'}>{dictionary[DictionaryEnum.YouWouldNeedToUseThisPaczkomatToReturnWashedClothes]}</Text>
                     <Text fontSize={15} mt={3} textAlign={'center'} fontFamily={'regular'}>
-                        You will be able to change it later
+                        {dictionary[DictionaryEnum.YouWillBeAbleToChangeItLater]}
                     </Text>
                 </Box>
             }

@@ -53,8 +53,8 @@ export const authApi = {
     async fullDeleteAccount() {
         return await instance.post(`executor_full_delete`)
     },
-    async getDictionary() {
-        return await instance.get(`get_dictionary`)
+    async getDictionary(payload: { language: string }) {
+        return await instance.get(`get_dictionary`, { params: payload })
     },
     async updateExecutor(payload: UpdateExecutorPayloadType) {
         return await instance.post(`executor_register`, {}, {
@@ -100,7 +100,7 @@ export const authApi = {
         return await instance.get<ExamEducationResponseType<string>>(`executor_status`)
     },
     async sendPushReport(push_id: string) {
-        return await instance.post(`push_report`, {}, {params: {push_id}})
+        return await instance.post(`executor_push_report`, {}, {params: {push_id}})
     },
 }
 type ExamEducationResponseType<T> = {

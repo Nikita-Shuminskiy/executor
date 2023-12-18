@@ -7,6 +7,8 @@ import {useNavigation} from '@react-navigation/native'
 import {BASE_URL} from '../../api/config'
 import {observer} from "mobx-react-lite";
 import {routerConstants} from "../../constants/routerConstants";
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 type AvatarProps = {
     photo: string
@@ -15,6 +17,7 @@ type AvatarProps = {
 }
 
 const AvatarUser = observer(({photo, name, onClose}: AvatarProps) => {
+    const {dictionary} = DictionaryStore
 
     const navigation = useNavigation<any>()
     const onPressGoProfile = () => {
@@ -33,7 +36,7 @@ const AvatarUser = observer(({photo, name, onClose}: AvatarProps) => {
                                         source={{uri: photo}}/>
                     }
                     <Box ml={3} flex={1} mr={4}>
-                        <Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}>Welcome back</Text>
+                        <Text fontSize={13} fontFamily={'regular'} color={colors.grayLight}> {dictionary[DictionaryEnum.WelcomeBack]}</Text>
                         <Text fontSize={17} fontFamily={'semiBold'}>{name}</Text>
                     </Box>
                 </Box>

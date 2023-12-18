@@ -23,11 +23,13 @@ import rootStore from "../store/RootStore/root-store";
 import authenticatedRoutes from "./routesConstants";
 import {usePermissionsPushGeo} from "../utils/hook/usePermissionsPushGeo";
 import GivePermissions from "../components/GivePermissions";
+import DictionaryStore from "../store/DictionaryStore/dictionary-store";
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
     const {isLoading, serverResponseText, isLocalLoading, setIsLoading} = NotificationStore
     const {isAuth} = AuthStore
+    const {dictionary} = DictionaryStore
     const {AuthStoreService} = rootStore
     const {
         askNotificationPermissionHandler,
@@ -46,10 +48,13 @@ const RootNavigation = observer(() => {
         AuthStoreService.getSettingExecutor(navigate?.navigate)
             .then((data) => {
                 if (data === 'not_token') {
-                    // DictionaryStore.getDictionaryLocal()
+                     DictionaryStore.getDictionaryLocal()
                 }
             })
     }, [])
+    if (!dictionary) {
+        return <LoadingGlobal visible={true}/>
+    }
     return (
         <BurgerMenuProvider>
             {isLoading === LoadingEnum.fetching && <LoadingGlobal visible={true}/>}
@@ -57,8 +62,10 @@ const RootNavigation = observer(() => {
             {serverResponseText && <Alerts
                 text={serverResponseText}/>}
             {!isConnected && <WifiReconnect
+                dictionary={dictionary}
                 checkInternet={checkInternetConnection} visible={!isConnected}/>}
             {checkStatusPermissions && <GivePermissions
+                dictionary={dictionary}
                 askLocationPermissionHandler={askLocationPermissionHandler}
                 askNotificationPermissionHandler={askNotificationPermissionHandler}
                 visible={checkStatusPermissions}/>}

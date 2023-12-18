@@ -35,7 +35,7 @@ const CloseShiftS = observer(({navigation}: CloseShiftSProps) => {
     const sendData = () => {
         const formattedDateString = chosenDate ? chosenDate?.replace(/\//g, '-') + 'T00:00:00.000Z' : ''
         const dateObject = chosenDate ? new Date(formattedDateString) : new Date()
-        const formattedDate = isNaN(dateObject.getTime()) ? executorSettings?.executors?.datetime_workshift_until : format(dateObject, 'yyyy-MM-dd HH:mm:ss');
+        const formattedDate = isNaN(dateObject.getTime()) ? executorSettings?.executors?.datetime_workshift_until : format(dateObject, 'yyyy-MM-dd');
         AuthStoreService.sendShiftSetup({datetime_freeze_until: formattedDate}).then((data) => {
             if (data) {
                 setIsMenuOpen(true)

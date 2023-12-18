@@ -18,10 +18,13 @@ import {observer} from 'mobx-react-lite'
 import {useNavigation} from '@react-navigation/native'
 import {routerConstants} from '../../constants/routerConstants'
 import {isFutureDate} from "../../utils/commonUtils";
+import DictionaryStore from "../../store/DictionaryStore/dictionary-store";
+import {DictionaryEnum} from "../../store/DictionaryStore/type";
 
 const BurgerMenu = observer(() => {
     const {isMenuOpen, setIsMenuOpen} = useBurgerMenu()
     const [isOpenLogout, setIsLogout] = useState<boolean>(false)
+    const {dictionary} = DictionaryStore
     const toValue = isMenuOpen ? 0 : -1000
     const menuPosition = useRef(new Animated.Value(toValue)).current
     const {AuthStoreService, OrdersStoreService, ChatStoreService} = rootStore
@@ -29,7 +32,7 @@ const BurgerMenu = observer(() => {
     const navigation = useNavigation<any>()
     const isFreeze = isFutureDate(executorSettings?.executors?.datetime_freeze_until) ||
         !executorSettings?.executors?.datetime_workshift_until ||
-        !(+executorSettings.executors.ready_for_orders >= 1)
+        !(+executorSettings.executors.ready_for_orders >= 1) // проверка -  если true - исполнитель не принимает заказы и ему нужно открыть смену
     const toggleMenu = () => {
         Animated.timing(menuPosition, {
             toValue,
@@ -116,7 +119,7 @@ const BurgerMenu = observer(() => {
                                 <Box flexDirection={'row'} alignItems={'center'}>
                                     <Image w={6} h={6} alt={'img'} source={countryImg}/>
                                     <Text fontSize={15} fontWeight={'regular'}
-                                          ml={2}>Country</Text>
+                                          ml={2}> {dictionary[DictionaryEnum.Country]}</Text>
                                 </Box>
                                 <Box alignItems={'center'}
                                      flexDirection={'row'}>
@@ -127,32 +130,33 @@ const BurgerMenu = observer(() => {
 
                             <BurgerLink onPress={onPressOrderHistoryHandler}
                                         img={repeatImg}
-                                        text={'Order history'}/>
+                                        text={dictionary[DictionaryEnum.OrderHistory]}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.RECEIVING_METHOD)}
                                         img={walletImg}
-                                        text={'Receiving method'}/>
+                                        text={dictionary[DictionaryEnum.ReceivingMethod]}/>
                             <BurgerLink onPress={onPressChatHandler}
                                         isRedDot={executorSettings?.unread_messages > 0}
                                         img={questionMarkImg}
-                                        text={'Contact support'}/>
+                                        text={dictionary[DictionaryEnum.ContactSupport]}/>
                             <BurgerLink
                                 onPress={() => onPressNavigateHandler(routerConstants.SELECT_LOGISTIC_POINT, {from: 'update'})}
                                 img={exclamationMarkImg}
-                                text={'Change of logistics point'}/>
+                                text={dictionary[DictionaryEnum.ChangeOfLogisticsPoint]}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.OPEN_SHIFT)}
                                         isRedDot={isFreeze}
                                         img={exclamationMarkImg}
-                                        text={'Open shift'}/>
+                                        text={dictionary[DictionaryEnum.OpenShift]}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.CLOSE_SHIFT)}
                                         img={exclamationMarkImg}
-                                        text={'Freeze shift'}/>
+                                        text={dictionary[DictionaryEnum.FreezeShift]}/>
                             <BurgerLink onPress={() => onPressNavigateHandler(routerConstants.ABOUT_US)}
                                         img={exclamationMarkImg}
-                                        text={'About swash'}/>
+                                        text={dictionary[DictionaryEnum.AboutSwash]}/>
                             <Box mt={5} mb={3} alignItems={'center'}>
                                 <Button backgroundColor={colors.white} colorText={colors.black}
-                                        styleContainer={styles.btnContainer} styleText={{fontFamily: 'regular'}} onPress={onPressLogOut}
-                                        title={'Log off'}/>
+                                        styleContainer={styles.btnContainer} styleText={{fontFamily: 'regular'}}
+                                        onPress={onPressLogOut}
+                                        title={dictionary[DictionaryEnum.LogOff]}/>
                             </Box>
                         </ScrollView>
                     </Box>
@@ -168,7 +172,6 @@ const BurgerMenu = observer(() => {
         </>
     )
 })
-/*добавить крастную точкy*/
 const styles = StyleSheet.create({
     btnContainer: {
         borderWidth: 1,
@@ -206,12 +209,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowOffset: {width: 5, height: 0},
         elevation: 5,
-    },
-    menuButton: {
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: 'gray',
-    },
+    }
 })
 
 export default BurgerMenu
