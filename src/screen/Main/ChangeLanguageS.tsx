@@ -13,14 +13,17 @@ import { useBurgerMenu } from '../../components/BurgerMenu/BurgerMenuContext'
 import { LanguageEnum } from '../../api/type'
 import DictionaryStore from '../../store/DictionaryStore/dictionary-store'
 import { DictionaryEnum } from '../../store/DictionaryStore/type'
+import { routerConstants } from '../../constants/routerConstants'
 
 type ChangeLanguageSProps = {
 	navigation: NavigationProp<ParamListBase>
+	route: any
 }
-const ChangeLanguageS = observer(({ navigation }: ChangeLanguageSProps) => {
+const ChangeLanguageS = observer(({ navigation, route }: ChangeLanguageSProps) => {
+	const from_exam = route?.params?.exam_passed == 'not_passed'
 	const { AuthStoreService } = rootStore
 	const { dictionary } = DictionaryStore
-	const { executorSettings } = AuthStore
+	const { executorSettings, getExamEducation } = AuthStore
 	const [chosenLang, setChosenLang] = useState<LanguageEnum | ''>('')
 	const onChangeLang = (key: LanguageEnum) => {
 		setChosenLang(key)
@@ -30,6 +33,11 @@ const ChangeLanguageS = observer(({ navigation }: ChangeLanguageSProps) => {
 		if (chosenLang === executorSettings.executors.language || chosenLang === '') return
 		AuthStoreService.updateExecutor({ language: chosenLang }).then((data) => {
 			if (data) {
+				if (from_exam) {
+					getExamEducation()
+					navigation.navigate(routerConstants.EDUCATIONAL_TEXT)
+					return
+				}
 				setIsMenuOpen(true)
 			}
 		})

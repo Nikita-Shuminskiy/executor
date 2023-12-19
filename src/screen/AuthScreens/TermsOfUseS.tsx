@@ -82,7 +82,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 					</Box>
 					<Box
 						paddingX={2}
-						h={375}
+						h={465}
 						w={'100%'}
 						alignItems={'center'}
 						justifyContent={'space-evenly'}
@@ -164,7 +164,10 @@ const styles = StyleSheet.create({
 		opacity: 0.1,
 	},
 	link: { borderBottomWidth: 1, borderBottomColor: colors.blue },
-	imgLogo: {},
+	imgLogo: {
+		width: 230,
+		height: 230,
+	},
 	styleContainerBtn: {
 		maxWidth: 280,
 		width: '100%',

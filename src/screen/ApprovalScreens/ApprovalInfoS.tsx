@@ -10,9 +10,13 @@ import Button from '../../components/Button'
 import { CommonScreenPropsType } from '../../api/type'
 import { routerConstants } from '../../constants/routerConstants'
 import { useGoBack } from '../../utils/hook/useGoBack'
+import DictionaryStore from '../../store/DictionaryStore/dictionary-store'
+import { observer } from 'mobx-react-lite'
+import { DictionaryEnum } from '../../store/DictionaryStore/type'
 
 type ApprovalSProps = CommonScreenPropsType & {}
-const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
+const ApprovalInfoS = observer(({ navigation }: ApprovalSProps) => {
+	const { dictionary } = DictionaryStore
 	const onPressStartApprovement = () => {
 		navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
 	}
@@ -40,11 +44,11 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 						backgroundColor={colors.white}
 					>
 						<Text fontSize={27} textAlign={'center'} fontFamily={'semiBold'}>
-							We need a few photos for the approvement process
+							{dictionary[DictionaryEnum.NeedPhotos]}
 						</Text>
 						<Box mt={3} ml={2} paddingX={7}>
 							<Text textAlign={'left'} fontSize={17} fontFamily={'regular'} color={colors.black}>
-								We will ask you for photos of
+								{dictionary[DictionaryEnum.PhotosOfID]}
 							</Text>
 							<Text
 								textAlign={'left'}
@@ -53,7 +57,7 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 								fontFamily={'regular'}
 								color={colors.black}
 							>
-								&#8226; your ID document
+								&#8226; {dictionary[DictionaryEnum.YourIDDocument]}
 							</Text>
 							<Text
 								textAlign={'left'}
@@ -62,7 +66,7 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 								fontFamily={'regular'}
 								color={colors.black}
 							>
-								&#8226; your ID document next to your face
+								&#8226; {dictionary[DictionaryEnum.IDNextToFace]}
 							</Text>
 							<Text
 								textAlign={'left'}
@@ -71,7 +75,7 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 								fontFamily={'regular'}
 								color={colors.black}
 							>
-								&#8226; your washing machine
+								&#8226; {dictionary[DictionaryEnum.WashingMachine]}
 							</Text>
 							<Text
 								textAlign={'left'}
@@ -80,7 +84,7 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 								fontFamily={'regular'}
 								color={colors.black}
 							>
-								&#8226; your ironing equipment
+								&#8226; {dictionary[DictionaryEnum.IroningEquipment]}
 							</Text>
 							<Text
 								textAlign={'left'}
@@ -89,7 +93,7 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 								fontFamily={'regular'}
 								color={colors.black}
 							>
-								&#8226; the room where you are will conduct your work
+								&#8226; {dictionary[DictionaryEnum.RoomForWork]}
 							</Text>
 						</Box>
 
@@ -97,7 +101,7 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 							<Button
 								onPress={onPressStartApprovement}
 								styleContainer={styles.styleContainerBtn}
-								title={'Start approvement process'}
+								title={dictionary[DictionaryEnum.StartApprovalProcess]}
 								colorText={colors.white}
 								backgroundColor={colors.blue}
 							/>
@@ -107,7 +111,7 @@ const ApprovalInfoS = ({ navigation }: ApprovalSProps) => {
 			</Box>
 		</BaseWrapperComponent>
 	)
-}
+})
 const styles = StyleSheet.create({
 	imgLogo: {
 		width: 316,

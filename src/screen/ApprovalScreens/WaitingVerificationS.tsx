@@ -15,10 +15,13 @@ import { routerConstants } from '../../constants/routerConstants'
 import { useGoBack } from '../../utils/hook/useGoBack'
 import { authApi } from '../../api/authApi'
 import { useIsFocused } from '@react-navigation/native'
+import DictionaryStore from '../../store/DictionaryStore/dictionary-store'
+import { DictionaryEnum } from '../../store/DictionaryStore/type'
 
 type WaitingVerificationProps = CommonScreenPropsType & {}
 const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificationProps) => {
-	const { executorSettings } = AuthStore
+	const { dictionary } = DictionaryStore
+	const { executorSettings, approveRefuseText, setRefuseText } = AuthStore
 	const [intervalId, setIntervalId] = useState<number | null>(null)
 	const isFocused = useIsFocused()
 	const [status, setStatus] = useState<{
@@ -36,11 +39,16 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 	useEffect(() => {
 		if (isFocused) {
 			const intervalId = +setInterval(() => {
-				authApi.getStatusDocumentVerification().then((data: any) => {
-					if (data.data.status === 'ok') {
+				authApi.getSettingExecutorShort().then((data: any) => {
+					if (data.data.message === 'ok') {
 						clearInterval(intervalId)
 						return navigation.navigate(routerConstants.EDUCATIONAL_TEST, { exam_passed: false })
 					}
+					authApi.getSettingExecutorShort().then((data) => {
+						if (data) {
+							setRefuseText(data?.data?.executors?.executor_approve_refuse_text)
+						}
+					})
 					setStatus(data.data)
 				})
 			}, 10000)
@@ -81,15 +89,17 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 					>
 						<Box alignItems={'center'} flex={1} justifyContent={'space-evenly'}>
 							<Text fontSize={27} textAlign={'center'} fontFamily={'semiBold'}>
-								{isMissingPhoto ? 'Some photos are missing!' : 'Now you need to wait'}
+								{isMissingPhoto
+									? `${dictionary[DictionaryEnum.MissingPhotos]}`
+									: `${dictionary[DictionaryEnum.Wait]}`}
 							</Text>
 							{!isMissingPhoto && (
 								<>
 									<Text textAlign={'center'} fontSize={24} fontFamily={'regular'}>
-										Our administrator will check your data
+										{dictionary[DictionaryEnum.AdminCheckData]}
 									</Text>
 									<Text textAlign={'center'} fontSize={24} fontFamily={'regular'}>
-										You will be notified as this process will go on
+										{dictionary[DictionaryEnum.NotificationOnProcess]}
 									</Text>
 								</>
 							)}
@@ -101,8 +111,7 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 										fontFamily={'regular'}
 										color={colors.black}
 									>
-										Our Our admin marked photos that have troubles, you will be able to view marked
-										photos
+										{dictionary[DictionaryEnum.OurAdminMarkedPhotos]}
 									</Text>
 									<Text
 										textAlign={'left'}
@@ -111,7 +120,7 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 										fontFamily={'regular'}
 										color={colors.red}
 									>
-										“{status?.message ?? executorSettings.executors.executor_approve_refuse_text}”
+										“{approveRefuseText ?? ''}”
 									</Text>
 								</Box>
 							)}
@@ -121,7 +130,7 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 								<Button
 									onPress={onPressGoAddPhoto}
 									styleContainer={styles.styleContainerBtn}
-									title={'Add missing photos'}
+									title={dictionary[DictionaryEnum.AddMissingPhotos]}
 									colorText={colors.white}
 									backgroundColor={colors.blue}
 								/>

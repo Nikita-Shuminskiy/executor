@@ -15,6 +15,7 @@ import OrderViewer from '../../../components/list-viewer/OrderViewer/OrderViewer
 import { processingNavigationOrderStatus } from './utils'
 import rootStore from '../../../store/RootStore/root-store'
 import DictionaryStore from '../../../store/DictionaryStore/dictionary-store'
+import EmptyComponent from '../../../components/list-viewer/EmptyComponent'
 
 type OrdersSProps = CommonScreenPropsType & {}
 const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
@@ -90,6 +91,12 @@ const OrdersS = observer(({ navigation, route }: OrdersSProps) => {
 					>
 						<FlatList
 							scrollEnabled={false}
+							contentContainerStyle={
+								!executorSettings?.orders.length && {
+									flex: 1,
+								}
+							}
+							ListEmptyComponent={EmptyComponent}
 							data={executorSettings?.orders}
 							renderItem={renderItem}
 						/>
