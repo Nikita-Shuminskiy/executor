@@ -5,7 +5,7 @@ import { colors } from '../../../../assets/colors/colors'
 import { Image, Modal, ScrollView, StyleSheet } from 'react-native'
 import Button from '../../../../components/Button'
 import { getInfoPriceElement } from '../../../../components/list-viewer/PriceViewer/utils'
-import DictionaryStore from '../../../../store/DictionaryStore/dictionary-store'
+import { DictionaryType } from '../../../../store/DictionaryStore/dictionary-store'
 import { DictionaryEnum } from '../../../../store/DictionaryStore/type'
 
 type ModalEvaluateOrderProps = {
@@ -13,14 +13,15 @@ type ModalEvaluateOrderProps = {
 	onClose: () => void
 	onSave: () => void
 	isOpen: boolean
+	dictionary: DictionaryType
 }
 const ModalEvaluateOrder = ({
 	priceDataUnits,
 	onClose,
 	onSave,
+	dictionary,
 	isOpen,
 }: ModalEvaluateOrderProps) => {
-	const { dictionary } = DictionaryStore
 	const dataArrayUnits = Object.entries(priceDataUnits).map(([key, value]) => ({
 		[key]: String(value),
 	}))
@@ -42,7 +43,7 @@ const ModalEvaluateOrder = ({
 					{dataArrayUnits.map((unit, index) => {
 						const [key, value] = Object.entries(unit)[0]
 						if (value === '0') return
-						const getInfo = getInfoPriceElement(key)
+						const getInfo = getInfoPriceElement(key, dictionary)
 						return (
 							<Box
 								key={`${index}-${key}`}
@@ -74,7 +75,7 @@ const ModalEvaluateOrder = ({
 							styleContainer={{ ...styles.styleContainerBtn, ...styles.btnYes }}
 							colorText={colors.blue}
 							onPress={onClose}
-							title={dictionary[DictionaryEnum.Cansel]}
+							title={dictionary[DictionaryEnum.Cancel]}
 						/>
 					</Box>
 					<Box flex={1}>

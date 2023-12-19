@@ -38,9 +38,9 @@ const TimerComponent = ({ onPressSendCodeAgain }: TimerComponentProps) => {
 					{isRunning ? (
 						<Box>
 							<Text fontSize={15} fontFamily={'regular'} color={colors.grayLight}>
-								Send code again after{' '}
+								{dictionary[DictionaryEnum.SendCodeAgainAfter]}{' '}
 								<Text fontSize={15} fontFamily={'regular'} color={colors.black}>
-									{seconds} seconds
+									{seconds} {dictionary[DictionaryEnum.Seconds]}
 								</Text>
 							</Text>
 						</Box>

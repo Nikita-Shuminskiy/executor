@@ -18,6 +18,7 @@ import { useGoBack } from '../../../../utils/hook/useGoBack'
 import { routerConstants } from '../../../../constants/routerConstants'
 import DictionaryStore from '../../../../store/DictionaryStore/dictionary-store'
 import { DictionaryEnum } from '../../../../store/DictionaryStore/type'
+import { getArrayPriceOrder } from './utils'
 
 export type priceDataPayloadType = {
 	[key: string]: number
@@ -76,17 +77,20 @@ const EvaluateTheOrderS = observer(({ navigation, route }: EvaluateTheOrderSProp
 		OrdersStoreService.deleteOrderPhoto(photoId)
 	}
 	const onPressContinue = () => {
-		const dataArray = Object.entries(priceDataPayload).map(([key, value]) => ({
-			[key]: String(value),
-		}))
+		const dataUnitsOrder = getArrayPriceOrder(priceDataPayload)
 		OrdersStoreService.sendOrderRegister({
 			orders_id: orderDetail.orders_id,
-			units_order: dataArray,
+			units_order: dataUnitsOrder,
 		}).then((data) => {
 			if (data) {
 				goBackPress()
 			}
 		})
+	}
+	const onPressGo = () => {
+		const isDefaultDataPriceEmpty = Object.values(priceDataPayload).every((value) => value === 0)
+		if (isDefaultDataPriceEmpty) return
+		setConfirmation(true)
 	}
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
@@ -138,13 +142,14 @@ const EvaluateTheOrderS = observer(({ navigation, route }: EvaluateTheOrderSProp
 							width: 280,
 							borderRadius: 28,
 						}}
-						onPress={() => setConfirmation(true)}
+						onPress={onPressGo}
 						title={dictionary[DictionaryEnum.Continue]}
 					/>
 				</Box>
 			</Box>
 			{confirmations && (
 				<ModalEvaluateOrder
+					dictionary={dictionary}
 					onSave={onPressContinue}
 					onClose={() => setConfirmation(false)}
 					isOpen={confirmations}

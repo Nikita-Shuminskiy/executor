@@ -65,7 +65,7 @@ const OrderPlacementS = observer(({ navigation, route }: InProgressSProps) => {
 							</Text>
 							<Text fontSize={15} mt={1} fontFamily={'regular'}>
 								{orderDetail.add_hypo
-									? `⚠️ ${dictionary[DictionaryEnum.Hypoallergenic]}}`
+									? `⚠️ ${dictionary[DictionaryEnum.Hypoallergenic]}`
 									: `⚠️ ${dictionary[DictionaryEnum.WithIroning]}`}
 							</Text>
 						</Box>

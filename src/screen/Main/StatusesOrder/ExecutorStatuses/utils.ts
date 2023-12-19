@@ -28,7 +28,7 @@ export const getStepData = (
 	switch (status) {
 		case LAST_STEP_ORDER_ENUM.client_sent: {
 			return {
-				text: `${dictionary[DictionaryEnum.OrderWillBeReturnedAt]}`,
+				text: `${dictionary[DictionaryEnum.OrderWillBeReturnedApproximatelyAt]}`,
 				date: dateStringFormat(dateReady, 'dd MMMM yyyy'),
 				img: takeThingsImg,
 				bigImg: OnTheWay,
