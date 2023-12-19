@@ -21,11 +21,10 @@ import { DictionaryEnum } from '../../store/DictionaryStore/type'
 type WaitingVerificationProps = CommonScreenPropsType & {}
 const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificationProps) => {
 	const { dictionary } = DictionaryStore
-	const { executorSettings, approveRefuseText, setRefuseText } = AuthStore
+	const { executorShortData, setExecutorShortData } = AuthStore
 	const [intervalId, setIntervalId] = useState<number | null>(null)
 	const isFocused = useIsFocused()
 	const [status, setStatus] = useState<{
-		message: string
 		status: 'ok' | 'waiting' | 'declined'
 	} | null>(null)
 	const onPressGoAddPhoto = () => {
@@ -39,17 +38,13 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 	useEffect(() => {
 		if (isFocused) {
 			const intervalId = +setInterval(() => {
-				authApi.getSettingExecutorShort().then((data: any) => {
-					if (data.data.message === 'ok') {
+				authApi.getSettingExecutorShort().then((data) => {
+					if (data?.data?.executors.message === 'ok') {
 						clearInterval(intervalId)
 						return navigation.navigate(routerConstants.EDUCATIONAL_TEST, { exam_passed: false })
 					}
-					authApi.getSettingExecutorShort().then((data) => {
-						if (data) {
-							setRefuseText(data?.data?.executors?.executor_approve_refuse_text)
-						}
-					})
-					setStatus(data.data)
+					setExecutorShortData(data?.data)
+					setStatus({ status: data?.data?.executors?.message })
 				})
 			}, 10000)
 			setIntervalId(intervalId)
@@ -120,7 +115,7 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 										fontFamily={'regular'}
 										color={colors.red}
 									>
-										“{approveRefuseText ?? ''}”
+										“{executorShortData?.executors?.executor_approve_refuse_text ?? ''}”
 									</Text>
 								</Box>
 							)}

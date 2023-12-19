@@ -4,6 +4,7 @@ import { deviceStorage } from '../../utils/storage/storage'
 import {
 	AuthGooglePayload,
 	ExecutorSettingType,
+	ExecutorShortDataType,
 	LogisticsPointType,
 	PhotoPayloadType,
 	ShiftSetupPayload,
@@ -16,18 +17,18 @@ export class AuthStore {
 	logisticPoints: LogisticsPointType[] = []
 	executorSettings: ExecutorSettingType = {} as ExecutorSettingType
 	examEducationText: string = ''
-	approveRefuseText: string = ''
+	executorShortData: ExecutorShortDataType | null = null
 	examData: { question: string; answers: string[]; total?: number; answered: number } | null = null
 	clearStore = () => {
 		this.phone = ''
 		this.examEducationText = ''
-		this.approveRefuseText = ''
+		this.executorShortData = null
 		this.examData = null
 		this.executorSettings = {} as ExecutorSettingType
 		this.logisticPoints = []
 	}
-	setRefuseText = (refuseText: string): void => {
-		this.approveRefuseText = refuseText
+	setExecutorShortData = (dataShort: ExecutorShortDataType): void => {
+		this.executorShortData = dataShort
 	}
 	setAuth = (auth: boolean): void => {
 		this.isAuth = auth

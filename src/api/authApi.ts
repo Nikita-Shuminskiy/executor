@@ -2,6 +2,7 @@ import { instance } from './config'
 import {
 	AuthGooglePayload,
 	ExecutorSettingType,
+	ExecutorShortDataType,
 	PhotoPayloadType,
 	ShiftSetupPayload,
 	UpdateExecutorPayloadType,
@@ -139,16 +140,7 @@ type ExamEducationResponseType<T> = {
 type ExamNextQuestionWithTotalResponseType = ExamNextQuestionType & {
 	total: number
 }
-export type ExecutorShortDataType = {
-	executors: {
-		executor_approve_datetime: string
-		executor_approve_refuse_text: string
-		executor_exam_datetime: string
-		id: number
-		user: string
-	}
-	status: string
-}
+
 type ExamNextQuestionType = {
 	message: string
 	question: string
