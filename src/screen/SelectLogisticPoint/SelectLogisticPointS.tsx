@@ -68,7 +68,7 @@ const SelectLogisticPointS = observer(({ navigation, route }: SelectLogisticPoin
 				alignItems={'center'}
 				justifyContent={'center'}
 			>
-				{!(!isFromUpdate || !isFromUpdateOrder) ? (
+				{!isFromUpdate || !isFromUpdateOrder ? (
 					<Text fontSize={17} fontFamily={'semiBold'}>
 						{dictionary[DictionaryEnum.SelectYourNearestPaczkomat]}
 					</Text>
@@ -80,7 +80,7 @@ const SelectLogisticPointS = observer(({ navigation, route }: SelectLogisticPoin
 				)}
 			</Box>
 			<MapViews onPressPaczkomat={onPressPaczkomat} logisticPoints={logisticPoints} />
-			{!(!isFromUpdate || !isFromUpdateOrder) && (
+			{(!isFromUpdate || !isFromUpdateOrder) && (
 				<Box
 					borderRadius={16}
 					pb={3}

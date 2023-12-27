@@ -4,16 +4,16 @@ import { Box, Text } from 'native-base'
 import { colors } from '../../../assets/colors/colors'
 import closeImage from '../../../assets/Images/order/closeCircleGray.png'
 import Button from '../../../components/Button'
-import DictionaryStore from '../../../store/DictionaryStore/dictionary-store'
+import DictionaryStore, { DictionaryType } from '../../../store/DictionaryStore/dictionary-store'
 import { DictionaryEnum } from '../../../store/DictionaryStore/type'
 
 type BaseModalInfoProps = {
 	visible: boolean
+	dictionary: DictionaryType
 	onClose: () => void
 }
 
-const BaseModalInfo = ({ visible, onClose }: BaseModalInfoProps) => {
-	const { dictionary } = DictionaryStore
+const BaseModalInfo = ({ visible, onClose, dictionary }: BaseModalInfoProps) => {
 	return (
 		<Modal transparent={true} visible={visible}>
 			<Box

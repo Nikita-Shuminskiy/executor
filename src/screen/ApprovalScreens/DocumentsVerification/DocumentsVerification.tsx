@@ -79,7 +79,7 @@ const DocumentsVerification = observer(({ navigation }: DocumentsVerificationPro
 			setDisableBtn(true)
 			return
 		}
-		navigation.navigate(routerConstants.WAITING_VERIFICATION)
+		navigation.navigate(routerConstants.WAITING_VERIFICATION, { error: false })
 	}
 	return (
 		<BaseWrapperComponent isKeyboardAwareScrollView={true}>
@@ -194,7 +194,13 @@ const DocumentsVerification = observer(({ navigation }: DocumentsVerificationPro
 					/>
 				</Box>
 			</Box>
-			{disableBtn && <BaseModalInfo visible={disableBtn} onClose={() => setDisableBtn(false)} />}
+			{disableBtn && (
+				<BaseModalInfo
+					dictionary={dictionary}
+					visible={disableBtn}
+					onClose={() => setDisableBtn(false)}
+				/>
+			)}
 		</BaseWrapperComponent>
 	)
 })

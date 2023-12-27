@@ -24,13 +24,14 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 	const { executorShortData, setExecutorShortData } = AuthStore
 	const [intervalId, setIntervalId] = useState<number | null>(null)
 	const isFocused = useIsFocused()
-	const [status, setStatus] = useState<{
-		status: 'ok' | 'waiting' | 'declined'
-	} | null>(null)
 	const onPressGoAddPhoto = () => {
 		navigation.navigate(routerConstants.DOCUMENT_VERIFICATION)
 	}
-	const isMissingPhoto = route?.params?.error || status?.status === 'declined' //photos are missing
+	const isMissingPhoto =
+		!!(
+			!executorShortData?.executors?.executor_approve_datetime &&
+			executorShortData?.executors?.executor_approve_refuse_text
+		) || route?.params?.error //photos are missing
 	const goBackPress = () => {
 		return true
 	}
@@ -39,17 +40,19 @@ const WaitingVerificationS = observer(({ navigation, route }: WaitingVerificatio
 		if (isFocused) {
 			const intervalId = +setInterval(() => {
 				authApi.getSettingExecutorShort().then((data) => {
-					if (data?.data?.executors.message === 'ok') {
+					if (data?.data?.executors?.executor_approve_datetime) {
 						clearInterval(intervalId)
 						return navigation.navigate(routerConstants.EDUCATIONAL_TEST, { exam_passed: false })
 					}
 					setExecutorShortData(data?.data)
-					setStatus({ status: data?.data?.executors?.message })
 				})
 			}, 10000)
 			setIntervalId(intervalId)
 		} else {
 			clearInterval(intervalId)
+		}
+		if (!isFocused) {
+			return setExecutorShortData(null)
 		}
 	}, [isFocused])
 	return (

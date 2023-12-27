@@ -82,7 +82,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 					</Box>
 					<Box
 						paddingX={2}
-						h={465}
+						h={475}
 						w={'100%'}
 						alignItems={'center'}
 						justifyContent={'space-evenly'}
@@ -104,7 +104,7 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 									<CheckBoxs value={checkToc} onPress={onPressTocHandler} />
 
 									<Box flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'}>
-										<Text ml={2} fontSize={15} fontFamily={'regular'}>
+										<Text ml={2} flex={2} fontSize={15} fontFamily={'regular'}>
 											{dictionary[DictionaryEnum.IAgreeWith]}{' '}
 										</Text>
 										<TouchableOpacity
@@ -124,11 +124,12 @@ const TermsOfUseS = observer(({ navigation }: TermsOfUseSProps) => {
 									justifyContent={'flex-start'}
 									alignItems={'center'}
 									p={3}
+									flexGrow={1}
 									backgroundColor={colors.blueLight}
 								>
 									<CheckBoxs value={checkLegal} onPress={onPressLegalHandler} />
 									<Box flexDirection={'row'} justifyContent={'flex-start'} alignItems={'center'}>
-										<Text ml={2} fontSize={15} fontFamily={'regular'}>
+										<Text ml={2} flex={2} fontSize={15} fontFamily={'regular'}>
 											{dictionary[DictionaryEnum.IAgreeWith]}{' '}
 										</Text>
 										<TouchableOpacity
@@ -163,7 +164,8 @@ const styles = StyleSheet.create({
 	disBtn: {
 		opacity: 0.1,
 	},
-	link: { borderBottomWidth: 1, borderBottomColor: colors.blue },
+	borderBottom: { borderBottomWidth: 1, borderBottomColor: colors.blue },
+	link: { flex: 1, flexWrap: 'nowrap' },
 	imgLogo: {
 		width: 230,
 		height: 230,

@@ -10,7 +10,6 @@ import MessageViewer from '../../../components/list-viewer/MessageViewer/Message
 import Footer from './Footer'
 import arrowBottomImg from '../../../assets/Images/Chat/arrowBottomBackground.png'
 import Link from '../../../components/Link'
-import AuthStore from '../../../store/AuthStore/auth-store'
 import { useGoBack } from '../../../utils/hook/useGoBack'
 import { routerConstants } from '../../../constants/routerConstants'
 import DictionaryStore from '../../../store/DictionaryStore/dictionary-store'

@@ -83,7 +83,12 @@ const RootNavigation = observer(() => {
 				{isAuth &&
 					authenticatedRoutes.map((route) => {
 						return (
-							<RootStack.Screen key={route.name} name={route.name} component={route.component} />
+							<RootStack.Screen
+								options={{ gestureEnabled: false }}
+								key={route.name}
+								name={route.name}
+								component={route.component}
+							/>
 						)
 					})}
 			</RootStack.Navigator>
