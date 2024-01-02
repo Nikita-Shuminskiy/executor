@@ -11,11 +11,13 @@ import {
 	ShiftSetupPayload,
 	UpdateExecutorPayloadType,
 } from '../../api/type'
+import Constants from 'expo-constants'
 
 export class AuthStore {
 	isAuth: boolean = false
 	isOnboarding: boolean = false
 	phone: string = ''
+	isNewVersionApp: boolean = false
 	logisticPoints: LogisticsPointType[] = []
 	executorSettings: ExecutorSettingType = {} as ExecutorSettingType
 	examEducationText: string = ''
@@ -39,6 +41,9 @@ export class AuthStore {
 	}
 	setGlobalSettings = (data: GlobalSettingsType | null): void => {
 		this.globalSettings = data
+		if (Constants?.expoConfig?.version < data?.executor_app_last_version) {
+			this.isNewVersionApp = true
+		}
 	}
 	setExamEducationText = (data: string) => {
 		this.examEducationText = data
@@ -74,7 +79,10 @@ export class AuthStore {
 	getGlobalSetting = async () => {
 		const { data } = await authApi.getGlobalSetting()
 		this.setGlobalSettings(data?.result)
-		this.setIsOnboarding(true)
+		const isShowOnboarding = await deviceStorage.getItem('onboarding')
+		if (!isShowOnboarding || isShowOnboarding === 'false') {
+			this.setIsOnboarding(true)
+		}
 		return data
 	}
 	logout = async () => {

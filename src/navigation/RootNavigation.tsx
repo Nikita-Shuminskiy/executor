@@ -26,11 +26,12 @@ import GivePermissions from '../components/GivePermissions'
 import DictionaryStore from '../store/DictionaryStore/dictionary-store'
 import ChangeLanguageS from '../screen/Main/ChangeLanguageS'
 import Onboarding from '../components/Onboarding/Onboarding'
+import UpdateAppModal from '../components/modal/UpdateAppModal'
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
 	const { isLoading, serverResponseText, isLocalLoading, setIsLoading } = NotificationStore
-	const { isAuth, globalSettings, isOnboarding } = AuthStore
+	const { isAuth, globalSettings, isOnboarding, isNewVersionApp } = AuthStore
 	const { dictionary } = DictionaryStore
 	const { AuthStoreService } = rootStore
 	const { askNotificationPermissionHandler, askLocationPermissionHandler, locationStatus } =
@@ -67,6 +68,7 @@ const RootNavigation = observer(() => {
 				/>
 			)}
 			{isOnboarding && <Onboarding visible={isOnboarding} />}
+			{isNewVersionApp && <UpdateAppModal visible={isNewVersionApp} />}
 			{checkStatusPermissions && (
 				<GivePermissions
 					dictionary={dictionary}
