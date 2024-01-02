@@ -25,11 +25,12 @@ import { usePermissionsPushGeo } from '../utils/hook/usePermissionsPushGeo'
 import GivePermissions from '../components/GivePermissions'
 import DictionaryStore from '../store/DictionaryStore/dictionary-store'
 import ChangeLanguageS from '../screen/Main/ChangeLanguageS'
+import Onboarding from '../components/Onboarding/Onboarding'
 
 const RootStack = createNativeStackNavigator()
 const RootNavigation = observer(() => {
 	const { isLoading, serverResponseText, isLocalLoading, setIsLoading } = NotificationStore
-	const { isAuth } = AuthStore
+	const { isAuth, globalSettings, isOnboarding } = AuthStore
 	const { dictionary } = DictionaryStore
 	const { AuthStoreService } = rootStore
 	const { askNotificationPermissionHandler, askLocationPermissionHandler, locationStatus } =
@@ -38,11 +39,12 @@ const RootNavigation = observer(() => {
 	const { checkInternetConnection, isConnected } = useInternetConnected()
 	const navigate = useNavigation()
 	// emulator(10) egovLUZ5QWWrNLEWUwFjkY:APA91bE0BIx8nAxOXsL1RoNyolI6EZZVMM9x2uWRJ4bBq7W2S46Y07xPcigUuSznoq1xbtCwkVUgfHnH1i-jId4Ffs5_vjAntlJLCRgsPnV1PSkYJAHNL8otUUQmJXrQ4DwN0Is51tdd
-	// my xiaomi fswDVQ3qSr-qnThlq5BwGE:APA91bEDnwNFjcx_WDNzkw1hbpSNbPwa3FxflB53OP_YBf2DQdZlstbApsHXh2fOM6t-umtHNRsi0JQSklsP1ux2Qutf8oDglRxu-3n8kTiH4rpy6jEjneomupRiz885eTaZ_eyfwr13
+	// my xiaomi c3ybnCWVQtG-BI_9WgacBV:APA91bE_oRT_p2GZA9YkWbaaU32m1bB4hZUUkMGS_uKxo4K2c59hmT79gEriIYjW7a14c1AX6prjQpJp7thW7lwS7DUon9ih4DIU1YA_mHJ_JgR702EXaN3UR3bwrP3rkCH-W7eNh9ra
 	// my android (9) eCJMtreXTQKFzpuO1sve0K:APA91bGykORJfvmJ0eMaLT1pnFuXIk74syB6eCwbZLw9onBfyKH0CRmaBgPXDgbwiHNRn14o6unHFEqme2RQpGhrrLpPEoAJOtxwZak1wlcfratd7g_ECgTT4p2zYyZQ6liRcix5_shG
 	// ios eYrnYuEyREzoo6wPDtu4tn:APA91bEGbmKvFDSDSY1m5I8B7zJbddH9dnxKEhItD7h-j_bbbCt4uBxegutWh8fJSmwtaqGxgDCKbixjhpEYiRN6y9mlLkFAxozi2QCvOWJauQYGH4RZnFzdrWpDr8mf_Xwcg9aYhZbc
-	useNotification(isAuth, navigate.navigate)
+	useNotification(isAuth)
 	useLayoutEffect(() => {
+		AuthStoreService.getGlobalSetting()
 		AuthStoreService.getSettingExecutor(navigate?.navigate).then((data) => {
 			if (data === 'not_token') {
 				DictionaryStore.getDictionaryLocal()
@@ -64,6 +66,7 @@ const RootNavigation = observer(() => {
 					visible={!isConnected}
 				/>
 			)}
+			{isOnboarding && <Onboarding visible={isOnboarding} />}
 			{checkStatusPermissions && (
 				<GivePermissions
 					dictionary={dictionary}
@@ -73,7 +76,10 @@ const RootNavigation = observer(() => {
 				/>
 			)}
 			<BurgerMenu />
-			<RootStack.Navigator screenOptions={{ headerShown: false }}>
+			<RootStack.Navigator
+				initialRouteName={routerConstants.LOGIN}
+				screenOptions={{ headerShown: false }}
+			>
 				<RootStack.Screen name={routerConstants.LOGIN} component={LoginS} />
 				<RootStack.Screen name={routerConstants.VERIFY_NUMBER} component={VerifyNumberS} />
 				<RootStack.Screen name={routerConstants.PHONE_VERIFY} component={AddPhoneS} />

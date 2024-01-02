@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BaseWrapperComponent } from '../../components/baseWrapperComponent'
 import { observer } from 'mobx-react-lite'
-import { CommonScreenPropsType, LAST_STEP_ORDER_ENUM, LogisticsPointType } from '../../api/type'
+import { CommonScreenPropsType, LogisticsPointType } from '../../api/type'
 import { Box, Text } from 'native-base'
 import AuthStore from '../../store/AuthStore/auth-store'
 import { colors } from '../../assets/colors/colors'
@@ -68,19 +68,21 @@ const SelectLogisticPointS = observer(({ navigation, route }: SelectLogisticPoin
 				alignItems={'center'}
 				justifyContent={'center'}
 			>
-				{!isFromUpdate || !isFromUpdateOrder ? (
-					<Text fontSize={17} fontFamily={'semiBold'}>
-						{dictionary[DictionaryEnum.SelectYourNearestPaczkomat]}
-					</Text>
-				) : (
+				{isFromUpdate || isFromUpdateOrder ? (
 					<HeaderGoBackTitle
 						title={dictionary[DictionaryEnum.SelectYourNearestPaczkomat]}
 						goBackPress={() => goBackPress(routerConstants.ORDERS)}
 					/>
+				) : (
+					<Text fontSize={17} fontFamily={'semiBold'}>
+						{dictionary[DictionaryEnum.SelectYourNearestPaczkomat]}
+					</Text>
 				)}
 			</Box>
 			<MapViews onPressPaczkomat={onPressPaczkomat} logisticPoints={logisticPoints} />
-			{(!isFromUpdate || !isFromUpdateOrder) && (
+			{isFromUpdate || isFromUpdateOrder ? (
+				<></>
+			) : (
 				<Box
 					borderRadius={16}
 					pb={3}

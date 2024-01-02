@@ -60,7 +60,7 @@ export const MapViews = ({ logisticPoints, onPressPaczkomat }: MapViewsProps) =>
 	return (
 		<>
 			<Box style={styles.container}>
-				<Box
+				{/*<Box
 					zIndex={20}
 					position={'absolute'}
 					top={5}
@@ -70,7 +70,7 @@ export const MapViews = ({ logisticPoints, onPressPaczkomat }: MapViewsProps) =>
 					w={'100%'}
 				>
 					<AddressAutocomplete onSave={onSaveAutoCompleteHandler} />
-				</Box>
+				</Box>*/}
 				<MapView
 					ref={(ref) => setMapRef(ref)}
 					style={styles.map}

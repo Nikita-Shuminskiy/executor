@@ -1,30 +1,29 @@
-declare module '*.scss';
+declare module '*.scss'
 
 declare module '*.scss' {
-    const content: Record<string, string>;
-    export default content;
+	const content: Record<string, string>
+	export default content
 }
-
 declare module '*.jpg' {
-    const content: string;
-    export default content;
+	const content: string
+	export default content
 }
 
 declare module '*.png' {
-    import { ImageSourcePropType } from 'react-native'
+	import { ImageSourcePropType } from 'react-native'
 
-    const content: ImageSourcePropType
+	const content: ImageSourcePropType
 
-    export default content
+	export default content
 }
 
 declare module '*.svg' {
-    import React from 'react'
-    import { SvgProps } from 'react-native-svg'
+	import React from 'react'
+	import { SvgProps } from 'react-native-svg'
 
-    const content: React.FC<SvgProps>
+	const content: React.FC<SvgProps>
 
-    export default content
+	export default content
 }
-declare module "*.gif";
-declare module "*.wav";
+declare module '*.gif'
+declare module '*.wav'

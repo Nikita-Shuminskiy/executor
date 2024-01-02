@@ -9,7 +9,6 @@ import { colors } from '../../assets/colors/colors'
 import Button from '../../components/Button'
 import { observer } from 'mobx-react-lite'
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
-import NotificationStore from '../../store/CommonStore/common-store'
 import rootStore from '../../store/RootStore/root-store'
 import { routerConstants } from '../../constants/routerConstants'
 import * as Facebook from 'expo-auth-session/providers/facebook'
@@ -33,7 +32,6 @@ GoogleSignin.configure({
 })
 export const LoginS = observer(({ navigation }: any) => {
 	const { dictionary } = DictionaryStore
-	//   {dictionary[DictionaryEnum.WelcomeToSwash]}
 	const { AuthStoreService } = rootStore
 	const [request, response, promptAsync] = Facebook.useAuthRequest({
 		clientId: '679597410577527', // change this for yours

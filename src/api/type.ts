@@ -167,7 +167,22 @@ type UpdateExecutorPayloadType = {
 	account_number?: string
 	full_name?: string
 }
-
+type GlobalSettingsType = {
+	executor_app_onboarding: ExecutorOnboardingType
+	executor_app_last_version: string
+}
+type ExecutorOnboardingType = {
+	executor_app_onboarding_1: string
+	executor_app_onboarding_2: string
+	executor_app_onboarding_3: string
+	executor_app_onboarding_4: string
+	executor_app_onboarding_5: string
+	executor_app_onboarding_text_1: string
+	executor_app_onboarding_text_2: string
+	executor_app_onboarding_text_3: string
+	executor_app_onboarding_text_4: string
+	executor_app_onboarding_text_5: string
+}
 enum PhotoCategoryEnum {
 	DOC = 'doc',
 	FACE = 'face',
@@ -176,6 +191,7 @@ enum PhotoCategoryEnum {
 	ROOM = 'room',
 	ADDRESS = 'address',
 }
+
 type ExecutorShortDataType = {
 	executors: {
 		executor_approve_datetime: string
@@ -222,6 +238,8 @@ type NotificationResponse = {
 
 export {
 	ExecutorShortDataType,
+	GlobalSettingsType,
+	ExecutorOnboardingType,
 	OrderDetailType,
 	NotificationResponse,
 	ShiftSetupPayload,

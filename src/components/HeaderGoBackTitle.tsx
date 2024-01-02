@@ -8,12 +8,14 @@ type HeaderGoBackTitleProps = {
 }
 const HeaderGoBackTitle = ({ goBackPress, title }: HeaderGoBackTitleProps) => {
 	return (
-		<Box flexDirection={'row'}  alignItems={'center'} justifyContent={'center'}>
+		<Box flexDirection={'row'} alignItems={'center'} justifyContent={'center'}>
 			<Box flex={1} position={'relative'} bottom={1}>
 				<ArrowBack goBackPress={goBackPress} />
 			</Box>
 			<Box flex={4} alignItems={'center'}>
-				<Text fontSize={17} fontFamily={'semiBold'}>{title}</Text>
+				<Text fontSize={16} fontFamily={'semiBold'}>
+					{title}
+				</Text>
 			</Box>
 			<Box flex={1} />
 		</Box>

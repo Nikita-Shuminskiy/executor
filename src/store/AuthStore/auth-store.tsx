@@ -5,6 +5,7 @@ import {
 	AuthGooglePayload,
 	ExecutorSettingType,
 	ExecutorShortDataType,
+	GlobalSettingsType,
 	LogisticsPointType,
 	PhotoPayloadType,
 	ShiftSetupPayload,
@@ -13,10 +14,12 @@ import {
 
 export class AuthStore {
 	isAuth: boolean = false
+	isOnboarding: boolean = false
 	phone: string = ''
 	logisticPoints: LogisticsPointType[] = []
 	executorSettings: ExecutorSettingType = {} as ExecutorSettingType
 	examEducationText: string = ''
+	globalSettings: GlobalSettingsType | null = null
 	executorShortData: ExecutorShortDataType | null = null
 	examData: { question: string; answers: string[]; total?: number; answered: number } | null = null
 	clearStore = () => {
@@ -24,6 +27,7 @@ export class AuthStore {
 		this.examEducationText = ''
 		this.executorShortData = null
 		this.examData = null
+		this.globalSettings = null
 		this.executorSettings = {} as ExecutorSettingType
 		this.logisticPoints = []
 	}
@@ -33,7 +37,9 @@ export class AuthStore {
 	setAuth = (auth: boolean): void => {
 		this.isAuth = auth
 	}
-
+	setGlobalSettings = (data: GlobalSettingsType | null): void => {
+		this.globalSettings = data
+	}
 	setExamEducationText = (data: string) => {
 		this.examEducationText = data
 	}
@@ -45,7 +51,9 @@ export class AuthStore {
 			answered: data.answered,
 		}
 	}
-
+	setIsOnboarding = (val: boolean) => {
+		this.isOnboarding = val
+	}
 	setPhone = (phone: string): void => {
 		this.phone = phone
 	}
@@ -61,6 +69,12 @@ export class AuthStore {
 	getSettingExecutor = async () => {
 		const { data } = await authApi.getSettingsExecutor()
 		this.setExecutorSettings(data)
+		return data
+	}
+	getGlobalSetting = async () => {
+		const { data } = await authApi.getGlobalSetting()
+		this.setGlobalSettings(data?.result)
+		this.setIsOnboarding(true)
 		return data
 	}
 	logout = async () => {
@@ -143,6 +157,7 @@ export class AuthStore {
 		const { data } = await authApi.sendShiftSetup(date)
 		return data
 	}
+
 	constructor() {
 		makeAutoObservable(this)
 	}

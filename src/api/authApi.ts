@@ -3,11 +3,12 @@ import {
 	AuthGooglePayload,
 	ExecutorSettingType,
 	ExecutorShortDataType,
+	GlobalSettingsType,
 	PhotoPayloadType,
 	ShiftSetupPayload,
 	UpdateExecutorPayloadType,
 } from './type'
-import { convertToFormDataImg } from '../utils/commonUtils'
+import { convertToFormDataImg, language } from '../utils/commonUtils'
 import { Platform } from 'react-native'
 
 export const authApi = {
@@ -56,7 +57,11 @@ export const authApi = {
 	async getSettingsExecutor() {
 		return await instance.get<ExecutorSettingType>(`get_settings_executor`)
 	},
-
+	async getGlobalSetting() {
+		return await instance.get<{ result: GlobalSettingsType; status: string }>(
+			`first_settings?language=${language?.slice(0, 2)}`
+		)
+	},
 	async forgotAboutDevice() {
 		return await instance.post(`executor_forget_about_device`)
 	},
@@ -97,7 +102,6 @@ export const authApi = {
 	},
 
 	async getExamEducation(lang: string) {
-		console.log(lang)
 		return await instance.get<ExamEducationResponseType<string>>(`executor_exam_education`, {
 			params: { lang },
 		})
